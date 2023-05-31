@@ -561,7 +561,7 @@ if __name__ == "__main__":
                 "track_id": actor.id,
             })
           if args.show_actor_box:
-            # last param is line width
+            # last param is line with
             pygame.draw.rect(bb_surface, (0, 255, 0), bbox, 2)
       if args.show_actor_box:
         display.blit(bb_surface, (0, 0))

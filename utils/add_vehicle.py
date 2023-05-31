@@ -1,4 +1,4 @@
-from cmd import CMD
+from utils.cmd import CMD
 
 class AddVehicle(CMD):
         

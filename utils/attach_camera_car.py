@@ -1,7 +1,7 @@
-from cmd import CMD
+from utils.cmd import CMD
 import carla
 
-class AttachCamera(CMD):
+class AttachCameraToCar(CMD):
         
         def __init__(self, world, vehicle):
             self.world = world

@@ -1,6 +1,10 @@
 import cv2
 import numpy as np
 from camera_config import *
+from pygame.locals import *
+import pygame
+
+images = [None, None, None, None]
 
 def raw_data_to_image(image):
     # Convert image data to a NumPy array
@@ -12,6 +16,7 @@ def raw_data_to_image(image):
     # Return the image array
     return image_reshaped
 
+
 def get_srouce_and_destination_matrices(id, image):
     # Define the source points for the perspective transform
     source_points = np.float32(get_source_matrix(image.height, image.width))
@@ -21,6 +26,7 @@ def get_srouce_and_destination_matrices(id, image):
     destination_points = np.float32(get_destination_matrix(new_dimensions['h'],new_dimensions['w']))
 
     return source_points, destination_points
+
 
 def transform_perspective(id, image_reshaped, source_points, destination_points):
     
@@ -34,11 +40,11 @@ def transform_perspective(id, image_reshaped, source_points, destination_points)
 
     return transformed_image
 
+
 def rotate_image(id, image, transformed_image):
 
     # Calculate the rotation matrix
     rotation_matrix = cv2.getRotationMatrix2D((image.width/2, image.height/2), -rotation_angles[str(id)], 1)
-
 
     new_rotated_dimensions = get_rotated_image_dimensions(id)
 
@@ -47,7 +53,27 @@ def rotate_image(id, image, transformed_image):
 
     return rotated_image
 
-def generate_birds_eye_view(id, image):
+
+def combine_images(combined_surface):
+
+    global images
+    id = 0
+    for image in images:
+        id +=1 
+    
+        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        pygame_img = pygame.surfarray.make_surface(image_rgb)
+        #pygame_img = pygame.image.frombuffer(pygame_img.tostring(), pygame_img.shape[1::-1], "BGR")
+        if id == 1 or id == 3:
+            pygame_img = pygame.transform.rotate(pygame_img, 270)
+        else:
+            pygame_img = pygame.transform.rotate(pygame_img, 90)
+        pygame_img.set_colorkey((0,0,0))
+        pygame_img.set_alpha(255)
+        combined_surface.blit(pygame_img, pygame_images_window_placement[str(id)])
+
+
+def generate_birds_eye_view(id, image, combined_surface):
 
     image_reshaped = raw_data_to_image(image)
 
@@ -57,5 +83,16 @@ def generate_birds_eye_view(id, image):
 
     rotated_image = rotate_image(id, image, transformed_image)
 
-    cv2.imshow(str(id), rotated_image)
-    cv2.waitKey(10)
+    if id == 3:
+        rotated_image = cv2.flip(rotated_image, 0)
+
+    if id == 4:
+        rotated_image = cv2.flip(rotated_image, 1)
+
+    images[id-1] = rotated_image
+
+    if all(item is not None for item in images):
+        combine_images(combined_surface)
+
+    # cv2.imshow(str(id), rotated_image)
+    # cv2.waitKey(10)

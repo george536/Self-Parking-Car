@@ -86,8 +86,11 @@ window_size = (800, 600)  # Set your desired window size
 window = pygame.display.set_mode(window_size)
 
 combined_surface = pygame.Surface(window_size, pygame.SRCALPHA)
-combined_surface.blit(pygame.surfarray.make_surface(cropped_image), (0, 0))
-combined_surface.blit(pygame.surfarray.make_surface(cropped_image), (200, 50))
+pygame_img = pygame.image.frombuffer(wrapped.tostring(), wrapped.shape[1::-1], "BGR")
+pygame_img.set_colorkey((0,0,0))
+pygame_img.set_alpha(255)
+combined_surface.blit(pygame_img, (0, 0))
+combined_surface.blit(pygame_img, (30, 50))
 
 rotation_matrix = cv2.getRotationMatrix2D((w/2, h/2), -(3-1)*90, 1)
 rotation_matrix2 = cv2.getRotationMatrix2D((w/2, h/2), 90, 1)

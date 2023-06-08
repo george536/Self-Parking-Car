@@ -8,6 +8,8 @@ import threading
 from camera_config import *
 from camera_processing import generate_birds_eye_view
 
+import pygame
+
 client = ConnectToCarla().execute()
 
 world = client.get_world()
@@ -20,13 +22,19 @@ vehicle = AddVehicle(world, spawn_point).execute()
 h = 240
 w = 320
 
+pygame.init()
+window_size = (pygame_window_dimensions['w'], pygame_window_dimensions['h'])  # Set your desired window size
+window = pygame.display.set_mode(window_size)
+combined_surface = pygame.Surface(window_size, pygame.SRCALPHA)
+
 def camera_listen(id, camera):
-    camera.listen(lambda image: generate_birds_eye_view(id, image))
+    global combined_surface
+    camera.listen(lambda image: generate_birds_eye_view(id, image, combined_surface))
 
 camera1 = AttachCamera(world, vehicle).execute(h, w, 90, CameraLocations.FrontLocation, CameraLocations.FrontRotation)
 camera2 = AttachCamera(world, vehicle).execute(h, w, 90, CameraLocations.RearLocation, CameraLocations.RearRotation)
-camera3 = AttachCamera(world, vehicle).execute(h, w, 140, CameraLocations.RightLocation, CameraLocations.RightRotation)
-camera4 = AttachCamera(world, vehicle).execute(h, w, 140, CameraLocations.LeftLocation, CameraLocations.LeftRotation)
+camera3 = AttachCamera(world, vehicle).execute(h, w, 90, CameraLocations.RightLocation, CameraLocations.RightRotation)
+camera4 = AttachCamera(world, vehicle).execute(h, w, 90, CameraLocations.LeftLocation, CameraLocations.LeftRotation)
 
 # Create threads for camera listens
 thread1 = threading.Thread(target=camera_listen, args=(1, camera1))
@@ -48,3 +56,5 @@ thread4.join()
 
 while True:
     world.tick()
+    window.blit(combined_surface, (0, 0))
+    pygame.display.flip()

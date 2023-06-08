@@ -7,7 +7,7 @@ def get_destination_matrix(h, w):
 
 # scaled size down to area of interest for birds eye view
 wrapped_image_dimensions_vertical = {
-    'w' : 320,
+    'w' : 450,
     'h' : 240
 }
 
@@ -25,13 +25,13 @@ def get_wrapped_image_dimensions(id):
 rotation_angles = {
     '1' : 0,
     '2' : 90,
-    '3' : 180,
-    '4' : -90
+    '3' : 0,
+    '4' : 90
 }
 
 # This is windows size for rotated images as it requires different image size
 rotated_image_dimensions_vertical = {
-    'w' : 320,
+    'w' : 450,
     'h' : 240
 }
 
@@ -45,3 +45,16 @@ def get_rotated_image_dimensions(id):
         return rotated_image_dimensions_vertical
     else:
         return rotated_image_dimensions_horizontal
+    
+pygame_window_dimensions = {
+    'w':1400,
+    'h' : 700
+}
+
+
+pygame_images_window_placement={
+    '1' : (pygame_window_dimensions['w']//3, 0),
+    '2' : (pygame_window_dimensions['w']*2//3, 0),
+    '3' : (pygame_window_dimensions['w']//3, pygame_window_dimensions['h']*2//3),
+    '4' : (pygame_window_dimensions['w']//10, 0)
+}

@@ -57,4 +57,4 @@ thread4.join()
 while True:
     world.tick()
     window.blit(combined_surface, (0, 0))
-    pygame.display.flip()
+    pygame.display.update()

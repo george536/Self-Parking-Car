@@ -41,19 +41,6 @@ def transform_perspective(id, image_reshaped, source_points, destination_points)
     return transformed_image
 
 
-def rotate_image(id, image, transformed_image):
-
-    # Calculate the rotation matrix
-    rotation_matrix = cv2.getRotationMatrix2D((image.width/2, image.height/2), -rotation_angles[str(id)], 1)
-
-    new_rotated_dimensions = get_rotated_image_dimensions(id)
-
-    # Apply the rotation to the image
-    rotated_image = cv2.warpAffine(transformed_image, rotation_matrix, (new_rotated_dimensions['w'], new_rotated_dimensions['h']))
-
-    return rotated_image
-
-
 def combine_images(combined_surface):
 
     global images
@@ -66,8 +53,10 @@ def combine_images(combined_surface):
         #pygame_img = pygame.image.frombuffer(pygame_img.tostring(), pygame_img.shape[1::-1], "BGR")
         if id == 1 or id == 3:
             pygame_img = pygame.transform.rotate(pygame_img, 270)
+        elif id == 2:
+            pygame_img = pygame.transform.rotate(pygame_img, 180)
         else:
-            pygame_img = pygame.transform.rotate(pygame_img, 90)
+            pygame_img = pygame.transform.rotate(pygame_img, 0)
         pygame_img.set_colorkey((0,0,0))
         pygame_img.set_alpha(255)
         combined_surface.blit(pygame_img, pygame_images_window_placement[str(id)])
@@ -81,15 +70,19 @@ def generate_birds_eye_view(id, image, combined_surface):
 
     transformed_image = transform_perspective(id, image_reshaped, source_points, destination_points)
 
-    rotated_image = rotate_image(id, image, transformed_image)
-
     if id == 3:
-        rotated_image = cv2.flip(rotated_image, 0)
+        transformed_image = cv2.flip(transformed_image, 0)
 
     if id == 4:
-        rotated_image = cv2.flip(rotated_image, 1)
+        transformed_image = cv2.flip(transformed_image, 1)
 
-    images[id-1] = rotated_image
+    if id == 2:
+        transformed_image = cv2.flip(transformed_image, 3)
+
+    if id == 1:
+        transformed_image = cv2.flip(transformed_image, 4)
+
+    images[id-1] = transformed_image
 
     if all(item is not None for item in images):
         combine_images(combined_surface)

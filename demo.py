@@ -1,14 +1,12 @@
 from connect_to_carla import ConnectToCarla
 from add_vehicle import AddVehicle
 from camera_locations import CameraLocations
-from listen_to_image import process_image
-from listen_to_image import perspective_transform
 from attach_camera import AttachCamera
-import threading
+from threading import Thread
 from camera_config import *
 from camera_processing import generate_birds_eye_view
-
 import pygame
+from birds_eye_view_calibration import BIVCalibration
 
 client = ConnectToCarla().execute()
 
@@ -37,12 +35,21 @@ camera3 = AttachCamera(world, vehicle).execute(h, w, 90, CameraLocations.RightLo
 camera4 = AttachCamera(world, vehicle).execute(h, w, 90, CameraLocations.LeftLocation, CameraLocations.LeftRotation)
 
 # Create threads for camera listens
-thread1 = threading.Thread(target=camera_listen, args=(1, camera1))
-thread2 = threading.Thread(target=camera_listen, args=(3, camera2))
-thread3 = threading.Thread(target=camera_listen, args=(2, camera3))
-thread4 = threading.Thread(target=camera_listen, args=(4, camera4))
+thread1 = Thread(target=camera_listen, args=(1, camera1))
+thread2 = Thread(target=camera_listen, args=(3, camera2))
+thread3 = Thread(target=camera_listen, args=(2, camera3))
+thread4 = Thread(target=camera_listen, args=(4, camera4))
+
+class BIV_calibration(Thread):
+    def __init__(self):
+        super().__init__()
+
+    def run(self):
+        BIVCalibration()
 
 # Start the threads
+biv_calibration = BIV_calibration()
+biv_calibration.start()
 thread1.start()
 thread2.start()
 thread3.start()
@@ -53,8 +60,9 @@ thread1.join()
 thread2.join()
 thread3.join()
 thread4.join()
+#biv_calibration.join()
 
 while True:
     world.tick()
     window.blit(combined_surface, (0, 0))
-    pygame.display.update()
+    pygame.display.flip()

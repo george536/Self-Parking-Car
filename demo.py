@@ -3,7 +3,7 @@ from add_vehicle import AddVehicle
 from camera_locations import CameraLocations
 from attach_camera import AttachCamera
 from threading import Thread
-from camera_config import *
+from camera_configs_manager import *
 from camera_processing import generate_birds_eye_view
 import pygame
 from birds_eye_view_calibration import BIVCalibration
@@ -11,6 +11,14 @@ from birds_eye_view_calibration import BIVCalibration
 client = ConnectToCarla().execute()
 
 world = client.get_world()
+
+# Get all actors in the world
+actors = world.get_actors()
+
+# Destroy only car actors
+for actor in actors:
+    if 'vehicle' in actor.type_id:
+        actor.destroy()
 
 spectator = world.get_spectator()
 spawn_point = spectator.get_transform()
@@ -29,8 +37,8 @@ def camera_listen(id, camera):
     global combined_surface
     camera.listen(lambda image: generate_birds_eye_view(id, image, combined_surface))
 
-camera1 = AttachCamera(world, vehicle).execute(h, w, 90, CameraLocations.FrontLocation, CameraLocations.FrontRotation)
-camera2 = AttachCamera(world, vehicle).execute(h, w, 90, CameraLocations.RearLocation, CameraLocations.RearRotation)
+camera1 = AttachCamera(world, vehicle).execute(h, w, 150, CameraLocations.FrontLocation, CameraLocations.FrontRotation)
+camera2 = AttachCamera(world, vehicle).execute(h, w, 150, CameraLocations.RearLocation, CameraLocations.RearRotation)
 camera3 = AttachCamera(world, vehicle).execute(h, w, 90, CameraLocations.RightLocation, CameraLocations.RightRotation)
 camera4 = AttachCamera(world, vehicle).execute(h, w, 90, CameraLocations.LeftLocation, CameraLocations.LeftRotation)
 
@@ -60,9 +68,39 @@ thread1.join()
 thread2.join()
 thread3.join()
 thread4.join()
-#biv_calibration.join()
 
-while True:
+running = True
+while running:
     world.tick()
     window.blit(combined_surface, (0, 0))
     pygame.display.flip()
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            # Handle mouse button down event
+            if event.button == 1:  # Left mouse button
+                print("Left mouse button down at", event.pos)
+            elif event.button == 2:  # Middle mouse button
+                print("Middle mouse button down at", event.pos)
+            elif event.button == 3:  # Right mouse button
+                print("Right mouse button down at", event.pos)
+        elif event.type == pygame.MOUSEBUTTONUP:
+            # Handle mouse button up event
+            if event.button == 1:  # Left mouse button
+                print("Left mouse button up at", event.pos)
+            elif event.button == 2:  # Middle mouse button
+                print("Middle mouse button up at", event.pos)
+            elif event.button == 3:  # Right mouse button
+                print("Right mouse button up at", event.pos)
+        elif event.type == pygame.MOUSEMOTION:
+            # Handle mouse motion event
+            print("Mouse moved to", event.pos)
+        elif event.type == pygame.KEYDOWN:
+            # Handle key down event
+            if event.key == pygame.K_SPACE:
+                print("Space key down")
+            elif event.key == pygame.K_ESCAPE:
+                running = False
+

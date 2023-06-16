@@ -1,10 +1,11 @@
 import cv2
 import numpy as np
-from camera_config import *
+from camera_configs_manager import *
 from pygame.locals import *
 import pygame
 
 images = [None, None, None, None]
+count = 0
 
 def raw_data_to_image(image):
     # Convert image data to a NumPy array
@@ -19,11 +20,11 @@ def raw_data_to_image(image):
 
 def get_srouce_and_destination_matrices(id, image):
     # Define the source points for the perspective transform
-    source_points = np.float32(get_source_matrix(image.height, image.width))
+    source_points = np.float32(get_source_matrix(id, image.height, image.width))
 
     new_dimensions = get_wrapped_image_dimensions(id)
 
-    destination_points = np.float32(get_destination_matrix(new_dimensions['h'],new_dimensions['w']))
+    destination_points = np.float32(get_destination_matrix(id, new_dimensions['h'],new_dimensions['w']))
 
     return source_points, destination_points
 
@@ -45,21 +46,44 @@ def combine_images(combined_surface):
 
     global images
     id = 0
+
+    combined_surface.fill((0,0,0))
     for image in images:
         id +=1 
     
         image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         pygame_img = pygame.surfarray.make_surface(image_rgb)
-        #pygame_img = pygame.image.frombuffer(pygame_img.tostring(), pygame_img.shape[1::-1], "BGR")
+        
         if id == 1 or id == 3:
             pygame_img = pygame.transform.rotate(pygame_img, 270)
         elif id == 2:
             pygame_img = pygame.transform.rotate(pygame_img, 180)
         else:
             pygame_img = pygame.transform.rotate(pygame_img, 0)
+        
         pygame_img.set_colorkey((0,0,0))
         pygame_img.set_alpha(255)
         combined_surface.blit(pygame_img, pygame_images_window_placement[str(id)])
+
+    global count
+    count = 0
+
+    # Determine the dimensions of the rectangle
+    rect_width = 30
+    rect_height = 50
+
+    # Calculate the top-left corner coordinates
+    rect_x = (pygame_window_dimensions['w'] - rect_width) // 2
+    rect_y = (pygame_window_dimensions['h'] - rect_height) // 2
+
+    # Create the rectangle object
+    rect = pygame.Rect(rect_x, rect_y, rect_width, rect_height)
+
+    # Set the color of the rectangle
+    rect_color = (255, 0, 0)  # Red
+
+    # Draw the rectangle on the combined surface
+    pygame.draw.rect(combined_surface, rect_color, rect)
 
 
 def generate_birds_eye_view(id, image, combined_surface):
@@ -84,8 +108,8 @@ def generate_birds_eye_view(id, image, combined_surface):
 
     images[id-1] = transformed_image
 
-    if all(item is not None for item in images):
-        combine_images(combined_surface)
+    global count
+    count+=1
 
-    # cv2.imshow(str(id), rotated_image)
-    # cv2.waitKey(10)
+    if all(item is not None for item in images) and count >3:
+        combine_images(combined_surface)

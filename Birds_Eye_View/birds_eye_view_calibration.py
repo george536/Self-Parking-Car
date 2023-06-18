@@ -24,11 +24,11 @@ class BEVCalibration(Thread):
             ("front_camera_left_indentation", config_modifications_insatnce.front_camera_left_indentation, config_modifications_insatnce.update_front_camera_left_indentation, 0, 50, 0.1),
             ("front_camera_top_indentation", config_modifications_insatnce.front_camera_top_indentation, config_modifications_insatnce.update_front_camera_top_indentation, 0, 50, 0.1),
             ("right_camera_left_indentation", config_modifications_insatnce.right_camera_left_indentation, config_modifications_insatnce.update_right_camera_left_indentation, 0, 50, 0.1),
-            ("right_camera_top_indentation", config_modifications_insatnce.right_camera_top_indentation, config_modifications_insatnce.update_right_camera_top_indentation, 0, 50, 0.1),
+            ("right_camera_top_indentation", config_modifications_insatnce.right_camera_top_indentation, config_modifications_insatnce.update_right_camera_top_indentation, -50, 50, 0.1),
             ("rear_camera_left_indentation", config_modifications_insatnce.rear_camera_left_indentation, config_modifications_insatnce.update_rear_camera_left_indentation, 0, 50, 0.1),
             ("rear_camera_top_indentation", config_modifications_insatnce.rear_camera_top_indentation, config_modifications_insatnce.update_rear_camera_top_indentation, 0, 50, 0.1),
             ("left_camera_left_indentation", config_modifications_insatnce.left_camera_left_indentation, config_modifications_insatnce.update_left_camera_left_indentation, 0, 50, 0.1),
-            ("left_camera_top_indentation", config_modifications_insatnce.left_camera_top_indentation, config_modifications_insatnce.update_left_camera_top_indentation, 0, 50, 0.1)
+            ("left_camera_top_indentation", config_modifications_insatnce.left_camera_top_indentation, config_modifications_insatnce.update_left_camera_top_indentation, -50, 50, 0.1)
         ]
 
         for i, (label, value, command, from_val, to_val, step) in enumerate(sliders):

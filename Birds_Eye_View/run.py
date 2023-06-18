@@ -9,28 +9,14 @@ import pygame
 from Birds_Eye_View.birds_eye_view_calibration import BEVCalibration
 
 class BirdsEyeView(Thread):
-    def __init__(self):
+    def __init__(self, should_calibrate):
         super().__init__()
+        self.should_calibrate = should_calibrate
 
     def run(self):
         client = ConnectToCarla().execute()
 
         world = client.get_world()
-
-        # Get all actors in the world
-        actors = world.get_actors()
-
-        # Destroy only car actors
-        for actor in actors:
-            if 'vehicle' in actor.type_id:
-                actor.destroy()
-        print("All Vehicle actors have been deleted")
-
-        # Destroy all camera sensors
-        for actor in actors:
-            if'sensor.camera' in actor.type_id:
-                actor.destroy()
-        print("All Sensor cameras have been destroyed")
 
         spectator = world.get_spectator()
         spawn_point = spectator.get_transform()
@@ -62,8 +48,9 @@ class BirdsEyeView(Thread):
         thread4 = Thread(target=camera_listen, args=(4, camera4))
 
         # Start the threads
-        biv_calibration = BEVCalibration()
-        biv_calibration.start()
+        if self.should_calibrate:
+            biv_calibration = BEVCalibration()
+            biv_calibration.start()
         thread1.start()
         thread2.start()
         thread3.start()
@@ -87,4 +74,11 @@ class BirdsEyeView(Thread):
                     print("Bird's Eye view is being terminated..")
                     config_modifications_insatnce.save_camera_configs()
                     pygame.quit()
+                    vehicle.destroy()
+                    print("Vehicle has been destroyed.")
+                    camera1.destroy()
+                    camera2.destroy()
+                    camera3.destroy()
+                    camera4.destroy()
+                    print("All Sensor cameras have been destroyed.")
                     running = False

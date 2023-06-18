@@ -1,4 +1,4 @@
-from cmd import CMD
+from Carla_Controls.abstract_command import CMD
 
 class AddVehicle(CMD):
         

@@ -1,11 +1,12 @@
 import cv2
 import numpy as np
-from camera_configs_manager import *
+from Birds_Eye_View.camera_configs_modifier import *
 from pygame.locals import *
 import pygame
 
 images = [None, None, None, None]
 count = 0
+config_modifications_insatnce = ConfigModifier.get_instance()
 
 def raw_data_to_image(image):
     # Convert image data to a NumPy array
@@ -53,7 +54,7 @@ def combine_images(combined_surface):
     
         image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         pygame_img = pygame.surfarray.make_surface(image_rgb)
-        
+
         if id == 1 or id == 3:
             pygame_img = pygame.transform.rotate(pygame_img, 270)
         elif id == 2:
@@ -63,27 +64,31 @@ def combine_images(combined_surface):
         
         pygame_img.set_colorkey((0,0,0))
         pygame_img.set_alpha(255)
-        combined_surface.blit(pygame_img, pygame_images_window_placement[str(id)])
+        global config_modifications_insatnce
+        combined_surface.blit(pygame_img, config_modifications_insatnce.pygame_images_window_placement[str(id)])
 
     global count
     count = 0
 
+
+    #################### Middle Rectangle begin ###################
     # Determine the dimensions of the rectangle
     rect_width = 30
     rect_height = 50
 
     # Calculate the top-left corner coordinates
-    rect_x = (pygame_window_dimensions['w'] - rect_width) // 2
-    rect_y = (pygame_window_dimensions['h'] - rect_height) // 2
+    rect_x = (config_modifications_insatnce.pygame_window_dimensions['w'] - rect_width) // 2
+    rect_y = (config_modifications_insatnce.pygame_window_dimensions['h'] - rect_height) // 2
 
     # Create the rectangle object
     rect = pygame.Rect(rect_x, rect_y, rect_width, rect_height)
 
     # Set the color of the rectangle
-    rect_color = (255, 0, 0)  # Red
+    rect_color = (0, 0, 255)  # Red
 
     # Draw the rectangle on the combined surface
     pygame.draw.rect(combined_surface, rect_color, rect)
+    #################### Middle Rectangle end ###################
 
 
 def generate_birds_eye_view(id, image, combined_surface):

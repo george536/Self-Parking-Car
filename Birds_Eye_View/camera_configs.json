@@ -9,7 +9,7 @@
     },
     "wrapped_image_dimensions_horizontal": {
         "w": 500,
-        "h": 250
+        "h": 266
     },
     "pygame_window_dimensions": {
         "w": 500,
@@ -17,7 +17,7 @@
     },
     "front_camera_left_indentation": 7.5,
     "front_camera_top_indentation": 20,
-    "right_camera_left_indentation": 3.3,
+    "right_camera_left_indentation": 9.8,
     "right_camera_top_indentation": 0,
     "rear_camera_left_indentation": 7.5,
     "rear_camera_top_indentation": 3.5,

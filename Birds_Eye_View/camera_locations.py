@@ -9,7 +9,7 @@ class CameraLocations(Enum):
     RearRotation = carla.Rotation(pitch=0, yaw=180, roll=0)
 
     RightLocation = carla.Location(x=1.2, y=0.5, z=2)
-    RightRotation = carla.Rotation(pitch=-15, yaw=90, roll=0)
+    RightRotation = carla.Rotation(pitch=0, yaw=90, roll=0)
 
     LeftLocation = carla.Location(x=1.2, y=-0.5, z=2)
-    LeftRotation = carla.Rotation(pitch=-15, yaw=270, roll=0)
+    LeftRotation = carla.Rotation(pitch=0, yaw=270, roll=0)

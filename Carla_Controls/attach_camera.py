@@ -2,7 +2,6 @@ from Carla_Controls.abstract_command import CMD
 import carla
 
 class AttachCamera(CMD):
-        
         def __init__(self, world, vehicle):
             self.world = world
             self.vehicle = vehicle

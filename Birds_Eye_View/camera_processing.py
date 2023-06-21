@@ -73,8 +73,8 @@ def combine_images(combined_surface):
 
     #################### Middle Rectangle begin ###################
     # Determine the dimensions of the rectangle
-    rect_width = 30
-    rect_height = 50
+    rect_width = 35
+    rect_height = 88
 
     # Calculate the top-left corner coordinates
     rect_x = (config_modifications_insatnce.pygame_window_dimensions['w'] - rect_width) // 2

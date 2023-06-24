@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from Birds_Eye_View.camera_configs_modifier import *
+from birds_eye_view.camera_configs_modifier import *
 from pygame.locals import *
 import pygame
 

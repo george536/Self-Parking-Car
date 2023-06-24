@@ -1,5 +1,5 @@
 import tkinter as tk
-from Birds_Eye_View.camera_configs_modifier import *
+from birds_eye_view.camera_configs_modifier import *
 from threading import Thread
 
 class BEVCalibration(Thread):

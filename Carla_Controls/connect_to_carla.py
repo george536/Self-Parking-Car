@@ -1,4 +1,4 @@
-from Carla_Controls.abstract_command import CMD
+from carla_controls.abstract_command import CMD
 import carla
 
 class ConnectToCarla(CMD):

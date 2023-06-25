@@ -1,14 +1,19 @@
 import os
 import sys
+import signal
 
-from Birds_Eye_View.run import BirdsEyeView
+from birds_eye_view.run import BirdsEyeView
 
-# Use this toold to calibrate the Bird's Eye View
-if "-calibrate_BEV" in sys.argv:
-    s = BirdsEyeView(True)
+
+def main():
+    # Use this toold to calibrate the Bird's Eye View
+    calibrate = "-c" in sys.argv
+
+    # Use this tool to run the Bird's Eye View
+    s = BirdsEyeView(calibrate)
     s.start()
     s.join()
-else:
-    s = BirdsEyeView(False)
-    s.start()
-    s.join()
+        
+        
+if __name__ == "__main__":
+    main()

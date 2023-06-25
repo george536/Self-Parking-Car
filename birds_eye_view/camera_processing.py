@@ -3,10 +3,13 @@ import numpy as np
 from birds_eye_view.camera_configs_modifier import *
 from pygame.locals import *
 import pygame
+from threading import Semaphore
+
+semaphore_surface = Semaphore(1)
 
 images = [None, None, None, None]
 count = 0
-config_modifications_insatnce = ConfigModifier.get_instance()
+config_modifications_instance = ConfigModifier.get_instance()
 
 def raw_data_to_image(image):
     # Convert image data to a NumPy array
@@ -42,30 +45,42 @@ def transform_perspective(id, image_reshaped, source_points, destination_points)
 
     return transformed_image
 
+def get_surface_image(id, image):
+    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    pygame_img = pygame.surfarray.make_surface(image_rgb)
+    
+    if id == 1 or id == 2:
+            pygame_img = pygame.transform.rotate(pygame_img, 270)
+    elif id == 3:
+        pygame_img = pygame.transform.rotate(pygame_img, 180)
+    else:
+        pygame_img = pygame.transform.rotate(pygame_img, 0)
+    
+    pygame_img.set_colorkey((0,0,0))
+    pygame_img.set_alpha(255)
+    
+    return pygame_img
 
 def combine_images(combined_surface):
 
     global images
-    id = 0
-
-    combined_surface.fill((0,0,0))
-    for image in images:
-        id +=1 
+    global semaphore_surface
     
-        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        pygame_img = pygame.surfarray.make_surface(image_rgb)
-
-        if id == 1 or id == 3:
-            pygame_img = pygame.transform.rotate(pygame_img, 270)
-        elif id == 2:
-            pygame_img = pygame.transform.rotate(pygame_img, 180)
-        else:
-            pygame_img = pygame.transform.rotate(pygame_img, 0)
-        
-        pygame_img.set_colorkey((0,0,0))
-        pygame_img.set_alpha(255)
-        global config_modifications_insatnce
-        combined_surface.blit(pygame_img, config_modifications_insatnce.pygame_images_window_placement[str(id)])
+    semaphore_surface.acquire()
+    combined_surface.fill((0,0,0))
+    
+    top_image = get_surface_image(1, images[0])
+    bottom_image = get_surface_image(2, images[1])
+    left_image = get_surface_image(3, images[2])
+    right_image = get_surface_image(4, images[3])
+    
+    
+    combined_surface.blit(left_image, config_modifications_instance.pygame_images_window_placement['3'])
+    combined_surface.blit(right_image, config_modifications_instance.pygame_images_window_placement['4'])
+    combined_surface.blit(top_image, config_modifications_instance.pygame_images_window_placement['1'])
+    combined_surface.blit(bottom_image, config_modifications_instance.pygame_images_window_placement['2'])
+    
+    semaphore_surface.release()
 
     global count
     count = 0
@@ -77,8 +92,8 @@ def combine_images(combined_surface):
     rect_height = 88
 
     # Calculate the top-left corner coordinates
-    rect_x = (config_modifications_insatnce.pygame_window_dimensions['w'] - rect_width) // 2
-    rect_y = (config_modifications_insatnce.pygame_window_dimensions['h'] - rect_height) // 2
+    rect_x = (config_modifications_instance.pygame_window_dimensions['w'] - rect_width) // 2
+    rect_y = (config_modifications_instance.pygame_window_dimensions['h'] - rect_height) // 2
 
     # Create the rectangle object
     rect = pygame.Rect(rect_x, rect_y, rect_width, rect_height)
@@ -99,13 +114,13 @@ def generate_birds_eye_view(id, image, combined_surface):
 
     transformed_image = transform_perspective(id, image_reshaped, source_points, destination_points)
 
-    if id == 3:
+    if id == 2:
         transformed_image = cv2.flip(transformed_image, 0)
 
     if id == 4:
         transformed_image = cv2.flip(transformed_image, 1)
 
-    if id == 2:
+    if id == 3:
         transformed_image = cv2.flip(transformed_image, 3)
 
     if id == 1:
@@ -116,5 +131,5 @@ def generate_birds_eye_view(id, image, combined_surface):
     global count
     count+=1
 
-    if all(item is not None for item in images) and count >3:
+    if all(item is not None for item in images) and count >=3:
         combine_images(combined_surface)

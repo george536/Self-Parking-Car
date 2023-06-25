@@ -1,17 +1,27 @@
-from Carla_Controls.connect_to_carla import ConnectToCarla
-from Carla_Controls.add_vehicle import AddVehicle
-from Birds_Eye_View.camera_locations import CameraLocations
-from Carla_Controls.attach_camera import AttachCamera
+from carla_controls.connect_to_carla import ConnectToCarla
+from carla_controls.add_vehicle import AddVehicle
+from birds_eye_view.camera_locations import CameraLocations
+from carla_controls.attach_camera import AttachCamera
 from threading import Thread
-from Birds_Eye_View.camera_configs_modifier import *
-from Birds_Eye_View.camera_processing import generate_birds_eye_view
+from birds_eye_view.camera_configs_modifier import *
+from birds_eye_view.camera_processing import generate_birds_eye_view
 import pygame
-from Birds_Eye_View.birds_eye_view_calibration import BEVCalibration
+from birds_eye_view.birds_eye_view_calibration import BEVCalibration
+import carla
+import time
 
 class BirdsEyeView(Thread):
     def __init__(self, should_calibrate):
         super().__init__()
         self.should_calibrate = should_calibrate
+        self.camera1 = None
+        self.camera2 = None
+        self.camera3 = None
+        self.camera4 = None
+        
+        self.vehicle = None
+        
+        self.running = False
 
     def run(self):
         client = ConnectToCarla().execute()
@@ -19,9 +29,9 @@ class BirdsEyeView(Thread):
         world = client.get_world()
 
         spectator = world.get_spectator()
-        spawn_point = spectator.get_transform()
-
-        vehicle = AddVehicle(world, spawn_point).execute()
+        spawn_point = carla.Transform(carla.Location(x=-13.2, y=-27.2, z=2), carla.Rotation(pitch=0, yaw=180, roll=0))
+        spectator.set_transform(spawn_point)
+        self.vehicle = AddVehicle(world, spawn_point).execute()
 
         # Carla Camera resolution
         h = 240
@@ -36,21 +46,22 @@ class BirdsEyeView(Thread):
         def camera_listen(id, camera):
             camera.listen(lambda image: generate_birds_eye_view(id, image, self.combined_surface))
 
-        camera1 = AttachCamera(world, vehicle).execute(h, w, 150, CameraLocations.FrontLocation, CameraLocations.FrontRotation)
-        camera2 = AttachCamera(world, vehicle).execute(h, w, 150, CameraLocations.RearLocation, CameraLocations.RearRotation)
-        camera3 = AttachCamera(world, vehicle).execute(h, w, 90, CameraLocations.RightLocation, CameraLocations.RightRotation)
-        camera4 = AttachCamera(world, vehicle).execute(h, w, 90, CameraLocations.LeftLocation, CameraLocations.LeftRotation)
+        self.camera1 = AttachCamera(world, self.vehicle).execute(h, w, 150, CameraLocations.FrontLocation, CameraLocations.FrontRotation)
+        self.camera2 = AttachCamera(world, self.vehicle).execute(h, w, 150, CameraLocations.RearLocation, CameraLocations.RearRotation)
+        self.camera3 = AttachCamera(world, self.vehicle).execute(h, w, 90, CameraLocations.RightLocation, CameraLocations.RightRotation)
+        self.camera4 = AttachCamera(world, self.vehicle).execute(h, w, 90, CameraLocations.LeftLocation, CameraLocations.LeftRotation)
 
         # Create threads for camera listens
-        thread1 = Thread(target=camera_listen, args=(1, camera1))
-        thread2 = Thread(target=camera_listen, args=(3, camera2))
-        thread3 = Thread(target=camera_listen, args=(2, camera3))
-        thread4 = Thread(target=camera_listen, args=(4, camera4))
+        thread1 = Thread(target=camera_listen, args=(1, self.camera1)) ## front camera
+        thread2 = Thread(target=camera_listen, args=(2, self.camera2)) ## rear camera
+        thread3 = Thread(target=camera_listen, args=(3, self.camera3)) ## right camera
+        thread4 = Thread(target=camera_listen, args=(4, self.camera4)) ## left camera
 
         # Start the threads
         if self.should_calibrate:
             biv_calibration = BEVCalibration()
             biv_calibration.start()
+            
         thread1.start()
         thread2.start()
         thread3.start()
@@ -62,8 +73,9 @@ class BirdsEyeView(Thread):
         thread3.join()
         thread4.join()
 
-        running = True
-        while running:
+        self.running = True
+        
+        while self.running:
             world.tick()
             window.blit(self.combined_surface, (0, 0))
             pygame.display.flip()
@@ -71,14 +83,22 @@ class BirdsEyeView(Thread):
             # handle all events to avoid crashes
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    print("Bird's Eye view is being terminated..")
-                    config_modifications_insatnce.save_camera_configs()
-                    pygame.quit()
-                    vehicle.destroy()
-                    print("Vehicle has been destroyed.")
-                    camera1.destroy()
-                    camera2.destroy()
-                    camera3.destroy()
-                    camera4.destroy()
-                    print("All Sensor cameras have been destroyed.")
-                    running = False
+                    self.at_exit()
+                    self.running = False
+                    
+            time.sleep(0.01)
+                    
+
+    def at_exit(self):
+        if self.running == True:    
+            config_modifications_insatnce = ConfigModifier.get_instance()
+            print("Bird's Eye view is being terminated..")
+            config_modifications_insatnce.save_camera_configs()
+            pygame.quit()
+            self.vehicle.destroy()
+            print("Vehicle has been destroyed.")
+            self.camera1.destroy()
+            self.camera2.destroy()
+            self.camera3.destroy()
+            self.camera4.destroy()
+            print("All Sensor cameras have been destroyed.")

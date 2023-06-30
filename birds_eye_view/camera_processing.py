@@ -5,6 +5,9 @@ from pygame.locals import *
 import pygame
 from threading import Semaphore
 
+from birds_eye_view.combined_surface import get_combined_surface, semaphore
+
+
 semaphore_surface = Semaphore(1)
 
 images = [None, None, None, None]
@@ -61,12 +64,13 @@ def get_surface_image(id, image):
     
     return pygame_img
 
-def combine_images(combined_surface):
+def combine_images():
 
     global images
-    global semaphore_surface
     
-    semaphore_surface.acquire()
+    semaphore.acquire()
+    combined_surface = get_combined_surface()
+    
     combined_surface.fill((0,0,0))
     
     top_image = get_surface_image(1, images[0])
@@ -80,7 +84,6 @@ def combine_images(combined_surface):
     combined_surface.blit(top_image, config_modifications_instance.pygame_images_window_placement['1'])
     combined_surface.blit(bottom_image, config_modifications_instance.pygame_images_window_placement['2'])
     
-    semaphore_surface.release()
 
     global count
     count = 0
@@ -88,8 +91,8 @@ def combine_images(combined_surface):
 
     #################### Middle Rectangle begin ###################
     # Determine the dimensions of the rectangle
-    rect_width = 35
-    rect_height = 88
+    rect_width = 35 * 2
+    rect_height = 88 * 2
 
     # Calculate the top-left corner coordinates
     rect_x = (config_modifications_instance.pygame_window_dimensions['w'] - rect_width) // 2
@@ -104,9 +107,11 @@ def combine_images(combined_surface):
     # Draw the rectangle on the combined surface
     pygame.draw.rect(combined_surface, rect_color, rect)
     #################### Middle Rectangle end ###################
+    
+    semaphore.release()
 
 
-def generate_birds_eye_view(id, image, combined_surface):
+def generate_birds_eye_view(id, image):
 
     image_reshaped = raw_data_to_image(image)
 
@@ -130,6 +135,9 @@ def generate_birds_eye_view(id, image, combined_surface):
 
     global count
     count+=1
-
+    
+    cv2.imshow('Birds Eye View ' + str(id), image_reshaped)
+    cv2.waitKey(1)
+    
     if all(item is not None for item in images) and count >=3:
-        combine_images(combined_surface)
+        combine_images()

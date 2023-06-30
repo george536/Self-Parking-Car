@@ -9,8 +9,11 @@ import pygame
 from birds_eye_view.birds_eye_view_calibration import BEVCalibration
 import carla
 import time
+from birds_eye_view.comb_surface_access import get_combined_surface, set_combined_surface, semaphore
+
 
 class BirdsEyeView(Thread):
+    
     def __init__(self, should_calibrate):
         super().__init__()
         self.should_calibrate = should_calibrate
@@ -22,8 +25,10 @@ class BirdsEyeView(Thread):
         self.vehicle = None
         
         self.running = False
+    
 
     def run(self):
+        
         client = ConnectToCarla().execute()
 
         world = client.get_world()
@@ -34,22 +39,24 @@ class BirdsEyeView(Thread):
         self.vehicle = AddVehicle(world, spawn_point).execute()
 
         # Carla Camera resolution
-        h = 240
-        w = 320
 
         config_modifications_insatnce = ConfigModifier.get_instance()
         pygame.init()
         window_size = (config_modifications_insatnce.pygame_window_dimensions['w'], config_modifications_insatnce.pygame_window_dimensions['h'])  # Set your desired window size
+        w = 1800
+        h = 700
         window = pygame.display.set_mode(window_size)
-        self.combined_surface = pygame.Surface(window_size, pygame.SRCALPHA)
+        
+        global combined_surface
+        set_combined_surface(pygame.Surface(window_size, pygame.SRCALPHA))
 
         def camera_listen(id, camera):
-            camera.listen(lambda image: generate_birds_eye_view(id, image, self.combined_surface))
+            camera.listen(lambda image: generate_birds_eye_view(id, image))
 
         self.camera1 = AttachCamera(world, self.vehicle).execute(h, w, 150, CameraLocations.FrontLocation, CameraLocations.FrontRotation)
         self.camera2 = AttachCamera(world, self.vehicle).execute(h, w, 150, CameraLocations.RearLocation, CameraLocations.RearRotation)
-        self.camera3 = AttachCamera(world, self.vehicle).execute(h, w, 90, CameraLocations.RightLocation, CameraLocations.RightRotation)
-        self.camera4 = AttachCamera(world, self.vehicle).execute(h, w, 90, CameraLocations.LeftLocation, CameraLocations.LeftRotation)
+        self.camera3 = AttachCamera(world, self.vehicle).execute(h, w, 150, CameraLocations.RightLocation, CameraLocations.RightRotation)
+        self.camera4 = AttachCamera(world, self.vehicle).execute(h, w, 150, CameraLocations.LeftLocation, CameraLocations.LeftRotation)
 
         # Create threads for camera listens
         thread1 = Thread(target=camera_listen, args=(1, self.camera1)) ## front camera
@@ -77,7 +84,9 @@ class BirdsEyeView(Thread):
         
         while self.running:
             world.tick()
-            window.blit(self.combined_surface, (0, 0))
+            semaphore.acquire()
+            window.blit(get_combined_surface(), (0, 0))
+            semaphore.release()
             pygame.display.flip()
 
             # handle all events to avoid crashes
@@ -101,4 +110,4 @@ class BirdsEyeView(Thread):
             self.camera2.destroy()
             self.camera3.destroy()
             self.camera4.destroy()
-            print("All Sensor cameras have been destroyed.")
+            print("Vehicle camera sensors have been destroyed.")

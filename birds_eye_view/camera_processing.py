@@ -5,7 +5,7 @@ from pygame.locals import *
 import pygame
 from threading import Semaphore
 
-from birds_eye_view.combined_surface import get_combined_surface, semaphore
+from birds_eye_view.comb_surface_access import get_combined_surface, semaphore
 
 
 semaphore_surface = Semaphore(1)

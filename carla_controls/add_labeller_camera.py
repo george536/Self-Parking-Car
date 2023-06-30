@@ -1,9 +1,10 @@
 import numpy as np
-from data_collection.utils_labeller import compute_intrinsic
 import pygame
 import carla
 
-class Camera:
+from carla_controls.abstract_command import CMD
+
+class LabellerCamera(CMD):
   """Camera object to have a surface."""
   def __init__(self,world, camera_type="rgb", image_type=carla.ColorConverter.Raw,
                width=None, height=None, fov=None):
@@ -15,17 +16,19 @@ class Camera:
     self.fov = fov
     self.camera_type = camera_type
 
+  def execute(self):
+
     self.camera_actor = self.create_camera()
     
     self.rgb_image = None  # last RGB image
     self.pygame_surface = None  # last RGB image made pygame surface
 
-    
-
     # initialize
     self.camera_actor.listen(self.parse_image)
     if self.camera_type == "rgb":
       self.camera_actor.intrinsic = self.compute_intrinsic()
+
+    return self
 
   # callback for sensor.listen()
   # this is called whenever a data comes from CARLA server

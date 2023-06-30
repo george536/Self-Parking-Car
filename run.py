@@ -3,16 +3,22 @@ import sys
 import signal
 
 from birds_eye_view.run import BirdsEyeView
-
+from parking_spot_labeller.run import parking_labeller
 
 def main():
-    # Use this toold to calibrate the Bird's Eye View
-    calibrate = "-c" in sys.argv
+    running_tools = []
 
-    # Use this tool to run the Bird's Eye View
-    s = BirdsEyeView(calibrate)
-    s.start()
-    s.join()
+    if "-l" in sys.argv:
+        parking_labeller().run()
+        return
+
+    # Use this tool to calibrate the Bird's Eye View
+    calibrate = "-c" in sys.argv
+    running_tools.append(BirdsEyeView(calibrate))
+
+    for tool in running_tools:
+        tool.start()
+        tool.join()
         
         
 if __name__ == "__main__":

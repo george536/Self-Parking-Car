@@ -1,7 +1,15 @@
+<<<<<<< HEAD:carla_controls/attach_camera.py
 from carla_controls.abstract_command import CMD
 import carla
 
 class AttachCamera(CMD):
+=======
+from utils.cmd import CMD
+import carla
+
+class AttachCameraToCar(CMD):
+        
+>>>>>>> f8f4313f3e927461ca78a93fa7043126918118ac:utils/attach_camera_car.py
         def __init__(self, world, vehicle):
             self.world = world
             self.vehicle = vehicle

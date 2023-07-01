@@ -10,7 +10,7 @@ def main():
 
     if "-l" in sys.argv:
         parking_labeller().run()
-        return
+        quit()
 
     # Use this tool to calibrate the Bird's Eye View
     calibrate = "-c" in sys.argv

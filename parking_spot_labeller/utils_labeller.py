@@ -1,9 +1,10 @@
 
 import pygame
-
 import carla
-
 import numpy as np
+import json
+
+parking_spots_file_path = "parking_spot_labeller/spots_data.json"
 
 def get_3d_points(camera, depth_camera):
         depth_in_meters = parse_carla_depth(depth_camera.rgb_image)
@@ -36,6 +37,26 @@ def parse_carla_depth(depth_image):
       depth_image[:, :, 2]*256*256) / (256 * 256 * 256 - 1)
   return 1000 * normalized
 
+
+def load_parking_spots(world):
+    try:
+        # Check if the file exists
+        with open(parking_spots_file_path, "r") as json_file:
+            data = json.load(json_file)
+            print("Loading previously saved parking spots...")
+            for spot_id, spot_corners in data.items():
+                draw_bounding_box(world, spot_corners)
+                for point in spot_corners:
+                    world.debug.draw_point(carla.Location(x=point[0], y=point[1], z=point[2]), size=0.1, life_time=1000)
+    except:
+        print("No previously saved parking spots exist.")
+
+def draw_bounding_box(world, points):
+    for p1, p2 in zip(points, points[1:] + [points[0]]):
+        world.debug.draw_line(carla.Location(x=p1[0], y=p1[1], z=p1[2]),
+                              carla.Location(x=p2[0], y=p2[1], z=p2[2]),
+                              thickness=0.1, color=carla.Color(255, 0, 0),
+                              life_time=1000)
 
 def compute_intrinsic(img_width, img_height, fov):
   """Compute intrinsic matrix."""

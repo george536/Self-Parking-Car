@@ -9,8 +9,9 @@ import pygame
 from birds_eye_view.birds_eye_view_calibration import BEVCalibration
 import carla
 import time
-from birds_eye_view.comb_surface_access import get_combined_surface, set_combined_surface, semaphore
 
+from birds_eye_view.comb_surface_access import get_combined_surface, set_combined_surface, semaphore
+from parking_spot_labeller.utils_labeller import load_parking_spots
 
 class BirdsEyeView(Thread):
     
@@ -32,6 +33,7 @@ class BirdsEyeView(Thread):
         client = ConnectToCarla().execute()
 
         world = client.get_world()
+        load_parking_spots(world)
 
         spectator = world.get_spectator()
         spawn_point = carla.Transform(carla.Location(x=-13.2, y=-27.2, z=2), carla.Rotation(pitch=0, yaw=180, roll=0))

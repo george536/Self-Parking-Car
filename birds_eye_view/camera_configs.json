@@ -1,14 +1,14 @@
 {
-    "source_matrix_depth_factor_v": 1.7,
-    "source_matrix_depth_factor_h": 3.1,
-    "destination_matrix_depth_factor_v": 18.6,
-    "destination_matrix_depth_factor_h": 9.2,
+    "source_matrix_depth_factor_v": 3.2,
+    "source_matrix_depth_factor_h": 2.2,
+    "destination_matrix_depth_factor_v": 21.7,
+    "destination_matrix_depth_factor_h": 5.3,
     "wrapped_image_dimensions_vertical": {
-        "w": 609,
-        "h": 208
+        "w": 605,
+        "h": 221
     },
     "wrapped_image_dimensions_horizontal": {
-        "w": 820,
+        "w": 780,
         "h": 394
     },
     "pygame_window_dimensions": {
@@ -16,11 +16,11 @@
         "h": 500
     },
     "front_camera_left_indentation": -9.3,
-    "front_camera_top_indentation": -4.3,
-    "right_camera_left_indentation": 3.3,
+    "front_camera_top_indentation": 51.3,
+    "right_camera_left_indentation": 145.3,
     "right_camera_top_indentation": -154.9,
-    "rear_camera_left_indentation": -10.7,
-    "rear_camera_top_indentation": 2.9,
-    "left_camera_top_indentation": -245.7,
-    "left_camera_left_indentation": -183.8
+    "rear_camera_left_indentation": -47.0,
+    "rear_camera_top_indentation": 190.2,
+    "left_camera_top_indentation": -369.7,
+    "left_camera_left_indentation": -136.8
 }

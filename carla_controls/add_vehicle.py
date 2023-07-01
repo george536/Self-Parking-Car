@@ -1,9 +1,5 @@
-<<<<<<< HEAD:carla_controls/add_vehicle.py
 from carla_controls.abstract_command import CMD
 import carla
-=======
-from utils.cmd import CMD
->>>>>>> f8f4313f3e927461ca78a93fa7043126918118ac:utils/add_vehicle.py
 
 class AddVehicle(CMD):
         def __init__(self, world, spawn_point):

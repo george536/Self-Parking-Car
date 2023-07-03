@@ -45,8 +45,8 @@ class BirdsEyeView(Thread):
         config_modifications_insatnce = ConfigModifier.get_instance()
         pygame.init()
         window_size = (config_modifications_insatnce.pygame_window_dimensions['w'], config_modifications_insatnce.pygame_window_dimensions['h'])  # Set your desired window size
-        w = 1800
-        h = 700
+        w = 640
+        h = 480
         window = pygame.display.set_mode(window_size)
         
         global combined_surface
@@ -55,10 +55,10 @@ class BirdsEyeView(Thread):
         def camera_listen(id, camera):
             camera.listen(lambda image: generate_birds_eye_view(id, image))
 
-        self.camera1 = AttachCamera(world, self.vehicle).execute(h, w, 150, CameraLocations.FrontLocation, CameraLocations.FrontRotation)
-        self.camera2 = AttachCamera(world, self.vehicle).execute(h, w, 150, CameraLocations.RearLocation, CameraLocations.RearRotation)
-        self.camera3 = AttachCamera(world, self.vehicle).execute(h, w, 150, CameraLocations.RightLocation, CameraLocations.RightRotation)
-        self.camera4 = AttachCamera(world, self.vehicle).execute(h, w, 150, CameraLocations.LeftLocation, CameraLocations.LeftRotation)
+        self.camera1 = AttachCamera(world, self.vehicle).execute(h, w, 120, CameraLocations.FrontLocation, CameraLocations.FrontRotation)
+        self.camera2 = AttachCamera(world, self.vehicle).execute(h, w, 135, CameraLocations.RearLocation, CameraLocations.RearRotation)
+        self.camera3 = AttachCamera(world, self.vehicle).execute(h, w, 130, CameraLocations.RightLocation, CameraLocations.RightRotation)
+        self.camera4 = AttachCamera(world, self.vehicle).execute(h, w, 130, CameraLocations.LeftLocation, CameraLocations.LeftRotation)
 
         # Create threads for camera listens
         thread1 = Thread(target=camera_listen, args=(1, self.camera1)) ## front camera

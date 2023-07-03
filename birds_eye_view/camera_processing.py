@@ -89,24 +89,24 @@ def combine_images():
     count = 0
 
 
-    #################### Middle Rectangle begin ###################
-    # Determine the dimensions of the rectangle
-    rect_width = 35 * 2
-    rect_height = 88 * 2
+    # #################### Middle Rectangle begin ###################
+    # # Determine the dimensions of the rectangle
+    # rect_width = 35 * 2
+    # rect_height = 88 * 2
 
-    # Calculate the top-left corner coordinates
-    rect_x = (config_modifications_instance.pygame_window_dimensions['w'] - rect_width) // 2
-    rect_y = (config_modifications_instance.pygame_window_dimensions['h'] - rect_height) // 2
+    # # Calculate the top-left corner coordinates
+    # rect_x = (config_modifications_instance.pygame_window_dimensions['w'] - rect_width) // 2
+    # rect_y = (config_modifications_instance.pygame_window_dimensions['h'] - rect_height) // 2
 
-    # Create the rectangle object
-    rect = pygame.Rect(rect_x, rect_y, rect_width, rect_height)
+    # # Create the rectangle object
+    # rect = pygame.Rect(rect_x, rect_y, rect_width, rect_height)
 
-    # Set the color of the rectangle
-    rect_color = (0, 0, 255)  # Red
+    # # Set the color of the rectangle
+    # rect_color = (0, 0, 255)  # Red
 
-    # Draw the rectangle on the combined surface
-    pygame.draw.rect(combined_surface, rect_color, rect)
-    #################### Middle Rectangle end ###################
+    # # Draw the rectangle on the combined surface
+    # pygame.draw.rect(combined_surface, rect_color, rect)
+    # #################### Middle Rectangle end ###################
     
     semaphore.release()
 

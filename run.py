@@ -1,6 +1,4 @@
-import os
 import sys
-import signal
 
 from birds_eye_view.run import BirdsEyeView
 from parking_spot_labeller.run import parking_labeller

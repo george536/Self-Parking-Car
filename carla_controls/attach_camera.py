@@ -16,6 +16,6 @@ class AttachCamera(CMD):
             camera_bp.set_attribute('lens_kcube', '1000.0')
             camera_bp.set_attribute('lens_x_size', '1.0')
             camera_bp.set_attribute('lens_y_size', '1.0')
-            camera_transform = carla.Transform(location.value, rotation.value)
+            camera_transform = carla.Transform(location, rotation)
             camera = self.world.spawn_actor(camera_bp, camera_transform, attach_to=self.vehicle)
             return camera

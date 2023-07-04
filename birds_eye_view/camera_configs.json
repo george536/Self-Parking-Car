@@ -1,6 +1,6 @@
 {
-    "source_matrix_depth_factor_v": 1.8,
-    "source_matrix_depth_factor_h": 2.6,
+    "source_matrix_depth_factor_v": 2.0,
+    "source_matrix_depth_factor_h": 2.1,
     "destination_matrix_depth_factor_v": 9.9,
     "destination_matrix_depth_factor_h": 3.9,
     "wrapped_image_dimensions_vertical": {

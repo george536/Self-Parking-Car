@@ -2,6 +2,7 @@ from threading import Thread
 import pygame
 import carla
 import time
+import tkinter as tk
 
 from carla_controls.connect_to_carla import ConnectToCarla
 from carla_controls.add_vehicle import AddVehicle
@@ -13,6 +14,7 @@ from birds_eye_view.camera_processing import generate_birds_eye_view
 from birds_eye_view.birds_eye_view_calibration import BEVCalibration
 from birds_eye_view.comb_surface_access import get_combined_surface, set_combined_surface, semaphore
 from parking_spot_labeller.utils_labeller import load_parking_spots
+from birds_eye_view.camera_properties_calibration import CameraPropertiesCalibration
 
 class BirdsEyeView(Thread):
     
@@ -80,6 +82,7 @@ class BirdsEyeView(Thread):
         if self.should_calibrate:
             biv_calibration = BEVCalibration()
             biv_calibration.start()
+            CameraPropertiesCalibration.get_instance().start()
             
         thread1.start()
         thread2.start()
@@ -115,6 +118,7 @@ class BirdsEyeView(Thread):
             config_modifications_insatnce = ConfigModifier.get_instance()
             print("Bird's Eye view is being terminated..")
             config_modifications_insatnce.save_camera_configs()
+            CameraPropertiesCalibration.get_instance().save_camera_properties()
             pygame.quit()
             self.vehicle.destroy()
             print("Vehicle has been destroyed.")

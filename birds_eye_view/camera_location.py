@@ -67,19 +67,19 @@ class CameraLocation:
         self.update_transform()
 
     def get_location(self):
-        return carla.Location(x = self.x, y = self.y, z = self.z)
-    
+        return carla.Location(x = float(self.x), y = float(self.y), z = float(self.z))
+       
     def get_rotation(self):
-        return carla.Rotation(pitch = self.pitch, yaw = self.yaw, roll = self.roll)
+        return carla.Rotation(pitch = float(self.pitch), yaw = float(self.yaw), roll = float(self.roll))
 
     def update_transform(self):
         self.camera.set_transform(carla.Transform(self.get_location(), self.get_rotation()))
 
     def parse_json_fields(self,jsonData):
         jsonData = jsonData[str(self.location.name)]
-        self.x = jsonData['x']
-        self.y = jsonData['y']
-        self.z = jsonData['z']
-        self.pitch = jsonData['pitch']
-        self.yaw = jsonData['yaw']
-        self.roll = jsonData['roll']
+        self.x = float(jsonData['x'])
+        self.y = float(jsonData['y'])
+        self.z = float(jsonData['z'])
+        self.pitch = float(jsonData['pitch'])
+        self.yaw = float(jsonData['yaw'])
+        self.roll = float(jsonData['roll'])

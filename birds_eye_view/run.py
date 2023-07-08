@@ -39,7 +39,7 @@ class BirdsEyeView(Thread):
         load_parking_spots(world)
 
         spectator = world.get_spectator()
-        spawn_point = carla.Transform(carla.Location(x=-13.2, y=-27.2, z=2), carla.Rotation(pitch=0, yaw=180, roll=0))
+        spawn_point = carla.Transform(carla.Location(x=-13.2, y=-27.2, z=2), carla.Rotation(pitch=0, yaw=-78, roll=0))
         spectator.set_transform(spawn_point)
         self.vehicle = AddVehicle(world, spawn_point).execute()
 
@@ -65,8 +65,8 @@ class BirdsEyeView(Thread):
 
         self.camera1 = AttachCamera(world, self.vehicle).execute(h, w, 150, camera_location1.get_location(), camera_location1.get_rotation())
         self.camera2 = AttachCamera(world, self.vehicle).execute(h, w, 150, camera_location2.get_location(), camera_location2.get_rotation())
-        self.camera3 = AttachCamera(world, self.vehicle).execute(h, w, 150, camera_location3.get_location(), camera_location3.get_rotation())
-        self.camera4 = AttachCamera(world, self.vehicle).execute(h, w, 150, camera_location4.get_location(), camera_location4.get_rotation())
+        self.camera3 = AttachCamera(world, self.vehicle).execute(h, w, 170, camera_location3.get_location(), camera_location3.get_rotation())
+        self.camera4 = AttachCamera(world, self.vehicle).execute(h, w, 170, camera_location4.get_location(), camera_location4.get_rotation())
 
         camera_location1.camera = self.camera1
         camera_location2.camera = self.camera2

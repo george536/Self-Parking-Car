@@ -78,36 +78,13 @@ def combine_images():
     left_image = get_surface_image(3, images[2])
     right_image = get_surface_image(4, images[3])
     
-    
-
     combined_surface.blit(top_image, config_modifications_instance.pygame_images_window_placement['1'])
     combined_surface.blit(bottom_image, config_modifications_instance.pygame_images_window_placement['2'])
     combined_surface.blit(left_image, config_modifications_instance.pygame_images_window_placement['3'])
     combined_surface.blit(right_image, config_modifications_instance.pygame_images_window_placement['4'])
     
-
     global count
     count = 0
-
-
-    # #################### Middle Rectangle begin ###################
-    # # Determine the dimensions of the rectangle
-    # rect_width = 35 * 2
-    # rect_height = 88 * 2
-
-    # # Calculate the top-left corner coordinates
-    # rect_x = (config_modifications_instance.pygame_window_dimensions['w'] - rect_width) // 2
-    # rect_y = (config_modifications_instance.pygame_window_dimensions['h'] - rect_height) // 2
-
-    # # Create the rectangle object
-    # rect = pygame.Rect(rect_x, rect_y, rect_width, rect_height)
-
-    # # Set the color of the rectangle
-    # rect_color = (0, 0, 255)  # Red
-
-    # # Draw the rectangle on the combined surface
-    # pygame.draw.rect(combined_surface, rect_color, rect)
-    # #################### Middle Rectangle end ###################
     
     semaphore.release()
 
@@ -136,9 +113,6 @@ def generate_birds_eye_view(id, image):
 
     global count
     count+=1
-    
-    cv2.imshow('Birds Eye View ' + str(id), image_reshaped)
-    cv2.waitKey(1)
     
     if all(item is not None for item in images) and count >=3:
         combine_images()

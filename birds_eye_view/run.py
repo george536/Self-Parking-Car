@@ -51,6 +51,7 @@ class BirdsEyeView(Thread):
         w = 640
         h = 480
         window = pygame.display.set_mode(window_size)
+        pygame.display.set_caption("Bird's eye view")
         
         global combined_surface
         set_combined_surface(pygame.Surface(window_size, pygame.SRCALPHA))
@@ -100,6 +101,8 @@ class BirdsEyeView(Thread):
         while self.running:
             world.tick()
             semaphore.acquire()
+            crop_rect = pygame.Rect(50, 50, 100, 100)
+            cropped_surface = get_combined_surface().subsurface(crop_rect)
             window.blit(get_combined_surface(), (0, 0))
             semaphore.release()
             pygame.display.flip()
@@ -117,8 +120,9 @@ class BirdsEyeView(Thread):
         if self.running == True:    
             config_modifications_insatnce = ConfigModifier.get_instance()
             print("Bird's Eye view is being terminated..")
-            config_modifications_insatnce.save_camera_configs()
-            CameraPropertiesCalibration.get_instance().save_camera_properties()
+            if self.should_calibrate:
+                config_modifications_insatnce.save_camera_configs()
+                CameraPropertiesCalibration.get_instance().save_camera_properties()
             pygame.quit()
             self.vehicle.destroy()
             print("Vehicle has been destroyed.")

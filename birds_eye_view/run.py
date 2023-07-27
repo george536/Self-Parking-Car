@@ -101,8 +101,6 @@ class BirdsEyeView(Thread):
         while self.running:
             world.tick()
             semaphore.acquire()
-            crop_rect = pygame.Rect(50, 50, 100, 100)
-            cropped_surface = get_combined_surface().subsurface(crop_rect)
             window.blit(get_combined_surface(), (0, 0))
             semaphore.release()
             pygame.display.flip()

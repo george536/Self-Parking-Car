@@ -12,15 +12,15 @@
         "h": 123
     },
     "pygame_window_dimensions": {
-        "w": 500,
-        "h": 500
+        "w": 295,
+        "h": 450
     },
-    "front_camera_left_indentation": -2.97,
-    "front_camera_top_indentation": 7.44,
-    "right_camera_left_indentation": 4.3,
-    "right_camera_top_indentation": 83.8,
-    "rear_camera_left_indentation": -3.0,
-    "rear_camera_top_indentation": 2.685,
-    "left_camera_top_indentation": 87.2,
-    "left_camera_left_indentation": 71.79
+    "front_camera_left_indentation": -1.26,
+    "front_camera_top_indentation": -24.79,
+    "right_camera_left_indentation": 3.52,
+    "right_camera_top_indentation": 0.9,
+    "rear_camera_left_indentation": -1.24,
+    "rear_camera_top_indentation": 3.09,
+    "left_camera_top_indentation": 2.6,
+    "left_camera_left_indentation": 0.84
 }

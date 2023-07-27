@@ -79,10 +79,11 @@ def combine_images():
     right_image = get_surface_image(4, images[3])
     
     
-    combined_surface.blit(left_image, config_modifications_instance.pygame_images_window_placement['3'])
-    combined_surface.blit(right_image, config_modifications_instance.pygame_images_window_placement['4'])
+
     combined_surface.blit(top_image, config_modifications_instance.pygame_images_window_placement['1'])
     combined_surface.blit(bottom_image, config_modifications_instance.pygame_images_window_placement['2'])
+    combined_surface.blit(left_image, config_modifications_instance.pygame_images_window_placement['3'])
+    combined_surface.blit(right_image, config_modifications_instance.pygame_images_window_placement['4'])
     
 
     global count

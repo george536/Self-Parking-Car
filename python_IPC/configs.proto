@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package IPC;
+
+service IPC {
+    rpc Add(Request) returns (Response);
+}
+
+message Request {
+    int32 num1 = 1;
+    int32 num2 = 2;
+}
+
+message Response {
+    int32 result = 1;
+}

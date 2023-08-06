@@ -1,0 +1,8 @@
+// To execute run: python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. python_IPC/ipc_configs.proto
+syntax = "proto3";
+
+package image_transfer;
+
+message ImageData {
+    bytes image_data = 1;
+}

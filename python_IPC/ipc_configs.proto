@@ -1,8 +1,30 @@
 // To execute run: python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. python_IPC/ipc_configs.proto
 syntax = "proto3";
 
-package image_transfer;
+package BEV_image_transfer;
 
-message ImageData {
-    bytes image_data = 1;
+service image_transfer {
+    rpc send_data(request_data) returns (empty_return);
+}
+
+message request_data {
+    image_request image_data = 1;
+    location_request car_location = 2;
+}
+
+message image_request  {
+    bytes data = 1;
+}
+
+message location_request {
+    int32 x = 1;
+    int32 y = 2;
+    int32 z = 3;
+    int32 pitch = 4;
+    int32 yaw = 5;
+    int32 roll = 6;
+}
+
+message empty_return {
+    int32 result = 1;
 }

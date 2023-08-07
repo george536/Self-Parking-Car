@@ -3,6 +3,7 @@ import pygame
 import carla
 import time
 import tkinter as tk
+import cv2
 
 from carla_controls.connect_to_carla import ConnectToCarla
 from carla_controls.add_vehicle import AddVehicle
@@ -15,12 +16,14 @@ from birds_eye_view.birds_eye_view_calibration import BEVCalibration
 from birds_eye_view.comb_surface_access import get_combined_surface, set_combined_surface, semaphore
 from parking_spot_labeller.utils_labeller import load_parking_spots
 from birds_eye_view.camera_properties_calibration import CameraPropertiesCalibration
+from python_IPC.IPC_client import IPC_client
 
 class BirdsEyeView(Thread):
     
-    def __init__(self, should_calibrate):
+    def __init__(self, should_calibrate, ipc_on):
         super().__init__()
         self.should_calibrate = should_calibrate
+        self.ipc_on = ipc_on
         self.camera1 = None
         self.camera2 = None
         self.camera3 = None
@@ -101,7 +104,14 @@ class BirdsEyeView(Thread):
         while self.running:
             world.tick()
             semaphore.acquire()
-            window.blit(get_combined_surface(), (0, 0))
+            combined_surface = get_combined_surface()
+            window.blit(combined_surface, (0, 0))
+            if self.ipc_on:
+                # Convert Pygame Surface to bytes array to be sent over ipc if needed
+                surface_bytes = pygame.image.tostring(combined_surface, 'RGBA')
+                IPC_client.get_instance().set_image_data(surface_bytes)
+                IPC_client.get_instance().set_location(self.vehicle.location)
+
             semaphore.release()
             pygame.display.flip()
 

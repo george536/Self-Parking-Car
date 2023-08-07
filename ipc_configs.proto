@@ -1,4 +1,5 @@
-// To execute run: python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. python_IPC/ipc_configs.proto
+// To execute for pytho run: python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. ipc_configs.proto
+// To execute for C++ run: protoc --proto_path=./ --cpp_out=src/build/gens ./ipc_configs.proto
 syntax = "proto3";
 
 package BEV_image_transfer;

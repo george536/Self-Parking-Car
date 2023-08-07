@@ -1,7 +1,10 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.15)
 project(IPC_lib CXX)
 
 include(FetchContent)
+
+set(ABSL_ENABLE_INSTALL ON)
+
 FetchContent_Declare(
   gRPC
   GIT_REPOSITORY https://github.com/grpc/grpc
@@ -10,4 +13,6 @@ FetchContent_Declare(
 set(FETCHCONTENT_QUIET OFF)
 FetchContent_MakeAvailable(gRPC)
 
-add_subdirectory(build/_deps/grpc-src/)
+add_executable(ipc_server server.cpp)
+
+target_link_libraries(ipc_server grpc++)

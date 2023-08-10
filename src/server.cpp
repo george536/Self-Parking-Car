@@ -3,13 +3,14 @@
 #include <string>
 #include <grpcpp/grpcpp.h>
 #include "include/ipc_configs.pb.h" // Generated header from your proto file
+#include "include/ipc_configs.grpc.pb.h" // Generated header from your proto file
 
 using grpc::Server;
 using grpc::ServerBuilder;
 using grpc::ServerContext;
 using grpc::Status;
 
-class ImageTransferServiceImpl final : public image_transfer::image_transfer::Service {
+class ImageTransferServiceImpl final : public image_transfer::Service {
     Status send_data(ServerContext* context, const request_data* request, empty_return* reply) override {
         // Process image and location data here
         const image_request& image = request->image_data();

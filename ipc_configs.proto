@@ -2,8 +2,6 @@
 // To execute for C++ run: protoc --proto_path=./ --cpp_out=src/build/gens ./ipc_configs.proto
 syntax = "proto3";
 
-package BEV_image_transfer;
-
 service image_transfer {
     rpc send_data(request_data) returns (empty_return);
 }

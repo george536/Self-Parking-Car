@@ -13,6 +13,8 @@ FetchContent_Declare(
 set(FETCHCONTENT_QUIET OFF)
 FetchContent_MakeAvailable(gRPC)
 
-add_executable(ipc_server server.cpp)
+include_directories(include/ipc_configs.pb.h)
+
+add_executable(ipc_server server.cpp ipc_configs.pb.cc)
 
 target_link_libraries(ipc_server grpc++)

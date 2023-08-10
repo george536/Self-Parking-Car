@@ -108,9 +108,11 @@ class BirdsEyeView(Thread):
             window.blit(combined_surface, (0, 0))
             if self.ipc_on:
                 # Convert Pygame Surface to bytes array to be sent over ipc if needed
+                IPC_client.get_instance().get_semaphore().acquire()
                 surface_bytes = pygame.image.tostring(combined_surface, 'RGBA')
                 IPC_client.get_instance().set_image_data(surface_bytes)
                 IPC_client.get_instance().set_location(self.vehicle.location)
+                IPC_client.get_instance().get_semaphore().release()
 
             semaphore.release()
             pygame.display.flip()

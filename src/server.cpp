@@ -1,32 +1,31 @@
 #include <iostream>
-#include <string>
 #include <memory>
+#include <string>
 #include <grpcpp/grpcpp.h>
-#include "image.grpc.pb.h"
+#include "include/ipc_configs.pb.h" // Generated header from your proto file
 
 using grpc::Server;
 using grpc::ServerBuilder;
 using grpc::ServerContext;
 using grpc::Status;
-using image_transfer::ImageData;
-using image_transfer::ImageTransfer;
 
-class ImageTransferServiceImpl final : public ImageTransfer::Service {
-    Status SendImage(ServerContext* context, const ImageData* request, ImageTransfer::ImageResponse* response) override {
-        std::ofstream image_file("received_image.jpg", std::ios::binary);
-        if (image_file.is_open()) {
-            image_file.write(request->image_data().data(), request->image_data().size());
-            image_file.close();
-            response->set_message("Image received successfully.");
-        } else {
-            response->set_message("Failed to save the received image.");
-        }
+class ImageTransferServiceImpl final : public image_transfer::image_transfer::Service {
+    Status send_data(ServerContext* context, const request_data* request, empty_return* reply) override {
+        // Process image and location data here
+        const image_request& image = request->image_data();
+        const location_request& location = request->car_location();
+
+        // Do something with image.data(), location.x(), location.y(), etc.
+
+        // Return a result
+        reply->set_result(0); // You can set an appropriate result value
+        
         return Status::OK;
     }
 };
 
 void RunServer() {
-    std::string server_address("0.0.0.0:50051");
+    std::string server_address("0.0.0.0:50051"); // Change to your desired address
     ImageTransferServiceImpl service;
 
     ServerBuilder builder;
@@ -39,6 +38,7 @@ void RunServer() {
 }
 
 int main() {
-    RunServer();
+    // RunServer();
+    printf("hello world");
     return 0;
 }

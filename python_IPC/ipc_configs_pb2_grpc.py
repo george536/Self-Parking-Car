@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import ipc_configs_pb2 as python__IPC_dot_ipc__configs__pb2
+import ipc_configs_pb2 as ipc__configs__pb2
 
 
 class image_transferStub(object):
@@ -15,9 +15,9 @@ class image_transferStub(object):
             channel: A grpc.Channel.
         """
         self.send_data = channel.unary_unary(
-                '/BEV_image_transfer.image_transfer/send_data',
-                request_serializer=python__IPC_dot_ipc__configs__pb2.request_data.SerializeToString,
-                response_deserializer=python__IPC_dot_ipc__configs__pb2.empty_return.FromString,
+                '/image_transfer/send_data',
+                request_serializer=ipc__configs__pb2.request_data.SerializeToString,
+                response_deserializer=ipc__configs__pb2.empty_return.FromString,
                 )
 
 
@@ -35,12 +35,12 @@ def add_image_transferServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'send_data': grpc.unary_unary_rpc_method_handler(
                     servicer.send_data,
-                    request_deserializer=python__IPC_dot_ipc__configs__pb2.request_data.FromString,
-                    response_serializer=python__IPC_dot_ipc__configs__pb2.empty_return.SerializeToString,
+                    request_deserializer=ipc__configs__pb2.request_data.FromString,
+                    response_serializer=ipc__configs__pb2.empty_return.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'BEV_image_transfer.image_transfer', rpc_method_handlers)
+            'image_transfer', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -59,8 +59,8 @@ class image_transfer(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/BEV_image_transfer.image_transfer/send_data',
-            python__IPC_dot_ipc__configs__pb2.request_data.SerializeToString,
-            python__IPC_dot_ipc__configs__pb2.empty_return.FromString,
+        return grpc.experimental.unary_unary(request, target, '/image_transfer/send_data',
+            ipc__configs__pb2.request_data.SerializeToString,
+            ipc__configs__pb2.empty_return.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

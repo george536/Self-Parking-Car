@@ -2,8 +2,8 @@
 // If you make any local change, they will be lost.
 // source: ipc_configs.proto
 
-#include "include/ipc_configs.pb.h"
-#include "include/ipc_configs.grpc.pb.h"
+#include "ipc_configs.pb.h"
+#include "ipc_configs.grpc.pb.h"
 
 #include <functional>
 #include <grpcpp/support/async_stream.h>

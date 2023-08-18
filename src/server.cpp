@@ -18,6 +18,8 @@ class ImageTransferServiceImpl final : public image_transfer::Service {
 
         // Do something with image.data(), location.x(), location.y(), etc.
 
+        std::cout<<location.x()<<std::endl;
+
         // Return a result
         reply->set_result(0); // You can set an appropriate result value
         
@@ -39,7 +41,7 @@ void RunServer() {
 }
 
 int main() {
-    // RunServer();
+    RunServer();
     printf("hello world");
     return 0;
 }

@@ -18,14 +18,14 @@ message image_request  {
 }
 
 message location_request {
-    int32 x = 1;
-    int32 y = 2;
-    int32 z = 3;
-    int32 pitch = 4;
-    int32 yaw = 5;
-    int32 roll = 6;
+    float x = 1;
+    float y = 2;
+    float z = 3;
+    float pitch = 4;
+    float yaw = 5;
+    float roll = 6;
 }
 
 message empty_return {
-    int32 result = 1;
+    float result = 1;
 }

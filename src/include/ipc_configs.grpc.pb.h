@@ -4,6 +4,8 @@
 // Original file comments:
 // To execute for pytho run: python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. ipc_configs.proto
 // To execute for C++ run: protoc --proto_path=./ --cpp_out=src/build/gens ./ipc_configs.proto
+//  protoc --proto_path=./  -I "D:\CARLA_0.9.14\Self-Parking-Car\src\build\protos" --grpc_out=. --plugin=protoc-gen-grpc="D:\CARLA_0.9.14\Self-Parking-Car\src\build\_deps\grpc-build\grpc_cpp_plugin.exe" ./ipc_configs.proto
+//
 #ifndef GRPC_ipc_5fconfigs_2eproto__INCLUDED
 #define GRPC_ipc_5fconfigs_2eproto__INCLUDED
 

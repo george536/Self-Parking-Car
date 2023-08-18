@@ -111,7 +111,7 @@ class BirdsEyeView(Thread):
                 IPC_client.get_instance().get_semaphore().acquire()
                 surface_bytes = pygame.image.tostring(combined_surface, 'RGBA')
                 IPC_client.get_instance().set_image_data(surface_bytes)
-                IPC_client.get_instance().set_location(self.vehicle.location)
+                IPC_client.get_instance().set_transform(self.vehicle.get_transform())
                 IPC_client.get_instance().get_semaphore().release()
 
             semaphore.release()

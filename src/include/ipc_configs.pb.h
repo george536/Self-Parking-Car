@@ -555,64 +555,64 @@ class location_request final :
     kYawFieldNumber = 5,
     kRollFieldNumber = 6,
   };
-  // int32 x = 1;
+  // float x = 1;
   void clear_x() ;
-  ::int32_t x() const;
-  void set_x(::int32_t value);
+  float x() const;
+  void set_x(float value);
 
   private:
-  ::int32_t _internal_x() const;
-  void _internal_set_x(::int32_t value);
+  float _internal_x() const;
+  void _internal_set_x(float value);
 
   public:
-  // int32 y = 2;
+  // float y = 2;
   void clear_y() ;
-  ::int32_t y() const;
-  void set_y(::int32_t value);
+  float y() const;
+  void set_y(float value);
 
   private:
-  ::int32_t _internal_y() const;
-  void _internal_set_y(::int32_t value);
+  float _internal_y() const;
+  void _internal_set_y(float value);
 
   public:
-  // int32 z = 3;
+  // float z = 3;
   void clear_z() ;
-  ::int32_t z() const;
-  void set_z(::int32_t value);
+  float z() const;
+  void set_z(float value);
 
   private:
-  ::int32_t _internal_z() const;
-  void _internal_set_z(::int32_t value);
+  float _internal_z() const;
+  void _internal_set_z(float value);
 
   public:
-  // int32 pitch = 4;
+  // float pitch = 4;
   void clear_pitch() ;
-  ::int32_t pitch() const;
-  void set_pitch(::int32_t value);
+  float pitch() const;
+  void set_pitch(float value);
 
   private:
-  ::int32_t _internal_pitch() const;
-  void _internal_set_pitch(::int32_t value);
+  float _internal_pitch() const;
+  void _internal_set_pitch(float value);
 
   public:
-  // int32 yaw = 5;
+  // float yaw = 5;
   void clear_yaw() ;
-  ::int32_t yaw() const;
-  void set_yaw(::int32_t value);
+  float yaw() const;
+  void set_yaw(float value);
 
   private:
-  ::int32_t _internal_yaw() const;
-  void _internal_set_yaw(::int32_t value);
+  float _internal_yaw() const;
+  void _internal_set_yaw(float value);
 
   public:
-  // int32 roll = 6;
+  // float roll = 6;
   void clear_roll() ;
-  ::int32_t roll() const;
-  void set_roll(::int32_t value);
+  float roll() const;
+  void set_roll(float value);
 
   private:
-  ::int32_t _internal_roll() const;
-  void _internal_set_roll(::int32_t value);
+  float _internal_roll() const;
+  void _internal_set_roll(float value);
 
   public:
   // @@protoc_insertion_point(class_scope:location_request)
@@ -623,12 +623,12 @@ class location_request final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::int32_t x_;
-    ::int32_t y_;
-    ::int32_t z_;
-    ::int32_t pitch_;
-    ::int32_t yaw_;
-    ::int32_t roll_;
+    float x_;
+    float y_;
+    float z_;
+    float pitch_;
+    float yaw_;
+    float roll_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -765,14 +765,14 @@ class empty_return final :
   enum : int {
     kResultFieldNumber = 1,
   };
-  // int32 result = 1;
+  // float result = 1;
   void clear_result() ;
-  ::int32_t result() const;
-  void set_result(::int32_t value);
+  float result() const;
+  void set_result(float value);
 
   private:
-  ::int32_t _internal_result() const;
-  void _internal_set_result(::int32_t value);
+  float _internal_result() const;
+  void _internal_set_result(float value);
 
   public:
   // @@protoc_insertion_point(class_scope:empty_return)
@@ -783,7 +783,7 @@ class empty_return final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::int32_t result_;
+    float result_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -1035,122 +1035,122 @@ inline void image_request::set_allocated_data(std::string* value) {
 
 // location_request
 
-// int32 x = 1;
+// float x = 1;
 inline void location_request::clear_x() {
   _impl_.x_ = 0;
 }
-inline ::int32_t location_request::x() const {
+inline float location_request::x() const {
   // @@protoc_insertion_point(field_get:location_request.x)
   return _internal_x();
 }
-inline void location_request::set_x(::int32_t value) {
+inline void location_request::set_x(float value) {
   _internal_set_x(value);
   // @@protoc_insertion_point(field_set:location_request.x)
 }
-inline ::int32_t location_request::_internal_x() const {
+inline float location_request::_internal_x() const {
   return _impl_.x_;
 }
-inline void location_request::_internal_set_x(::int32_t value) {
+inline void location_request::_internal_set_x(float value) {
   ;
   _impl_.x_ = value;
 }
 
-// int32 y = 2;
+// float y = 2;
 inline void location_request::clear_y() {
   _impl_.y_ = 0;
 }
-inline ::int32_t location_request::y() const {
+inline float location_request::y() const {
   // @@protoc_insertion_point(field_get:location_request.y)
   return _internal_y();
 }
-inline void location_request::set_y(::int32_t value) {
+inline void location_request::set_y(float value) {
   _internal_set_y(value);
   // @@protoc_insertion_point(field_set:location_request.y)
 }
-inline ::int32_t location_request::_internal_y() const {
+inline float location_request::_internal_y() const {
   return _impl_.y_;
 }
-inline void location_request::_internal_set_y(::int32_t value) {
+inline void location_request::_internal_set_y(float value) {
   ;
   _impl_.y_ = value;
 }
 
-// int32 z = 3;
+// float z = 3;
 inline void location_request::clear_z() {
   _impl_.z_ = 0;
 }
-inline ::int32_t location_request::z() const {
+inline float location_request::z() const {
   // @@protoc_insertion_point(field_get:location_request.z)
   return _internal_z();
 }
-inline void location_request::set_z(::int32_t value) {
+inline void location_request::set_z(float value) {
   _internal_set_z(value);
   // @@protoc_insertion_point(field_set:location_request.z)
 }
-inline ::int32_t location_request::_internal_z() const {
+inline float location_request::_internal_z() const {
   return _impl_.z_;
 }
-inline void location_request::_internal_set_z(::int32_t value) {
+inline void location_request::_internal_set_z(float value) {
   ;
   _impl_.z_ = value;
 }
 
-// int32 pitch = 4;
+// float pitch = 4;
 inline void location_request::clear_pitch() {
   _impl_.pitch_ = 0;
 }
-inline ::int32_t location_request::pitch() const {
+inline float location_request::pitch() const {
   // @@protoc_insertion_point(field_get:location_request.pitch)
   return _internal_pitch();
 }
-inline void location_request::set_pitch(::int32_t value) {
+inline void location_request::set_pitch(float value) {
   _internal_set_pitch(value);
   // @@protoc_insertion_point(field_set:location_request.pitch)
 }
-inline ::int32_t location_request::_internal_pitch() const {
+inline float location_request::_internal_pitch() const {
   return _impl_.pitch_;
 }
-inline void location_request::_internal_set_pitch(::int32_t value) {
+inline void location_request::_internal_set_pitch(float value) {
   ;
   _impl_.pitch_ = value;
 }
 
-// int32 yaw = 5;
+// float yaw = 5;
 inline void location_request::clear_yaw() {
   _impl_.yaw_ = 0;
 }
-inline ::int32_t location_request::yaw() const {
+inline float location_request::yaw() const {
   // @@protoc_insertion_point(field_get:location_request.yaw)
   return _internal_yaw();
 }
-inline void location_request::set_yaw(::int32_t value) {
+inline void location_request::set_yaw(float value) {
   _internal_set_yaw(value);
   // @@protoc_insertion_point(field_set:location_request.yaw)
 }
-inline ::int32_t location_request::_internal_yaw() const {
+inline float location_request::_internal_yaw() const {
   return _impl_.yaw_;
 }
-inline void location_request::_internal_set_yaw(::int32_t value) {
+inline void location_request::_internal_set_yaw(float value) {
   ;
   _impl_.yaw_ = value;
 }
 
-// int32 roll = 6;
+// float roll = 6;
 inline void location_request::clear_roll() {
   _impl_.roll_ = 0;
 }
-inline ::int32_t location_request::roll() const {
+inline float location_request::roll() const {
   // @@protoc_insertion_point(field_get:location_request.roll)
   return _internal_roll();
 }
-inline void location_request::set_roll(::int32_t value) {
+inline void location_request::set_roll(float value) {
   _internal_set_roll(value);
   // @@protoc_insertion_point(field_set:location_request.roll)
 }
-inline ::int32_t location_request::_internal_roll() const {
+inline float location_request::_internal_roll() const {
   return _impl_.roll_;
 }
-inline void location_request::_internal_set_roll(::int32_t value) {
+inline void location_request::_internal_set_roll(float value) {
   ;
   _impl_.roll_ = value;
 }
@@ -1159,22 +1159,22 @@ inline void location_request::_internal_set_roll(::int32_t value) {
 
 // empty_return
 
-// int32 result = 1;
+// float result = 1;
 inline void empty_return::clear_result() {
   _impl_.result_ = 0;
 }
-inline ::int32_t empty_return::result() const {
+inline float empty_return::result() const {
   // @@protoc_insertion_point(field_get:empty_return.result)
   return _internal_result();
 }
-inline void empty_return::set_result(::int32_t value) {
+inline void empty_return::set_result(float value) {
   _internal_set_result(value);
   // @@protoc_insertion_point(field_set:empty_return.result)
 }
-inline ::int32_t empty_return::_internal_result() const {
+inline float empty_return::_internal_result() const {
   return _impl_.result_;
 }
-inline void empty_return::_internal_set_result(::int32_t value) {
+inline void empty_return::_internal_set_result(float value) {
   ;
   _impl_.result_ = value;
 }

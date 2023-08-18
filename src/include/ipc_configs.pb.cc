@@ -167,9 +167,9 @@ const char descriptor_table_protodef_ipc_5fconfigs_2eproto[] PROTOBUF_SECTION_VA
     "mage_data\030\001 \001(\0132\016.image_request\022\'\n\014car_l"
     "ocation\030\002 \001(\0132\021.location_request\"\035\n\rimag"
     "e_request\022\014\n\004data\030\001 \001(\014\"]\n\020location_requ"
-    "est\022\t\n\001x\030\001 \001(\005\022\t\n\001y\030\002 \001(\005\022\t\n\001z\030\003 \001(\005\022\r\n\005"
-    "pitch\030\004 \001(\005\022\013\n\003yaw\030\005 \001(\005\022\014\n\004roll\030\006 \001(\005\"\036"
-    "\n\014empty_return\022\016\n\006result\030\001 \001(\0052;\n\016image_"
+    "est\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022\t\n\001z\030\003 \001(\002\022\r\n\005"
+    "pitch\030\004 \001(\002\022\013\n\003yaw\030\005 \001(\002\022\014\n\004roll\030\006 \001(\002\"\036"
+    "\n\014empty_return\022\016\n\006result\030\001 \001(\0022;\n\016image_"
     "transfer\022)\n\tsend_data\022\r.request_data\032\r.e"
     "mpty_returnb\006proto3"
 };
@@ -736,56 +736,56 @@ const char* location_request::_InternalParse(const char* ptr, ::_pbi::ParseConte
     ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // int32 x = 1;
+      // float x = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
-          _impl_.x_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 13)) {
+          _impl_.x_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
         } else {
           goto handle_unusual;
         }
         continue;
-      // int32 y = 2;
+      // float y = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 16)) {
-          _impl_.y_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
+          _impl_.y_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
         } else {
           goto handle_unusual;
         }
         continue;
-      // int32 z = 3;
+      // float z = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 24)) {
-          _impl_.z_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 29)) {
+          _impl_.z_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
         } else {
           goto handle_unusual;
         }
         continue;
-      // int32 pitch = 4;
+      // float pitch = 4;
       case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 32)) {
-          _impl_.pitch_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 37)) {
+          _impl_.pitch_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
         } else {
           goto handle_unusual;
         }
         continue;
-      // int32 yaw = 5;
+      // float yaw = 5;
       case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 40)) {
-          _impl_.yaw_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 45)) {
+          _impl_.yaw_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
         } else {
           goto handle_unusual;
         }
         continue;
-      // int32 roll = 6;
+      // float roll = 6;
       case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 48)) {
-          _impl_.roll_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 53)) {
+          _impl_.roll_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
         } else {
           goto handle_unusual;
         }
@@ -819,45 +819,69 @@ failure:
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int32 x = 1;
-  if (this->_internal_x() != 0) {
+  // float x = 1;
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  float tmp_x = this->_internal_x();
+  ::uint32_t raw_x;
+  memcpy(&raw_x, &tmp_x, sizeof(tmp_x));
+  if (raw_x != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
         1, this->_internal_x(), target);
   }
 
-  // int32 y = 2;
-  if (this->_internal_y() != 0) {
+  // float y = 2;
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  float tmp_y = this->_internal_y();
+  ::uint32_t raw_y;
+  memcpy(&raw_y, &tmp_y, sizeof(tmp_y));
+  if (raw_y != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
         2, this->_internal_y(), target);
   }
 
-  // int32 z = 3;
-  if (this->_internal_z() != 0) {
+  // float z = 3;
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  float tmp_z = this->_internal_z();
+  ::uint32_t raw_z;
+  memcpy(&raw_z, &tmp_z, sizeof(tmp_z));
+  if (raw_z != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
         3, this->_internal_z(), target);
   }
 
-  // int32 pitch = 4;
-  if (this->_internal_pitch() != 0) {
+  // float pitch = 4;
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  float tmp_pitch = this->_internal_pitch();
+  ::uint32_t raw_pitch;
+  memcpy(&raw_pitch, &tmp_pitch, sizeof(tmp_pitch));
+  if (raw_pitch != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
         4, this->_internal_pitch(), target);
   }
 
-  // int32 yaw = 5;
-  if (this->_internal_yaw() != 0) {
+  // float yaw = 5;
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  float tmp_yaw = this->_internal_yaw();
+  ::uint32_t raw_yaw;
+  memcpy(&raw_yaw, &tmp_yaw, sizeof(tmp_yaw));
+  if (raw_yaw != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
         5, this->_internal_yaw(), target);
   }
 
-  // int32 roll = 6;
-  if (this->_internal_roll() != 0) {
+  // float roll = 6;
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  float tmp_roll = this->_internal_roll();
+  ::uint32_t raw_roll;
+  memcpy(&raw_roll, &tmp_roll, sizeof(tmp_roll));
+  if (raw_roll != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
         6, this->_internal_roll(), target);
   }
 
@@ -877,40 +901,58 @@ failure:
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // int32 x = 1;
-  if (this->_internal_x() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-        this->_internal_x());
+  // float x = 1;
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  float tmp_x = this->_internal_x();
+  ::uint32_t raw_x;
+  memcpy(&raw_x, &tmp_x, sizeof(tmp_x));
+  if (raw_x != 0) {
+    total_size += 5;
   }
 
-  // int32 y = 2;
-  if (this->_internal_y() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-        this->_internal_y());
+  // float y = 2;
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  float tmp_y = this->_internal_y();
+  ::uint32_t raw_y;
+  memcpy(&raw_y, &tmp_y, sizeof(tmp_y));
+  if (raw_y != 0) {
+    total_size += 5;
   }
 
-  // int32 z = 3;
-  if (this->_internal_z() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-        this->_internal_z());
+  // float z = 3;
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  float tmp_z = this->_internal_z();
+  ::uint32_t raw_z;
+  memcpy(&raw_z, &tmp_z, sizeof(tmp_z));
+  if (raw_z != 0) {
+    total_size += 5;
   }
 
-  // int32 pitch = 4;
-  if (this->_internal_pitch() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-        this->_internal_pitch());
+  // float pitch = 4;
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  float tmp_pitch = this->_internal_pitch();
+  ::uint32_t raw_pitch;
+  memcpy(&raw_pitch, &tmp_pitch, sizeof(tmp_pitch));
+  if (raw_pitch != 0) {
+    total_size += 5;
   }
 
-  // int32 yaw = 5;
-  if (this->_internal_yaw() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-        this->_internal_yaw());
+  // float yaw = 5;
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  float tmp_yaw = this->_internal_yaw();
+  ::uint32_t raw_yaw;
+  memcpy(&raw_yaw, &tmp_yaw, sizeof(tmp_yaw));
+  if (raw_yaw != 0) {
+    total_size += 5;
   }
 
-  // int32 roll = 6;
-  if (this->_internal_roll() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-        this->_internal_roll());
+  // float roll = 6;
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  float tmp_roll = this->_internal_roll();
+  ::uint32_t raw_roll;
+  memcpy(&raw_roll, &tmp_roll, sizeof(tmp_roll));
+  if (raw_roll != 0) {
+    total_size += 5;
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -931,22 +973,46 @@ void location_request::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_x() != 0) {
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  float tmp_x = from._internal_x();
+  ::uint32_t raw_x;
+  memcpy(&raw_x, &tmp_x, sizeof(tmp_x));
+  if (raw_x != 0) {
     _this->_internal_set_x(from._internal_x());
   }
-  if (from._internal_y() != 0) {
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  float tmp_y = from._internal_y();
+  ::uint32_t raw_y;
+  memcpy(&raw_y, &tmp_y, sizeof(tmp_y));
+  if (raw_y != 0) {
     _this->_internal_set_y(from._internal_y());
   }
-  if (from._internal_z() != 0) {
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  float tmp_z = from._internal_z();
+  ::uint32_t raw_z;
+  memcpy(&raw_z, &tmp_z, sizeof(tmp_z));
+  if (raw_z != 0) {
     _this->_internal_set_z(from._internal_z());
   }
-  if (from._internal_pitch() != 0) {
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  float tmp_pitch = from._internal_pitch();
+  ::uint32_t raw_pitch;
+  memcpy(&raw_pitch, &tmp_pitch, sizeof(tmp_pitch));
+  if (raw_pitch != 0) {
     _this->_internal_set_pitch(from._internal_pitch());
   }
-  if (from._internal_yaw() != 0) {
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  float tmp_yaw = from._internal_yaw();
+  ::uint32_t raw_yaw;
+  memcpy(&raw_yaw, &tmp_yaw, sizeof(tmp_yaw));
+  if (raw_yaw != 0) {
     _this->_internal_set_yaw(from._internal_yaw());
   }
-  if (from._internal_roll() != 0) {
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  float tmp_roll = from._internal_roll();
+  ::uint32_t raw_roll;
+  memcpy(&raw_roll, &tmp_roll, sizeof(tmp_roll));
+  if (raw_roll != 0) {
     _this->_internal_set_roll(from._internal_roll());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -1039,11 +1105,11 @@ const char* empty_return::_InternalParse(const char* ptr, ::_pbi::ParseContext* 
     ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // int32 result = 1;
+      // float result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
-          _impl_.result_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 13)) {
+          _impl_.result_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
         } else {
           goto handle_unusual;
         }
@@ -1077,10 +1143,14 @@ failure:
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int32 result = 1;
-  if (this->_internal_result() != 0) {
+  // float result = 1;
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  float tmp_result = this->_internal_result();
+  ::uint32_t raw_result;
+  memcpy(&raw_result, &tmp_result, sizeof(tmp_result));
+  if (raw_result != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
         1, this->_internal_result(), target);
   }
 
@@ -1100,10 +1170,13 @@ failure:
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // int32 result = 1;
-  if (this->_internal_result() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-        this->_internal_result());
+  // float result = 1;
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  float tmp_result = this->_internal_result();
+  ::uint32_t raw_result;
+  memcpy(&raw_result, &tmp_result, sizeof(tmp_result));
+  if (raw_result != 0) {
+    total_size += 5;
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -1124,7 +1197,11 @@ void empty_return::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::P
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_result() != 0) {
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  float tmp_result = from._internal_result();
+  ::uint32_t raw_result;
+  memcpy(&raw_result, &tmp_result, sizeof(tmp_result));
+  if (raw_result != 0) {
     _this->_internal_set_result(from._internal_result());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);

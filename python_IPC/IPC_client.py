@@ -3,8 +3,8 @@ from threading import Semaphore
 import time
 
 import grpc
-import ipc_configs_pb2
-import ipc_configs_pb2_grpc
+from python_IPC.ipc_configs_pb2 import *
+from python_IPC.ipc_configs_pb2_grpc import *
 
 class IPC_client(Thread):
 
@@ -19,15 +19,16 @@ class IPC_client(Thread):
         IPC_client.__instance = self
         super().__init__()
         self.channel = grpc.insecure_channel('localhost:50051')  # Update with your server address
-        self.stub = ipc_configs_pb2_grpc.image_transferStub(self.channel)
+        print("GRPC client is initalized.")
+        self.stub = image_transferStub(self.channel)
         self.image_data = None
-        self.location = None
+        self.transform = None
 
     def set_image_data(self, image_data):
         self.image_data = image_data
 
-    def set_location(self, location):
-        self.location = location
+    def set_transform(self, transform):
+        self.transform = transform
 
     def get_semaphore(self):
         return IPC_client.semaphore
@@ -35,20 +36,20 @@ class IPC_client(Thread):
     def run(self):
         while True:
             IPC_client.semaphore.acquire()
-            if(self.image_data == None or self.location == None):
+            if(self.image_data == None or self.transform == None):
                 return
             
-            image_stub = ipc_configs_pb2.image_request(data=self.image_data)
-            car_location = ipc_configs_pb2.location_request(
-                x=self.location.transform.x, 
-                y=self.location.transform.y, 
-                z=self.location.transform.z, 
-                pitch= self.location.rotation.pitch,
-                yaw= self.location.rotation.yaw, 
-                roll= self.location.rotation.roll)  # Sample location values
+            image_stub = image_request(data=self.image_data)
+            car_location = location_request(
+                x=self.transform.location.x, 
+                y=self.transform.location.y, 
+                z=self.transform.location.z, 
+                pitch= self.transform.rotation.pitch,
+                yaw= self.transform.rotation.yaw, 
+                roll= self.transform.rotation.roll)  # Sample location values
 
             # Create request
-            request = ipc_configs_pb2.request_data(
+            request = request_data(
                 image_data=image_stub,
                 car_location=car_location
             )

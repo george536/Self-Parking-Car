@@ -27,8 +27,9 @@ def main():
 
     for tool in running_tools:
         tool.start()
+
+    for tool in running_tools:
         tool.join()
-        
-        
+
 if __name__ == "__main__":
     main()

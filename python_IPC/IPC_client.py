@@ -37,7 +37,8 @@ class IPC_client(Thread):
         while True:
             IPC_client.semaphore.acquire()
             if(self.image_data == None or self.transform == None):
-                return
+                IPC_client.semaphore.release()
+                continue
             
             image_stub = image_request(data=self.image_data)
             car_location = location_request(

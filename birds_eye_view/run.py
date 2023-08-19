@@ -32,7 +32,6 @@ class BirdsEyeView(Thread):
         self.vehicle = None
         
         self.running = False
-    
 
     def run(self):
         

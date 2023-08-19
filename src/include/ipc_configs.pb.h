@@ -56,21 +56,21 @@ extern empty_returnDefaultTypeInternal _empty_return_default_instance_;
 class image_request;
 struct image_requestDefaultTypeInternal;
 extern image_requestDefaultTypeInternal _image_request_default_instance_;
-class location_request;
-struct location_requestDefaultTypeInternal;
-extern location_requestDefaultTypeInternal _location_request_default_instance_;
 class request_data;
 struct request_dataDefaultTypeInternal;
 extern request_dataDefaultTypeInternal _request_data_default_instance_;
+class transform_request;
+struct transform_requestDefaultTypeInternal;
+extern transform_requestDefaultTypeInternal _transform_request_default_instance_;
 PROTOBUF_NAMESPACE_OPEN
 template <>
 ::empty_return* Arena::CreateMaybeMessage<::empty_return>(Arena*);
 template <>
 ::image_request* Arena::CreateMaybeMessage<::image_request>(Arena*);
 template <>
-::location_request* Arena::CreateMaybeMessage<::location_request>(Arena*);
-template <>
 ::request_data* Arena::CreateMaybeMessage<::request_data>(Arena*);
+template <>
+::transform_request* Arena::CreateMaybeMessage<::transform_request>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 
 
@@ -208,7 +208,7 @@ class request_data final :
 
   enum : int {
     kImageDataFieldNumber = 1,
-    kCarLocationFieldNumber = 2,
+    kCarTransformFieldNumber = 2,
   };
   // .image_request image_data = 1;
   bool has_image_data() const;
@@ -224,20 +224,20 @@ class request_data final :
   void unsafe_arena_set_allocated_image_data(
       ::image_request* image_data);
   ::image_request* unsafe_arena_release_image_data();
-  // .location_request car_location = 2;
-  bool has_car_location() const;
-  void clear_car_location() ;
-  const ::location_request& car_location() const;
-  PROTOBUF_NODISCARD ::location_request* release_car_location();
-  ::location_request* mutable_car_location();
-  void set_allocated_car_location(::location_request* car_location);
+  // .transform_request car_transform = 2;
+  bool has_car_transform() const;
+  void clear_car_transform() ;
+  const ::transform_request& car_transform() const;
+  PROTOBUF_NODISCARD ::transform_request* release_car_transform();
+  ::transform_request* mutable_car_transform();
+  void set_allocated_car_transform(::transform_request* car_transform);
   private:
-  const ::location_request& _internal_car_location() const;
-  ::location_request* _internal_mutable_car_location();
+  const ::transform_request& _internal_car_transform() const;
+  ::transform_request* _internal_mutable_car_transform();
   public:
-  void unsafe_arena_set_allocated_car_location(
-      ::location_request* car_location);
-  ::location_request* unsafe_arena_release_car_location();
+  void unsafe_arena_set_allocated_car_transform(
+      ::transform_request* car_transform);
+  ::transform_request* unsafe_arena_release_car_transform();
   // @@protoc_insertion_point(class_scope:request_data)
  private:
   class _Internal;
@@ -249,7 +249,7 @@ class request_data final :
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
     ::image_request* image_data_;
-    ::location_request* car_location_;
+    ::transform_request* car_transform_;
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_ipc_5fconfigs_2eproto;
@@ -420,25 +420,25 @@ class image_request final :
   friend struct ::TableStruct_ipc_5fconfigs_2eproto;
 };// -------------------------------------------------------------------
 
-class location_request final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:location_request) */ {
+class transform_request final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:transform_request) */ {
  public:
-  inline location_request() : location_request(nullptr) {}
-  ~location_request() override;
+  inline transform_request() : transform_request(nullptr) {}
+  ~transform_request() override;
   template<typename = void>
-  explicit PROTOBUF_CONSTEXPR location_request(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  explicit PROTOBUF_CONSTEXPR transform_request(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  location_request(const location_request& from);
-  location_request(location_request&& from) noexcept
-    : location_request() {
+  transform_request(const transform_request& from);
+  transform_request(transform_request&& from) noexcept
+    : transform_request() {
     *this = ::std::move(from);
   }
 
-  inline location_request& operator=(const location_request& from) {
+  inline transform_request& operator=(const transform_request& from) {
     CopyFrom(from);
     return *this;
   }
-  inline location_request& operator=(location_request&& from) noexcept {
+  inline transform_request& operator=(transform_request&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -468,20 +468,20 @@ class location_request final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const location_request& default_instance() {
+  static const transform_request& default_instance() {
     return *internal_default_instance();
   }
-  static inline const location_request* internal_default_instance() {
-    return reinterpret_cast<const location_request*>(
-               &_location_request_default_instance_);
+  static inline const transform_request* internal_default_instance() {
+    return reinterpret_cast<const transform_request*>(
+               &_transform_request_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     2;
 
-  friend void swap(location_request& a, location_request& b) {
+  friend void swap(transform_request& a, transform_request& b) {
     a.Swap(&b);
   }
-  inline void Swap(location_request* other) {
+  inline void Swap(transform_request* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -494,7 +494,7 @@ class location_request final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(location_request* other) {
+  void UnsafeArenaSwap(transform_request* other) {
     if (other == this) return;
     ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -502,14 +502,14 @@ class location_request final :
 
   // implements Message ----------------------------------------------
 
-  location_request* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<location_request>(arena);
+  transform_request* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<transform_request>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const location_request& from);
+  void CopyFrom(const transform_request& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const location_request& from) {
-    location_request::MergeImpl(*this, from);
+  void MergeFrom( const transform_request& from) {
+    transform_request::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -527,15 +527,15 @@ class location_request final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(location_request* other);
+  void InternalSwap(transform_request* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::absl::string_view FullMessageName() {
-    return "location_request";
+    return "transform_request";
   }
   protected:
-  explicit location_request(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit transform_request(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   public:
 
   static const ClassData _class_data_;
@@ -615,7 +615,7 @@ class location_request final :
   void _internal_set_roll(float value);
 
   public:
-  // @@protoc_insertion_point(class_scope:location_request)
+  // @@protoc_insertion_point(class_scope:transform_request)
  private:
   class _Internal;
 
@@ -893,42 +893,42 @@ inline void request_data::set_allocated_image_data(::image_request* image_data) 
   // @@protoc_insertion_point(field_set_allocated:request_data.image_data)
 }
 
-// .location_request car_location = 2;
-inline bool request_data::has_car_location() const {
+// .transform_request car_transform = 2;
+inline bool request_data::has_car_transform() const {
   bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.car_location_ != nullptr);
+  PROTOBUF_ASSUME(!value || _impl_.car_transform_ != nullptr);
   return value;
 }
-inline void request_data::clear_car_location() {
-  if (_impl_.car_location_ != nullptr) _impl_.car_location_->Clear();
+inline void request_data::clear_car_transform() {
+  if (_impl_.car_transform_ != nullptr) _impl_.car_transform_->Clear();
   _impl_._has_bits_[0] &= ~0x00000002u;
 }
-inline const ::location_request& request_data::_internal_car_location() const {
-  const ::location_request* p = _impl_.car_location_;
-  return p != nullptr ? *p : reinterpret_cast<const ::location_request&>(
-      ::_location_request_default_instance_);
+inline const ::transform_request& request_data::_internal_car_transform() const {
+  const ::transform_request* p = _impl_.car_transform_;
+  return p != nullptr ? *p : reinterpret_cast<const ::transform_request&>(
+      ::_transform_request_default_instance_);
 }
-inline const ::location_request& request_data::car_location() const {
-  // @@protoc_insertion_point(field_get:request_data.car_location)
-  return _internal_car_location();
+inline const ::transform_request& request_data::car_transform() const {
+  // @@protoc_insertion_point(field_get:request_data.car_transform)
+  return _internal_car_transform();
 }
-inline void request_data::unsafe_arena_set_allocated_car_location(
-    ::location_request* car_location) {
+inline void request_data::unsafe_arena_set_allocated_car_transform(
+    ::transform_request* car_transform) {
   if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.car_location_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.car_transform_);
   }
-  _impl_.car_location_ = car_location;
-  if (car_location) {
+  _impl_.car_transform_ = car_transform;
+  if (car_transform) {
     _impl_._has_bits_[0] |= 0x00000002u;
   } else {
     _impl_._has_bits_[0] &= ~0x00000002u;
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:request_data.car_location)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:request_data.car_transform)
 }
-inline ::location_request* request_data::release_car_location() {
+inline ::transform_request* request_data::release_car_transform() {
   _impl_._has_bits_[0] &= ~0x00000002u;
-  ::location_request* temp = _impl_.car_location_;
-  _impl_.car_location_ = nullptr;
+  ::transform_request* temp = _impl_.car_transform_;
+  _impl_.car_transform_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
   temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
@@ -940,44 +940,44 @@ inline ::location_request* request_data::release_car_location() {
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::location_request* request_data::unsafe_arena_release_car_location() {
-  // @@protoc_insertion_point(field_release:request_data.car_location)
+inline ::transform_request* request_data::unsafe_arena_release_car_transform() {
+  // @@protoc_insertion_point(field_release:request_data.car_transform)
   _impl_._has_bits_[0] &= ~0x00000002u;
-  ::location_request* temp = _impl_.car_location_;
-  _impl_.car_location_ = nullptr;
+  ::transform_request* temp = _impl_.car_transform_;
+  _impl_.car_transform_ = nullptr;
   return temp;
 }
-inline ::location_request* request_data::_internal_mutable_car_location() {
+inline ::transform_request* request_data::_internal_mutable_car_transform() {
   _impl_._has_bits_[0] |= 0x00000002u;
-  if (_impl_.car_location_ == nullptr) {
-    auto* p = CreateMaybeMessage<::location_request>(GetArenaForAllocation());
-    _impl_.car_location_ = p;
+  if (_impl_.car_transform_ == nullptr) {
+    auto* p = CreateMaybeMessage<::transform_request>(GetArenaForAllocation());
+    _impl_.car_transform_ = p;
   }
-  return _impl_.car_location_;
+  return _impl_.car_transform_;
 }
-inline ::location_request* request_data::mutable_car_location() {
-  ::location_request* _msg = _internal_mutable_car_location();
-  // @@protoc_insertion_point(field_mutable:request_data.car_location)
+inline ::transform_request* request_data::mutable_car_transform() {
+  ::transform_request* _msg = _internal_mutable_car_transform();
+  // @@protoc_insertion_point(field_mutable:request_data.car_transform)
   return _msg;
 }
-inline void request_data::set_allocated_car_location(::location_request* car_location) {
+inline void request_data::set_allocated_car_transform(::transform_request* car_transform) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete _impl_.car_location_;
+    delete _impl_.car_transform_;
   }
-  if (car_location) {
+  if (car_transform) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(car_location);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(car_transform);
     if (message_arena != submessage_arena) {
-      car_location = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, car_location, submessage_arena);
+      car_transform = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, car_transform, submessage_arena);
     }
     _impl_._has_bits_[0] |= 0x00000002u;
   } else {
     _impl_._has_bits_[0] &= ~0x00000002u;
   }
-  _impl_.car_location_ = car_location;
-  // @@protoc_insertion_point(field_set_allocated:request_data.car_location)
+  _impl_.car_transform_ = car_transform;
+  // @@protoc_insertion_point(field_set_allocated:request_data.car_transform)
 }
 
 // -------------------------------------------------------------------
@@ -1033,124 +1033,124 @@ inline void image_request::set_allocated_data(std::string* value) {
 
 // -------------------------------------------------------------------
 
-// location_request
+// transform_request
 
 // float x = 1;
-inline void location_request::clear_x() {
+inline void transform_request::clear_x() {
   _impl_.x_ = 0;
 }
-inline float location_request::x() const {
-  // @@protoc_insertion_point(field_get:location_request.x)
+inline float transform_request::x() const {
+  // @@protoc_insertion_point(field_get:transform_request.x)
   return _internal_x();
 }
-inline void location_request::set_x(float value) {
+inline void transform_request::set_x(float value) {
   _internal_set_x(value);
-  // @@protoc_insertion_point(field_set:location_request.x)
+  // @@protoc_insertion_point(field_set:transform_request.x)
 }
-inline float location_request::_internal_x() const {
+inline float transform_request::_internal_x() const {
   return _impl_.x_;
 }
-inline void location_request::_internal_set_x(float value) {
+inline void transform_request::_internal_set_x(float value) {
   ;
   _impl_.x_ = value;
 }
 
 // float y = 2;
-inline void location_request::clear_y() {
+inline void transform_request::clear_y() {
   _impl_.y_ = 0;
 }
-inline float location_request::y() const {
-  // @@protoc_insertion_point(field_get:location_request.y)
+inline float transform_request::y() const {
+  // @@protoc_insertion_point(field_get:transform_request.y)
   return _internal_y();
 }
-inline void location_request::set_y(float value) {
+inline void transform_request::set_y(float value) {
   _internal_set_y(value);
-  // @@protoc_insertion_point(field_set:location_request.y)
+  // @@protoc_insertion_point(field_set:transform_request.y)
 }
-inline float location_request::_internal_y() const {
+inline float transform_request::_internal_y() const {
   return _impl_.y_;
 }
-inline void location_request::_internal_set_y(float value) {
+inline void transform_request::_internal_set_y(float value) {
   ;
   _impl_.y_ = value;
 }
 
 // float z = 3;
-inline void location_request::clear_z() {
+inline void transform_request::clear_z() {
   _impl_.z_ = 0;
 }
-inline float location_request::z() const {
-  // @@protoc_insertion_point(field_get:location_request.z)
+inline float transform_request::z() const {
+  // @@protoc_insertion_point(field_get:transform_request.z)
   return _internal_z();
 }
-inline void location_request::set_z(float value) {
+inline void transform_request::set_z(float value) {
   _internal_set_z(value);
-  // @@protoc_insertion_point(field_set:location_request.z)
+  // @@protoc_insertion_point(field_set:transform_request.z)
 }
-inline float location_request::_internal_z() const {
+inline float transform_request::_internal_z() const {
   return _impl_.z_;
 }
-inline void location_request::_internal_set_z(float value) {
+inline void transform_request::_internal_set_z(float value) {
   ;
   _impl_.z_ = value;
 }
 
 // float pitch = 4;
-inline void location_request::clear_pitch() {
+inline void transform_request::clear_pitch() {
   _impl_.pitch_ = 0;
 }
-inline float location_request::pitch() const {
-  // @@protoc_insertion_point(field_get:location_request.pitch)
+inline float transform_request::pitch() const {
+  // @@protoc_insertion_point(field_get:transform_request.pitch)
   return _internal_pitch();
 }
-inline void location_request::set_pitch(float value) {
+inline void transform_request::set_pitch(float value) {
   _internal_set_pitch(value);
-  // @@protoc_insertion_point(field_set:location_request.pitch)
+  // @@protoc_insertion_point(field_set:transform_request.pitch)
 }
-inline float location_request::_internal_pitch() const {
+inline float transform_request::_internal_pitch() const {
   return _impl_.pitch_;
 }
-inline void location_request::_internal_set_pitch(float value) {
+inline void transform_request::_internal_set_pitch(float value) {
   ;
   _impl_.pitch_ = value;
 }
 
 // float yaw = 5;
-inline void location_request::clear_yaw() {
+inline void transform_request::clear_yaw() {
   _impl_.yaw_ = 0;
 }
-inline float location_request::yaw() const {
-  // @@protoc_insertion_point(field_get:location_request.yaw)
+inline float transform_request::yaw() const {
+  // @@protoc_insertion_point(field_get:transform_request.yaw)
   return _internal_yaw();
 }
-inline void location_request::set_yaw(float value) {
+inline void transform_request::set_yaw(float value) {
   _internal_set_yaw(value);
-  // @@protoc_insertion_point(field_set:location_request.yaw)
+  // @@protoc_insertion_point(field_set:transform_request.yaw)
 }
-inline float location_request::_internal_yaw() const {
+inline float transform_request::_internal_yaw() const {
   return _impl_.yaw_;
 }
-inline void location_request::_internal_set_yaw(float value) {
+inline void transform_request::_internal_set_yaw(float value) {
   ;
   _impl_.yaw_ = value;
 }
 
 // float roll = 6;
-inline void location_request::clear_roll() {
+inline void transform_request::clear_roll() {
   _impl_.roll_ = 0;
 }
-inline float location_request::roll() const {
-  // @@protoc_insertion_point(field_get:location_request.roll)
+inline float transform_request::roll() const {
+  // @@protoc_insertion_point(field_get:transform_request.roll)
   return _internal_roll();
 }
-inline void location_request::set_roll(float value) {
+inline void transform_request::set_roll(float value) {
   _internal_set_roll(value);
-  // @@protoc_insertion_point(field_set:location_request.roll)
+  // @@protoc_insertion_point(field_set:transform_request.roll)
 }
-inline float location_request::_internal_roll() const {
+inline float transform_request::_internal_roll() const {
   return _impl_.roll_;
 }
-inline void location_request::_internal_set_roll(float value) {
+inline void transform_request::_internal_set_roll(float value) {
   ;
   _impl_.roll_ = value;
 }

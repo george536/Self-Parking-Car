@@ -10,14 +10,14 @@ service image_transfer {
 
 message request_data {
     image_request image_data = 1;
-    location_request car_location = 2;
+    transform_request car_transform = 2;
 }
 
 message image_request  {
     bytes data = 1;
 }
 
-message location_request {
+message transform_request {
     float x = 1;
     float y = 2;
     float z = 3;

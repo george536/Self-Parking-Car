@@ -13,8 +13,16 @@ FetchContent_Declare(
 set(FETCHCONTENT_QUIET OFF)
 FetchContent_MakeAvailable(gRPC)
 
-include_directories(include/ipc_configs.pb.h include/ipc_configs.grpc.pb.h)
+set(OpenCV_DIR "C:/opencv/build")
 
-add_executable(ipc_server server.cpp ./include/ipc_configs.pb.cc ./include/ipc_configs.grpc.pb.cc)
+include_directories("C:/opencv/build/include")
+include_directories(include/ipc_configs.pb.h)
+include_directories(grpc_processing_utils/include/grpc_data_processor.h)
+include_directories(include/ipc_configs.grpc.pb.h)
 
-target_link_libraries(ipc_server grpc++)
+add_executable(ipc_server server.cpp)
+add_executable(./include/ipc_configs.pb.cc)
+add_executable(./grpc_processing_utils/grpc_data_processor.cpp)
+add_executable(./include/ipc_configs.grpc.pb.cc)
+
+target_link_libraries(ipc_server grpc++ ${OpenCV_LIBS})

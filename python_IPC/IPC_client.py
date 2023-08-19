@@ -38,18 +38,18 @@ class IPC_client(Thread):
                 continue
             
             image_stub = image_request(data=self.image_data)
-            car_location = location_request(
+            car_transform = transform_request(
                 x=self.transform.location.x, 
                 y=self.transform.location.y, 
                 z=self.transform.location.z, 
                 pitch= self.transform.rotation.pitch,
                 yaw= self.transform.rotation.yaw, 
-                roll= self.transform.rotation.roll)  # Sample location values
+                roll= self.transform.rotation.roll)
 
             # Create request
             request = request_data(
                 image_data=image_stub,
-                car_location=car_location
+                car_transform=car_transform
             )
 
             # Make the gRPC call

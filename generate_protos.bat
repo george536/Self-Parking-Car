@@ -1,5 +1,7 @@
 @echo off
 
+pip install grpcio-tools
+
 REM Execute for Python
 python -m grpc_tools.protoc -I. --python_out=./python_IPC --grpc_python_out=./python_IPC ipc_configs.proto
 

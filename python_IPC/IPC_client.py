@@ -9,7 +9,8 @@ from python_IPC.ipc_configs_pb2_grpc import *
 class IPC_client(Thread):
 
     __instance = None
-    semaphore = Semaphore(1)
+    semaphore1 = Semaphore(1)
+    semaphore2 = Semaphore(0)
 
     @staticmethod
     def get_instance():
@@ -30,14 +31,10 @@ class IPC_client(Thread):
     def set_transform(self, transform):
         self.transform = transform
 
-    def get_semaphore(self):
-        return IPC_client.semaphore
-
     def run(self):
         while True:
-            IPC_client.semaphore.acquire()
+            IPC_client.semaphore2.acquire()
             if(self.image_data == None or self.transform == None):
-                IPC_client.semaphore.release()
                 continue
             
             image_stub = image_request(data=self.image_data)
@@ -59,4 +56,4 @@ class IPC_client(Thread):
             self.stub.send_data(request)
 
             time.sleep(0.1)
-            IPC_client.semaphore.release()
+            IPC_client.semaphore1.release()

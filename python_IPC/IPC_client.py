@@ -46,14 +46,25 @@ class IPC_client(Thread):
                 yaw= self.transform.rotation.yaw, 
                 roll= self.transform.rotation.roll)
 
-            # Create request
-            request = request_data(
-                image_data=image_stub,
-                car_transform=car_transform
-            )
+            try:
+                # Create request
+                request = request_data(
+                    image_data=image_stub,
+                    car_transform=car_transform
+                )
 
-            # Make the gRPC call
-            self.stub.send_data(request)
+                # Make the gRPC call
+                status = self.stub.send_data(request)
+
+                print(status.result)
+            except grpc.RpcError as e:
+                # Handle gRPC errors
+                print('Error:', e.details())
+                if e.code() == grpc.StatusCode.UNKNOWN:
+                    print('Unknown error occurred')
+                elif e.code() == grpc.StatusCode.INVALID_ARGUMENT:
+                    print('Invalid argument provided')
+                # Handle more error codes as needed
 
             time.sleep(0.1)
             IPC_client.semaphore1.release()

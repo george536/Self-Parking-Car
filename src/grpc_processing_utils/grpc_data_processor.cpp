@@ -1,9 +1,9 @@
 #include "include/grpc_data_processor.h"
 
-bool GrpcDataProcessor::convertAndSaveImage(const std::vector<char> imageBytes) {
+bool GrpcDataProcessor::convertAndSaveImage(const char* imageBytes) {
     // Convert std::vector<char> to cv::Mat
-    cv::Mat imageMat(imageBytes.size(), 1, CV_8U);
-    memcpy(imageMat.data, imageBytes.data(), imageBytes.size() * sizeof(char));
+    cv::Mat imageMat(strlen(imageBytes), 1, CV_8U);
+    memcpy(imageMat.data, imageBytes, strlen(imageBytes));
 
     // If the image format is known (e.g., JPEG or PNG), you can decode it using cv::imdecode
     cv::Mat decodedImage = cv::imdecode(imageMat, cv::IMREAD_COLOR);
@@ -29,15 +29,9 @@ int GrpcDataProcessor::getNextImageId() {
     return 0;
 }
 
-std::vector<char> GrpcDataProcessor::convertToBytes(image_request& image) {
+const char* GrpcDataProcessor::convertToBytes(const std::string image) {
     // Create a pointer to the object and a pointer to a byte
-    const char* bytePointer = reinterpret_cast<const char*>(&image);
-
-    // Calculate the size of the object in bytes
-    size_t objectSize = sizeof(image);
-
-    // Create a vector to hold the bytes
-    std::vector<char> byteList(bytePointer, bytePointer + objectSize);
-
-    return byteList;
+    //const char* bytePointer = reinterpret_cast<const char*>(&image);
+    const char* bytePointer = image.c_str();
+    return bytePointer;
 }

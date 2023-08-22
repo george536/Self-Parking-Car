@@ -7,8 +7,6 @@ python -m grpc_tools.protoc -I. --python_out=./python_IPC --grpc_python_out=./py
 
 cd src
 
-echo. > temp.cpp
-
 copy ".\cmakeFiles\cmake1.txt" ".\CMakeLists.txt"
 
 mkdir build
@@ -18,8 +16,6 @@ cmake ../ -G "Ninja"
 cmake --build .
 
 cd ..
-
-del temp.cpp
 
 copy ".\cmakeFiles\cmake2.txt" ".\CMakeLists.txt"
 

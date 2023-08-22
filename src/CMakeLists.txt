@@ -13,16 +13,13 @@ FetchContent_Declare(
 set(FETCHCONTENT_QUIET OFF)
 FetchContent_MakeAvailable(gRPC)
 
-set(OpenCV_DIR "C:/opencv/build")
+set(OpenCV_DIR "C:/opencv/build/x64/vc16/lib")
+FIND_PACKAGE(OpenCV REQUIRED)
 
-include_directories("C:/opencv/build/include")
 include_directories(include/ipc_configs.pb.h)
 include_directories(grpc_processing_utils/include/grpc_data_processor.h)
 include_directories(include/ipc_configs.grpc.pb.h)
 
-add_executable(ipc_server server.cpp)
-add_executable(./include/ipc_configs.pb.cc)
-add_executable(./grpc_processing_utils/grpc_data_processor.cpp)
-add_executable(./include/ipc_configs.grpc.pb.cc)
+add_executable(ipc_server server.cpp ./include/ipc_configs.pb.cc ./grpc_processing_utils/grpc_data_processor.cpp ./include/ipc_configs.grpc.pb.cc)
 
 target_link_libraries(ipc_server grpc++ ${OpenCV_LIBS})

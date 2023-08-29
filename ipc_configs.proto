@@ -14,7 +14,7 @@ message request_data {
 }
 
 message image_request  {
-    bytes data = 1;
+    repeated float data = 1;
 }
 
 message transform_request {

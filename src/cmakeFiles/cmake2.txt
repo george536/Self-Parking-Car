@@ -20,6 +20,9 @@ include_directories(include/ipc_configs.pb.h)
 include_directories(grpc_processing_utils/include/grpc_data_processor.h)
 include_directories(include/ipc_configs.grpc.pb.h)
 
+FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz)
+FetchContent_MakeAvailable(json)
+
 add_executable(ipc_server server.cpp ./include/ipc_configs.pb.cc ./grpc_processing_utils/grpc_data_processor.cpp ./include/ipc_configs.grpc.pb.cc)
 
-target_link_libraries(ipc_server grpc++ ${OpenCV_LIBS})
+target_link_libraries(ipc_server grpc++ ${OpenCV_LIBS} nlohmann_json::nlohmann_json)

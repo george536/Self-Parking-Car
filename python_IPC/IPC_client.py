@@ -34,9 +34,9 @@ class IPC_client(Thread):
     def run(self):
         while True:
             IPC_client.semaphore2.acquire()
-            if(self.image_data == None or self.transform == None):
+            if(self.transform == None):
                 continue
-            
+            print(self.image_data)
             image_stub = image_request(data=self.image_data)
             car_transform = transform_request(
                 x=self.transform.location.x, 
@@ -54,9 +54,8 @@ class IPC_client(Thread):
                 )
 
                 # Make the gRPC call
-                status = self.stub.send_data(request)
+                self.stub.send_data(request)
 
-                print(status.result)
             except grpc.RpcError as e:
                 # Handle gRPC errors
                 print('Error:', e.details())

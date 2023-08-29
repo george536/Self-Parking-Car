@@ -15,6 +15,8 @@ using grpc::Status;
 
 class ImageTransferServiceImpl final : public image_transfer::Service {
 
+    GrpcDataProcessor grpcDataProcessor = GrpcDataProcessor();
+
     Status send_data(ServerContext* context, const request_data* request, empty_return* reply) override {
         // Process image and transform data here
         const image_request& image = request->image_data();
@@ -22,12 +24,7 @@ class ImageTransferServiceImpl final : public image_transfer::Service {
 
         std::cout<<"Client message recieved."<<std::endl;
 
-        GrpcDataProcessor grpcDataProcessor;
-
-        // Process image
-        const char* byteList = grpcDataProcessor.convertToBytes(image.data());
-
-        grpcDataProcessor.convertAndSaveImage(byteList);
+        grpcDataProcessor.convertAndSaveImage(image.data());
 
         // Return a result
         reply->set_result(0); // You can set an appropriate result value

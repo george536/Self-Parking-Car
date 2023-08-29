@@ -385,24 +385,24 @@ class image_request final :
   enum : int {
     kDataFieldNumber = 1,
   };
-  // bytes data = 1;
+  // repeated float data = 1;
+  int data_size() const;
+  private:
+  int _internal_data_size() const;
+
+  public:
   void clear_data() ;
-  const std::string& data() const;
-
-
-
-
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_data(Arg_&& arg, Args_... args);
-  std::string* mutable_data();
-  PROTOBUF_NODISCARD std::string* release_data();
-  void set_allocated_data(std::string* ptr);
+  float data(int index) const;
+  void set_data(int index, float value);
+  void add_data(float value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField<float>& data() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField<float>* mutable_data();
 
   private:
-  const std::string& _internal_data() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_data(
-      const std::string& value);
-  std::string* _internal_mutable_data();
+  float _internal_data(int index) const;
+  void _internal_add_data(float value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField<float>& _internal_data() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField<float>* _internal_mutable_data();
 
   public:
   // @@protoc_insertion_point(class_scope:image_request)
@@ -413,7 +413,7 @@ class image_request final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr data_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedField<float> data_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -984,51 +984,48 @@ inline void request_data::set_allocated_car_transform(::transform_request* car_t
 
 // image_request
 
-// bytes data = 1;
+// repeated float data = 1;
+inline int image_request::_internal_data_size() const {
+  return _impl_.data_.size();
+}
+inline int image_request::data_size() const {
+  return _internal_data_size();
+}
 inline void image_request::clear_data() {
-  _impl_.data_.ClearToEmpty();
+  _internal_mutable_data()->Clear();
 }
-inline const std::string& image_request::data() const {
+inline float image_request::data(int index) const {
   // @@protoc_insertion_point(field_get:image_request.data)
-  return _internal_data();
+  return _internal_data(index);
 }
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void image_request::set_data(Arg_&& arg,
-                                                     Args_... args) {
-  ;
-  _impl_.data_.SetBytes(static_cast<Arg_&&>(arg), args..., GetArenaForAllocation());
+inline void image_request::set_data(int index, float value) {
+  _internal_mutable_data()->Set(index, value);
   // @@protoc_insertion_point(field_set:image_request.data)
 }
-inline std::string* image_request::mutable_data() {
-  std::string* _s = _internal_mutable_data();
-  // @@protoc_insertion_point(field_mutable:image_request.data)
-  return _s;
+inline void image_request::add_data(float value) {
+  _internal_add_data(value);
+  // @@protoc_insertion_point(field_add:image_request.data)
 }
-inline const std::string& image_request::_internal_data() const {
-  return _impl_.data_.Get();
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField<float>& image_request::data() const {
+  // @@protoc_insertion_point(field_list:image_request.data)
+  return _internal_data();
 }
-inline void image_request::_internal_set_data(const std::string& value) {
-  ;
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField<float>* image_request::mutable_data() {
+  // @@protoc_insertion_point(field_mutable_list:image_request.data)
+  return _internal_mutable_data();
+}
 
-
-  _impl_.data_.Set(value, GetArenaForAllocation());
+inline float image_request::_internal_data(int index) const {
+  return _internal_data().Get(index);
 }
-inline std::string* image_request::_internal_mutable_data() {
-  ;
-  return _impl_.data_.Mutable( GetArenaForAllocation());
+inline void image_request::_internal_add_data(float value) {
+  _internal_mutable_data()->Add(value);
 }
-inline std::string* image_request::release_data() {
-  // @@protoc_insertion_point(field_release:image_request.data)
-  return _impl_.data_.Release();
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField<float>& image_request::_internal_data() const {
+  return _impl_.data_;
 }
-inline void image_request::set_allocated_data(std::string* value) {
-  _impl_.data_.SetAllocated(value, GetArenaForAllocation());
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        if (_impl_.data_.IsDefault()) {
-          _impl_.data_.Set("", GetArenaForAllocation());
-        }
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:image_request.data)
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField<float>* image_request::_internal_mutable_data() {
+  return &_impl_.data_;
 }
 
 // -------------------------------------------------------------------

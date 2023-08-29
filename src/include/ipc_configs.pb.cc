@@ -38,9 +38,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 template <typename>
 PROTOBUF_CONSTEXPR image_request::image_request(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.data_)*/ {
-    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
-  }
+    /*decltype(_impl_.data_)*/ {}
 
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct image_requestDefaultTypeInternal {
@@ -166,7 +164,7 @@ const char descriptor_table_protodef_ipc_5fconfigs_2eproto[] PROTOBUF_SECTION_VA
     "\n\021ipc_configs.proto\"]\n\014request_data\022\"\n\ni"
     "mage_data\030\001 \001(\0132\016.image_request\022)\n\rcar_t"
     "ransform\030\002 \001(\0132\022.transform_request\"\035\n\rim"
-    "age_request\022\014\n\004data\030\001 \001(\014\"^\n\021transform_r"
+    "age_request\022\014\n\004data\030\001 \003(\002\"^\n\021transform_r"
     "equest\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022\t\n\001z\030\003 \001(\002\022"
     "\r\n\005pitch\030\004 \001(\002\022\013\n\003yaw\030\005 \001(\002\022\014\n\004roll\030\006 \001("
     "\002\"\036\n\014empty_return\022\016\n\006result\030\001 \001(\0022;\n\016ima"
@@ -486,32 +484,21 @@ image_request::image_request(const image_request& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   image_request* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.data_) {}
+      decltype(_impl_.data_) { from._impl_.data_ }
 
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.data_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        _impl_.data_.Set("", GetArenaForAllocation());
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_data().empty()) {
-    _this->_impl_.data_.Set(from._internal_data(), _this->GetArenaForAllocation());
-  }
   // @@protoc_insertion_point(copy_constructor:image_request)
 }
 
 inline void image_request::SharedCtor(::_pb::Arena* arena) {
   (void)arena;
   new (&_impl_) Impl_{
-      decltype(_impl_.data_) {}
+      decltype(_impl_.data_) { arena }
 
     , /*decltype(_impl_._cached_size_)*/{}
   };
-  _impl_.data_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        _impl_.data_.Set("", GetArenaForAllocation());
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 image_request::~image_request() {
@@ -525,7 +512,7 @@ image_request::~image_request() {
 
 inline void image_request::SharedDtor() {
   ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  _impl_.data_.Destroy();
+  _impl_.data_.~RepeatedField();
 }
 
 void image_request::SetCachedSize(int size) const {
@@ -538,7 +525,7 @@ void image_request::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.data_.ClearToEmpty();
+  _internal_mutable_data()->Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -548,12 +535,14 @@ const char* image_request::_InternalParse(const char* ptr, ::_pbi::ParseContext*
     ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // bytes data = 1;
+      // repeated float data = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          auto str = _internal_mutable_data();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedFloatParser(_internal_mutable_data(), ptr, ctx);
           CHK_(ptr);
+        } else if (static_cast<::uint8_t>(tag) == 13) {
+          _internal_add_data(::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr));
+          ptr += sizeof(float);
         } else {
           goto handle_unusual;
         }
@@ -587,10 +576,9 @@ failure:
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // bytes data = 1;
-  if (!this->_internal_data().empty()) {
-    const std::string& _s = this->_internal_data();
-    target = stream->WriteBytesMaybeAliased(1, _s, target);
+  // repeated float data = 1;
+  if (this->_internal_data_size() > 0) {
+    target = stream->WriteFixedPacked(1, _internal_data(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -609,10 +597,17 @@ failure:
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // bytes data = 1;
-  if (!this->_internal_data().empty()) {
-    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
-                                    this->_internal_data());
+  // repeated float data = 1;
+  {
+    std::size_t data_size = std::size_t{4} *
+        ::_pbi::FromIntSize(this->_internal_data_size())
+    ;
+    std::size_t tag_size = data_size == 0
+        ? 0
+        : 1 + ::_pbi::WireFormatLite::Int32Size(
+                            static_cast<int32_t>(data_size))
+    ;
+    total_size += tag_size + data_size;
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -633,9 +628,7 @@ void image_request::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_data().empty()) {
-    _this->_internal_set_data(from._internal_data());
-  }
+  _this->_impl_.data_.MergeFrom(from._impl_.data_);
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -652,11 +645,8 @@ bool image_request::IsInitialized() const {
 
 void image_request::InternalSwap(image_request* other) {
   using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.data_, lhs_arena,
-                                       &other->_impl_.data_, rhs_arena);
+  _impl_.data_.InternalSwap(&other->_impl_.data_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata image_request::GetMetadata() const {

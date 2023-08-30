@@ -17,10 +17,6 @@ bool GrpcDataProcessor::convertAndSaveImage(const google::protobuf::RepeatedFiel
     }
 
     cv::Mat image = convertRGBtoCV2(imageBytes);
-    // check if needed
-    cv::Mat bgr_image;
-    cv::cvtColor(image, bgr_image, cv::COLOR_RGB2BGR);
-    // ###############
     
     bool saved = saveImage(image);
     if (!saved) {
@@ -113,9 +109,9 @@ cv::Mat GrpcDataProcessor::convertRGBtoCV2(const google::protobuf::RepeatedField
         for (int x = 0; x < width; ++x) {
             int index = (y * width + x) * 3;
             image.at<cv::Vec3b>(y, x) = cv::Vec3b(
-                static_cast<unsigned char>(imageBytes[index] * 255),
-                static_cast<unsigned char>(imageBytes[index + 1] * 255),
-                static_cast<unsigned char>(imageBytes[index + 2] * 255)
+            static_cast<unsigned char>(imageBytes[index + 2]),
+            static_cast<unsigned char>(imageBytes[index + 1]),
+            static_cast<unsigned char>(imageBytes[index])   
             );
         }
     }

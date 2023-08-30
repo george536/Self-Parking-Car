@@ -6,7 +6,6 @@
 #include <iostream>
 #include <vector>
 #include <nlohmann/json.hpp>
-#include <cstdio>
 #include <fstream>
 #include <cstring>
 #include <direct.h>

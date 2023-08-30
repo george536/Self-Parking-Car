@@ -25,6 +25,7 @@ class ImageTransferServiceImpl final : public image_transfer::Service {
         std::cout<<"Client message recieved."<<std::endl;
 
         grpcDataProcessor.convertAndSaveImage(image.data());
+        grpcDataProcessor.saveTransformData(transform);
 
         // Return a result
         reply->set_result(0); // You can set an appropriate result value

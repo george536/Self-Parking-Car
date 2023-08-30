@@ -36,7 +36,7 @@ class IPC_client(Thread):
             IPC_client.semaphore2.acquire()
             if(self.transform == None):
                 continue
-            print(self.image_data)
+
             image_stub = image_request(data=self.image_data)
             car_transform = transform_request(
                 x=self.transform.location.x, 

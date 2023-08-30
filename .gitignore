@@ -79,3 +79,5 @@ __pycache__
 .venv/
 
 src/build/*
+
+training_data/*

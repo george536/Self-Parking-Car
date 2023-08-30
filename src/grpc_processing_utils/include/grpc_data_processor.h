@@ -8,6 +8,10 @@
 #include <nlohmann/json.hpp>
 #include <cstdio>
 #include <fstream>
+#include <cstring>
+#include <direct.h>
+#include <string>
+#include <algorithm>
 
 struct ImageDimensions {
     int width;
@@ -18,17 +22,19 @@ class GrpcDataProcessor {
 public:
     GrpcDataProcessor();
     bool convertAndSaveImage(const google::protobuf::RepeatedField<float>& imageBytes);
-    void saveTransformData(const std::vector<float>& transform);
+    void saveTransformData(const transform_request& transform);
 private:
     const int INVALID_DIMENSION = -1;
     ImageDimensions imageDimensions;
-    char lastID;
+    int nextID = 0;
+    std::string currentDirectory;
 
-    char getNextImageId();
+    void extractNextImageId();
     cv::Mat convertRGBtoCV2(const google::protobuf::RepeatedField<float>& imageBytes);
     bool saveImage(cv::Mat image);
     void loadWidthAndHeight();
     void readJson(const char* jsonFilePath);
+    std::string getCurrentDirectory();
 };
 
 #endif

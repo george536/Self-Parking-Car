@@ -111,13 +111,6 @@ class BirdsEyeView(Thread):
                 IPC_client.semaphore1.acquire()
                 surface_bytes = pygame.image.tostring(combined_surface, 'RGB')
                 rgb_data = np.frombuffer(surface_bytes, dtype=np.uint8)
-                rgb_image = rgb_data.reshape((450, 295, 3))
-
-                # Convert RGB image to BGR (OpenCV's default format)
-                bgr_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2BGR)
-
-                # Display the image using cv2.imshow()
-                cv2.imshow('RGB Image', bgr_image)
                 IPC_client.get_instance().set_image_data(rgb_data)
                 IPC_client.get_instance().set_transform(self.vehicle.get_transform())
                 IPC_client.semaphore2.release()

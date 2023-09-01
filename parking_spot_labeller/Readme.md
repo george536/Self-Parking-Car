@@ -1,0 +1,1 @@
+## Parking spot order of points: left bottom -> left top -> right top -> right bottom 

@@ -22,7 +22,7 @@ public:
     GrpcDataProcessor();
     bool convertAndSaveImage(const google::protobuf::RepeatedField<float>& imageBytes);
     void saveTransformData(const transform_request& transform);
-private:
+    
     const int INVALID_DIMENSION = -1;
     ImageDimensions imageDimensions;
     int nextID = 0;

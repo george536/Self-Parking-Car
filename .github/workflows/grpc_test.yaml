@@ -1,0 +1,21 @@
+name: grpc_test
+
+on:
+  push:
+    branches:
+      - main
+      - Dev
+      - Test/grpc_test
+
+jobs:
+  build:
+    runs-on: windows-latest  # Use the Windows runner
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build and run tests
+        run: |
+          .\generate_protos.bat
+          .\grpc_test.exe

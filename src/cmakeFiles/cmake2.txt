@@ -37,6 +37,6 @@ FetchContent_Declare(
 set(FETCHCONTENT_QUIET OFF)
 FetchContent_MakeAvailable(googletest)
 include_directories(build/_deps/googletest-src/googletest/include)
+include_directories(build/_deps/googletest-src/googlemock/include)
 add_executable(grpc_test ./test/grpc_data_processor_test.cpp ./grpc_processing_utils/grpc_data_processor.cpp)
-target_link_libraries(grpc_test gtest gtest_main grpc++ ${OpenCV_LIBS} nlohmann_json::nlohmann_json)
-
+target_link_libraries(grpc_test gtest gmock gtest_main grpc++ ${OpenCV_LIBS} nlohmann_json::nlohmann_json)

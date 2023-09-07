@@ -1,0 +1,6 @@
+[submodule "src/opencv"]
+	path = src/opencv
+	url = https://github.com/opencv/opencv.git
+[submodule "src/grpc"]
+	path = src/grpc
+	url = https://github.com/grpc/grpc.git

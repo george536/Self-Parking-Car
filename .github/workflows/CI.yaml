@@ -18,9 +18,11 @@ jobs:
       - name: Install NASM
         run: |
           choco install nasm
-          nasm -v
 
-      - name: Build and run tests
+      - name: Build project
         run: |
-          .\generate_protos.bat
+            .\generate_protos.bat
+
+      - name: Run grpc tests
+        run: |
           .\grpc_test.exe

@@ -1,0 +1,26 @@
+{
+    "source_matrix_depth_factor_v": 2.9,
+    "source_matrix_depth_factor_h": 3.5,
+    "destination_matrix_depth_factor_v": 11.5,
+    "destination_matrix_depth_factor_h": 6.1,
+    "wrapped_image_dimensions_vertical": {
+        "w": 763,
+        "h": 165
+    },
+    "wrapped_image_dimensions_horizontal": {
+        "w": 450,
+        "h": 123
+    },
+    "pygame_window_dimensions": {
+        "w": 295,
+        "h": 450
+    },
+    "front_camera_left_indentation": -1.26,
+    "front_camera_top_indentation": -24.79,
+    "right_camera_left_indentation": 3.52,
+    "right_camera_top_indentation": 0.9,
+    "rear_camera_left_indentation": -1.24,
+    "rear_camera_top_indentation": 3.09,
+    "left_camera_top_indentation": 2.6,
+    "left_camera_left_indentation": 0.84
+}

@@ -1,0 +1,28 @@
+cmake_minimum_required(VERSION 3.15)
+project(IPC_lib CXX)
+
+include(FetchContent)
+
+set(ABSL_ENABLE_INSTALL ON)
+
+FetchContent_Declare(
+  gRPC
+  GIT_REPOSITORY https://github.com/grpc/grpc
+  GIT_TAG        v1.56.0
+)
+set(FETCHCONTENT_QUIET OFF)
+FetchContent_MakeAvailable(gRPC)
+
+set(OpenCV_DIR "C:/opencv/build/x64/vc16/lib")
+FIND_PACKAGE(OpenCV REQUIRED)
+
+include_directories(include/ipc_configs.pb.h)
+include_directories(grpc_processing_utils/include/grpc_data_processor.h)
+include_directories(include/ipc_configs.grpc.pb.h)
+
+FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz)
+FetchContent_MakeAvailable(json)
+
+add_executable(ipc_server server.cpp ./include/ipc_configs.pb.cc ./grpc_processing_utils/grpc_data_processor.cpp ./include/ipc_configs.grpc.pb.cc)
+
+target_link_libraries(ipc_server grpc++ ${OpenCV_LIBS} nlohmann_json::nlohmann_json)

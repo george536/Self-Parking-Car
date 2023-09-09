@@ -1,0 +1,31 @@
+// To execute for pytho run: python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. ipc_configs.proto
+// To execute for C++ run: protoc --proto_path=./ --cpp_out=src/build/gens ./ipc_configs.proto
+//  protoc --proto_path=./  -I "D:\CARLA_0.9.14\Self-Parking-Car\src\build\protos" --grpc_out=. --plugin=protoc-gen-grpc="D:\CARLA_0.9.14\Self-Parking-Car\src\build\_deps\grpc-build\grpc_cpp_plugin.exe" ./ipc_configs.proto
+
+syntax = "proto3";
+
+service image_transfer {
+    rpc send_data(request_data) returns (empty_return);
+}
+
+message request_data {
+    image_request image_data = 1;
+    transform_request car_transform = 2;
+}
+
+message image_request  {
+    repeated float data = 1;
+}
+
+message transform_request {
+    float x = 1;
+    float y = 2;
+    float z = 3;
+    float pitch = 4;
+    float yaw = 5;
+    float roll = 6;
+}
+
+message empty_return {
+    float result = 1;
+}

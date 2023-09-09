@@ -1,0 +1,34 @@
+{
+    "FrontLocation": {
+        "x": 3.3,
+        "y": 0.0,
+        "z": 1.4,
+        "pitch": -58.0,
+        "yaw": 0.0,
+        "roll": 0.0
+    },
+    "RearLocation": {
+        "x": -3.5,
+        "y": 0.0,
+        "z": 1.4,
+        "pitch": -59.0,
+        "yaw": 180.0,
+        "roll": 0.0
+    },
+    "RightLocation": {
+        "x": -0.3,
+        "y": 2.4,
+        "z": 0.4,
+        "pitch": -84.0,
+        "yaw": 90.0,
+        "roll": 0.0
+    },
+    "LeftLocation": {
+        "x": -0.4,
+        "y": -2.4,
+        "z": 0.4,
+        "pitch": -84.0,
+        "yaw": -90.0,
+        "roll": 0.0
+    }
+}

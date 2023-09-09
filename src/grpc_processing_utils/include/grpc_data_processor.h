@@ -1,7 +1,7 @@
 #ifndef IMAGECONVERTER_H
 #define IMAGECONVERTER_H
 
-#include <opencv2/opencv.hpp>
+#include "opencv2/opencv.hpp"
 #include "../../include/ipc_configs.pb.h"
 #include <iostream>
 #include <vector>

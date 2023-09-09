@@ -3,8 +3,6 @@ project(IPC_lib CXX)
 
 include(FetchContent)
 
-
-
 set(OpenCV_DIR ${CMAKE_CURRENT_LIST_DIR}/build_opencv)
 set(gRPC_DIR ${CMAKE_CURRENT_LIST_DIR}/build_grpc/install_grpc/lib/cmake/grpc)
 set(absl_DIR ${CMAKE_CURRENT_LIST_DIR}/build_grpc/install_grpc/lib/cmake/absl)

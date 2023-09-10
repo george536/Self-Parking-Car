@@ -1,5 +1,4 @@
 #include "include/grpc_data_processor.h"
-//#include "opencv2/core.hpp"
 
 GrpcDataProcessor::GrpcDataProcessor() {
     imageDimensions.width = INVALID_DIMENSION;

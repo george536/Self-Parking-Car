@@ -19,7 +19,7 @@ cd ..
 
 mkdir build_opencv
 cd build_opencv
-cmake ../opencv -G "Ninja" -DCMAKE_BUILD_TYPE=Debug
+cmake ../opencv -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DOpenCV_STATIC=ON
 
 cmake --build . --config Debug
 

@@ -21,7 +21,7 @@ from python_IPC.IPC_client import IPC_client
 
 class BirdsEyeView(Thread):
     
-    def __init__(self, should_calibrate, ipc_on):
+    def __init__(self, should_calibrate, ipc_on, should_load_spots):
         super().__init__()
         self.should_calibrate = should_calibrate
         self.ipc_on = ipc_on
@@ -29,17 +29,18 @@ class BirdsEyeView(Thread):
         self.camera2 = None
         self.camera3 = None
         self.camera4 = None
-        
         self.vehicle = None
-        
+
         self.running = False
+        self.should_load_spots = should_load_spots
 
     def run(self):
         
         client = ConnectToCarla().execute()
 
         world = client.get_world()
-        load_parking_spots(world)
+        if(self.should_load_spots):
+            load_parking_spots(world)
 
         spectator = world.get_spectator()
         spawn_point = carla.Transform(carla.Location(x=-13.2, y=-27.2, z=2), carla.Rotation(pitch=0, yaw=-78, roll=0))

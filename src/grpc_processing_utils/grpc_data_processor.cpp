@@ -1,5 +1,4 @@
 #include "include/grpc_data_processor.h"
-//#include "opencv2/core.hpp"
 
 GrpcDataProcessor::GrpcDataProcessor() {
     imageDimensions.width = INVALID_DIMENSION;
@@ -69,9 +68,8 @@ void GrpcDataProcessor::saveTransformData(const transform_request& transform) {
 }
 
 void GrpcDataProcessor::extractNextImageId() {
-    std::string currentDir = currentDirectory;
     char filePath[260];
-    snprintf(filePath, sizeof(filePath), "%s/../..\\training_data\\transforms.json", currentDir.c_str());
+    snprintf(filePath, sizeof(filePath), TRANSFORMS_JSON_FILE, currentDirectory.c_str());
 
     // Check if the file "transforms.json" exists
     std::ifstream file(filePath);
@@ -128,14 +126,16 @@ bool GrpcDataProcessor::saveImage(cv::Mat image) {
 
 void GrpcDataProcessor::loadWidthAndHeight() {
     if(imageDimensions.width == INVALID_DIMENSION || imageDimensions.height == INVALID_DIMENSION) {
-        std::string currentDir = currentDirectory;
         char jsonFilePath[260];
-        snprintf(jsonFilePath, sizeof(jsonFilePath), "%s/../..\\birds_eye_view\\camera_configs.json", currentDir.c_str());
-        readJson(jsonFilePath);
+        snprintf(jsonFilePath, sizeof(jsonFilePath), CAMERA_CONFIGS_FILE, currentDirectory.c_str());
+        nlohmann::json jsonData = readJson(jsonFilePath);
+        nlohmann::json pygame_window_dimensions = jsonData["pygame_window_dimensions"];
+        imageDimensions.width = pygame_window_dimensions["w"];
+        imageDimensions.height = pygame_window_dimensions["h"];
     }
 }
 
-void GrpcDataProcessor::readJson(const char* jsonFilePath) {
+nlohmann::json GrpcDataProcessor::readJson(const char* jsonFilePath) {
         nlohmann::json jsonData;
         std::ifstream jsonFile(jsonFilePath);
         if (jsonFile.is_open()) {
@@ -147,10 +147,7 @@ void GrpcDataProcessor::readJson(const char* jsonFilePath) {
         } else {
             std::cerr << "Failed to open JSON file." << std::endl;
         }
-        
-        nlohmann::json pygame_window_dimensions = jsonData["pygame_window_dimensions"];
-        imageDimensions.width = pygame_window_dimensions["w"];
-        imageDimensions.height = pygame_window_dimensions["h"];
+        return jsonData;
 }
 
 std::string GrpcDataProcessor::getCurrentDirectory() {

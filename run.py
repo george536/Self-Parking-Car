@@ -4,8 +4,9 @@ from birds_eye_view.run import BirdsEyeView
 from parking_spot_labeller.run import parking_labeller
 from python_IPC.IPC_client import IPC_client
 
-calibration_flag = "-c"
-labeller_flag = "-l"
+calibration_flag = "-calibrate"
+labeller_flag = "-labeller"
+load_spots_flag = "-load_spots"
 ipc_client_flag = "-ipc_client"
 
 def main():
@@ -19,8 +20,10 @@ def main():
     calibrate = calibration_flag in sys.argv
     # Use this tool to send image data over ipc
     ipc_on = ipc_client_flag in sys.argv
+    # use this to load saved spots into world
+    should_load_spots = load_spots_flag in sys.argv
 
-    running_tools.append(BirdsEyeView(calibrate, ipc_on))
+    running_tools.append(BirdsEyeView(calibrate, ipc_on, should_load_spots))
 
     if ipc_on:
         running_tools.append(IPC_client())

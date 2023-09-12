@@ -118,6 +118,9 @@ cv::Mat GrpcDataProcessor::convertRGBtoCV2(const google::protobuf::RepeatedField
 }
 
 bool GrpcDataProcessor::saveImage(cv::Mat image) {
+    if (image.empty()) {
+        return false;
+    }
     std::string currentDir = currentDirectory;
     char filePath[260];
     snprintf(filePath, sizeof(filePath), "%s/../..\\training_data\\%s.jpg", currentDir.c_str(), std::to_string(nextID).c_str());

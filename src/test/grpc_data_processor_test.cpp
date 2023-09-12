@@ -2,6 +2,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
+#include "opencv2/opencv.hpp"
 #include "../grpc_processing_utils/include/grpc_data_processor.h"
 
 GrpcDataProcessor processor;
@@ -70,6 +71,23 @@ TEST(GrpcDataProcessorTest, LoadWidthAndHeightTest) {
     ASSERT_EQ(mockProcessor.imageDimensions.width, 800);
     ASSERT_EQ(mockProcessor.imageDimensions.height, 600);
 }
+
+TEST(GrpcDataProcessorTest, SaveImage) {
+    // Create an empty black image (all pixels are black)
+    cv::Mat blackImage(100, 100, CV_8UC3, cv::Scalar(0, 0, 0));
+
+    bool result = processor.saveImage(blackImage);
+    ASSERT_TRUE(result);
+}
+
+TEST(GrpcDataProcessorTest, SaveEmptyImage) {
+    // Create an empty black image (all pixels are black)
+    cv::Mat emptyImage;
+
+    bool result = processor.saveImage(emptyImage);
+    ASSERT_FALSE(result);
+}
+
 
 
 

@@ -15,14 +15,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+
+      - name: Cache CMake dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ${{ runner.workspace }}/build
+          key: |
+            ${{ runner.os }}-${{ matrix.config }}-build
+
       - name: Install NASM
         run: |
           choco install nasm
 
-      # - name: Build project
-      #   run: |
-      #       .\generate_protos.bat
+      - name: Build project
+        run: |
+            PowerShell.exe -ExecutionPolicy Bypass -File ipc_build.ps1
 
-      # - name: Run grpc tests
-      #   run: |
-      #     .\grpc_test.exe
+      - name: Run grpc tests
+        run: |
+          ./src/buid/grpc_test.exe

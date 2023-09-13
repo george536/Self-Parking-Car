@@ -88,6 +88,52 @@ TEST(GrpcDataProcessorTest, SaveEmptyImage) {
     ASSERT_FALSE(result);
 }
 
+TEST(GrpcDataProcessorTest, ConvertRGBtoCV2) {
+    processor.imageDimensions.height = 2;
+    processor.imageDimensions.width = 3;
 
+    google::protobuf::RepeatedField<float> imageBytes;
+    for (int i = 0; i < 24; i += 3) {
+        imageBytes.Add(255.0f);  // Red component
+        imageBytes.Add(0.0f);    // Green component
+        imageBytes.Add(0.0f);    // Blue component
+        }
 
+    cv::Mat resultImage = processor.convertRGBtoCV2(imageBytes);
 
+    ASSERT_FALSE(resultImage.empty());
+
+    ASSERT_EQ(resultImage.rows, processor.imageDimensions.height);
+    ASSERT_EQ(resultImage.cols, processor.imageDimensions.width);
+}
+
+TEST(GrpcDataProcessorTest, ExtractNextImageIdWhenJsonIsEmpty) {
+    MockGrpcDataProcessor mockProcessor;
+    mockProcessor.nextID = 0;
+    char jsonFilePath[260];
+    snprintf(jsonFilePath, sizeof(jsonFilePath), mockProcessor.TRANSFORMS_JSON_FILE, mockProcessor.currentDirectory.c_str());
+    EXPECT_CALL(mockProcessor, readJson(testing::StrEq(jsonFilePath)))
+            .WillOnce([](const char*) {
+                // Return your mock JSON data here
+                nlohmann::json jsonData;
+                return jsonData;
+            });
+    mockProcessor.extractNextImageId();
+    ASSERT_EQ(mockProcessor.nextID, 0);
+}
+
+TEST(GrpcDataProcessorTest, ExtractNextImageIdWhenJsonIsNotEmpty) {
+    MockGrpcDataProcessor mockProcessor;
+    mockProcessor.nextID = 0;
+    char jsonFilePath[260];
+    snprintf(jsonFilePath, sizeof(jsonFilePath), mockProcessor.TRANSFORMS_JSON_FILE, mockProcessor.currentDirectory.c_str());
+    EXPECT_CALL(mockProcessor, readJson(testing::StrEq(jsonFilePath)))
+            .WillOnce([](const char*) {
+                // Return your mock JSON data here
+                nlohmann::json jsonData;
+                jsonData["5"] = {};
+                return jsonData;
+            });
+    mockProcessor.extractNextImageId();
+    ASSERT_EQ(mockProcessor.nextID, 6);
+}

@@ -34,18 +34,9 @@ void GrpcDataProcessor::saveTransformData(const transform_request& transform) {
     char filePath[260];
     snprintf(filePath, sizeof(filePath), "%s/../..\\training_data\\transforms.json", currentDir.c_str());
 
-    nlohmann::json jsonData;
+    nlohmann::json jsonData = readJson(filePath);
+
     // Append new transform data to the existing JSON data
-
-    // Read existing JSON data from file
-    std::ifstream inputFile(filePath);
-    if (inputFile.is_open()) {
-        inputFile >> jsonData;
-        inputFile.close();
-    } else {
-        // Handle error if the file doesn't exist or can't be opened
-}
-
     jsonData[std::to_string(nextID)] = {
         {"x", transform.x()},
         {"y", transform.y()},
@@ -71,23 +62,16 @@ void GrpcDataProcessor::extractNextImageId() {
     char filePath[260];
     snprintf(filePath, sizeof(filePath), TRANSFORMS_JSON_FILE, currentDirectory.c_str());
 
-    // Check if the file "transforms.json" exists
+    // Check if the file TRANSFORMS_JSON_FILE exists
     std::ifstream file(filePath);
     if (!file) {
         return; // File doesn't exist, return defaultId
     }
 
     // Read the JSON content from the file
-    nlohmann::json jsonData;
-    std::ifstream jsonFile(filePath);
-    if (jsonFile.is_open()) {
-        jsonFile >> jsonData;
-        if (jsonFile.fail()) {
-            std::cerr << "Failed to read JSON data from the file." << std::endl;
-        }
-        jsonFile.close();
-    } else {
-        std::cerr << "Failed to open JSON file." << std::endl;
+    nlohmann::json jsonData = readJson(filePath);
+    if (jsonData.empty()) {
+        return;
     }
 
     for (auto it = jsonData.begin(); it != jsonData.end(); ++it) {

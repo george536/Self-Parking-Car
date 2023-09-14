@@ -32,7 +32,7 @@ bool GrpcDataProcessor::convertAndSaveImage(const google::protobuf::RepeatedFiel
 void GrpcDataProcessor::saveTransformData(const transform_request& transform) {
     std::string currentDir = currentDirectory;
     char filePath[260];
-    snprintf(filePath, sizeof(filePath), "%s/../..\\training_data\\transforms.json", currentDir.c_str());
+    snprintf(filePath, sizeof(filePath), TRANSFORMS_JSON_FILE, currentDir.c_str());
 
     nlohmann::json jsonData = readJson(filePath);
 
@@ -46,16 +46,9 @@ void GrpcDataProcessor::saveTransformData(const transform_request& transform) {
         {"roll", transform.roll()},
     };
 
-    std::ofstream outputFile(filePath);
-    if (outputFile.is_open()) {
-        outputFile << jsonData.dump(4); // Indent with 4 spaces for better readability
-        outputFile.close();
-    } else {
-        std::cerr << "Error opening file for writing: " << filePath << std::endl;
-    }
+    saveJsonData(filePath, jsonData);
 
     nextID++;
-
 }
 
 void GrpcDataProcessor::extractNextImageId() {
@@ -135,6 +128,16 @@ nlohmann::json GrpcDataProcessor::readJson(const char* jsonFilePath) {
             std::cerr << "Failed to open JSON file." << std::endl;
         }
         return jsonData;
+}
+
+void GrpcDataProcessor::saveJsonData(const char* jsonFilePath, nlohmann::json& jsonData) {
+    std::ofstream outputFile(jsonFilePath);
+    if (outputFile.is_open()) {
+        outputFile << jsonData.dump(4); // Indent with 4 spaces for better readability
+        outputFile.close();
+    } else {
+        std::cerr << "Error opening file for writing: " << jsonFilePath << std::endl;
+    }
 }
 
 std::string GrpcDataProcessor::getCurrentDirectory() {

@@ -110,6 +110,7 @@ TEST(GrpcDataProcessorTest, ConvertRGBtoCV2) {
 TEST(GrpcDataProcessorTest, ExtractNextImageIdWhenJsonIsEmpty) {
     MockGrpcDataProcessor mockProcessor;
     mockProcessor.nextID = 0;
+
     char jsonFilePath[260];
     snprintf(jsonFilePath, sizeof(jsonFilePath), mockProcessor.TRANSFORMS_JSON_FILE, mockProcessor.currentDirectory.c_str());
     EXPECT_CALL(mockProcessor, readJson(testing::StrEq(jsonFilePath)))
@@ -137,3 +138,37 @@ TEST(GrpcDataProcessorTest, ExtractNextImageIdWhenJsonIsNotEmpty) {
     mockProcessor.extractNextImageId();
     ASSERT_EQ(mockProcessor.nextID, 6);
 }
+
+// TEST(GrpcDataProcessorTest, SaveTransformData) {
+//     MockGrpcDataProcessor mockProcessor;
+//     mockProcessor.nextID = 0;
+//     mockProcessor.currentDirectory = "./";
+
+//     char jsonFilePath[260];
+//     snprintf(jsonFilePath, sizeof(jsonFilePath), mockProcessor.TRANSFORMS_JSON_FILE, mockProcessor.currentDirectory.c_str());
+//     EXPECT_CALL(mockProcessor, readJson(testing::StrEq(jsonFilePath)))
+//             .WillOnce([](const char*) {
+//                 // Return your mock JSON data here
+//                 nlohmann::json jsonData;
+//                 return jsonData;
+//             });
+//     transform_request transform;
+//     transform.set_x(0.1);
+//     transform.set_y(0.1);
+//     transform.set_z(0.1);
+//     transform.set_pitch(0.1);
+//     transform.set_roll(0.1);
+//     transform.set_yaw(0.1);
+
+//     mockProcessor.saveTransformData(transform);
+
+//     ASSERT_EQ(mockProcessor.nextID, 1);
+    
+//     nlohmann::json jsonData = mockProcessor.readJson(jsonFilePath);
+//     ASSERT_EQ(jsonData["0"]["x"], transform.x());
+//     ASSERT_EQ(jsonData["0"]["y"], transform.y());
+//     ASSERT_EQ(jsonData["0"]["z"], transform.z());
+//     ASSERT_EQ(jsonData["0"]["pitch"], transform.pitch());
+//     ASSERT_EQ(jsonData["0"]["roll"], transform.roll());
+//     ASSERT_EQ(jsonData["0"]["yaw"], transform.yaw());
+// }

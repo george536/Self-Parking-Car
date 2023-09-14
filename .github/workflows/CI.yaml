@@ -18,8 +18,10 @@ jobs:
       - name: Cache CMake dependencies
         uses: actions/cache@v2
         with:
-          path: D:\a\Self-Parking-Car/build
-          key: Windows--build
+          path: |
+            D:\a\Self-Parking-Car/build
+          key: |
+            Windows--build
 
       - name: Install NASM
         run: |
@@ -31,4 +33,4 @@ jobs:
 
       - name: Run grpc tests
         run: |
-          ./src/buid/grpc_test.exe
+          ./src/build/grpc_test.exe

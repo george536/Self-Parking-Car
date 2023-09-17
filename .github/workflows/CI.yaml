@@ -33,7 +33,7 @@ jobs:
       - name: Cache CMake output
         uses: actions/cache@v2
         with:
-          path: build
+          path: ./src
           key: cmake-output-${{ runner.os }}-${{ hashFiles('./src/build') }}
 
       - name: Run grpc tests

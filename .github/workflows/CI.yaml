@@ -15,27 +15,32 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Cache CMake configuration
-        uses: actions/cache@v2
-        with:
-          path: ./src
-          key: cmake-cache-${{ runner.os }}-${{ hashFiles('./src/CMakeLists.txt') }}
-        if: steps.cache.outputs.cache-hit != 'true'
+      # - name: Cache CMake configuration
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: ./src
+      #     key: cmake-cache-${{ runner.os }}-${{ hashFiles('./src/CMakeLists.txt') }}
+      #   if: steps.cache.outputs.cache-hit != 'true'
 
       - name: Install NASM
         run: |
           choco install nasm
 
-      - name: Build project
-        run: |
-            PowerShell.exe -ExecutionPolicy Bypass -File ipc_build.ps1
+      
+        paths:
+          - ~/.cache
 
-      - name: Cache CMake output
-        uses: actions/cache@v2
-        with:
-          path: ./src
-          key: cmake-output-${{ runner.os }}-${{ hashFiles('./src/build') }}
 
-      - name: Run grpc tests
-        run: |
-          ./src/build/grpc_test.exe
+      # - name: Build project
+      #   run: |
+      #       PowerShell.exe -ExecutionPolicy Bypass -File ipc_build.ps1
+
+      # - name: Cache CMake output
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: ./src
+      #     key: cmake-output-${{ runner.os }}-${{ hashFiles('./src/build') }}
+
+      # - name: Run grpc tests
+      #   run: |
+      #     ./src/build/grpc_test.exe

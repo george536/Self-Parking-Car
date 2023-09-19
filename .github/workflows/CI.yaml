@@ -27,7 +27,7 @@ jobs:
           if [ -d ~/.cache ]; then
             echo "NASM_CACHE_EXISTS=true" >> $GITHUB_ENV
           else
-            echo "NASM_CACHE_EXISTS=false" >> $GITHUB_ENV
+            echo "NASM_CACHE_EXISTS=true" >> $GITHUB_ENV
           fi
         shell: bash
 

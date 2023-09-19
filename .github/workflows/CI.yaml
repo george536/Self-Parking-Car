@@ -21,7 +21,18 @@ jobs:
           path: ~/.cache
           key: nasm-windows
 
+      - name: Check if NASM is cached
+        id: check-cache
+        run: |
+          if [ -x ~/.cache/nasm ]; then
+            echo "::set-output name=nasm-cache-exists::true"
+          else
+            echo "::set-output name=nasm-cache-exists::false"
+          fi
+        shell: bash
+
       - name: Install NASM
+        if: steps.check-cache.outputs.nasm-cache-exists != 'true'
         run: |
           choco install nasm
 

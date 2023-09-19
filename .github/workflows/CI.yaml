@@ -35,14 +35,6 @@ jobs:
         run: |
           choco install nasm
 
-      - name: Cache NASM
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache
-          key: nasm-windows
-          restore-keys: |
-            nasm-windows-
-
       # - name: Build project
       #   run: |
       #       PowerShell.exe -ExecutionPolicy Bypass -File ipc_build.ps1

@@ -48,7 +48,18 @@ jobs:
         run: |
             PowerShell.exe -ExecutionPolicy Bypass -File ipc_grpc_build.ps1
 
+      - name: Check if grpc_test.exe exists
+        id: check_grpc_test_exists
+        run: |
+          if [ -f ./src/build/grpc_test.exe ]; then
+            echo "GRPC_TEST_EXISTS=true" >> $GITHUB_ENV
+          else
+            echo "GRPC_TEST_EXISTS=true" >> $GITHUB_ENV
+          fi
+        shell: bash
+
       - name: Cache grpc output
+        if: env.GRPC_TEST_EXISTS == 'true'
         uses: actions/cache@v2
         with:
           path: ~/.grpc_cache

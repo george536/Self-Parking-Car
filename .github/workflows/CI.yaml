@@ -24,7 +24,7 @@ jobs:
       - name: Check if NASM is cached
         id: check-cache
         run: |
-          if [ -x ~/.cache/nasm ]; then
+          if [ -x ~/.cache ]; then
             echo "NASM_CACHE_EXISTS=true" >> $GITHUB_ENV
           else
             echo "NASM_CACHE_EXISTS=false" >> $GITHUB_ENV
@@ -45,7 +45,7 @@ jobs:
       - name: Restore cache CMake configuration
         uses: actions/cache@v2
         with:
-          path: ~/.cache
+          path: ~/.cmake_cache
           key: cmake-cache
 
       - name: Build project
@@ -55,7 +55,7 @@ jobs:
       - name: Cache CMake output
         uses: actions/cache@v2
         with:
-          path: ~/.cache
+          path: ~/.cmake_cache
           key: cmake-cache
 
       # - name: Run grpc tests

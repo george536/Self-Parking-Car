@@ -38,6 +38,8 @@ src/build_grpc/third_party/protobuf/protoc --proto_path=./ --cpp_out=./src/inclu
 # Give full path for protos folder like below
 src/build_grpc/third_party/protobuf/protoc --proto_path=./ -I "$pwd\src\build_grpc\protos" --grpc_out=./src/include/ --plugin=protoc-gen-grpc="$pwd\src\build_grpc\grpc_cpp_plugin.exe" ./ipc_configs.proto
 
+git submodule update --init --recursive
+
 mkdir src/build
 cd src/build
 cmake ../ -G "Ninja" -DCMAKE_BUILD_TYPE=Debug

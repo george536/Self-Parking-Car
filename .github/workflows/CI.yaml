@@ -25,14 +25,13 @@ jobs:
         id: check-cache
         run: |
           if [ -x ~/.cache/nasm ]; then
-            echo "::set-output name=nasm-cache-exists::true"
+            echo "NASM_CACHE_EXISTS=true" >> $GITHUB_ENV
           else
-            echo "::set-output name=nasm-cache-exists::false"
+            echo "NASM_CACHE_EXISTS=false" >> $GITHUB_ENV
           fi
-        shell: bash
 
       - name: Install NASM
-        if: steps.check-cache.outputs.nasm-cache-exists != 'true'
+        if: env.NASM_CACHE_EXISTS != 'true'
         run: |
           choco install nasm
 

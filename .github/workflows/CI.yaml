@@ -24,7 +24,7 @@ jobs:
       - name: Check if NASM is cached
         id: check-cache
         run: |
-          if [ -x ~/.cache.tgz ]; then
+          if [ test -f ~/.cache.tgz ]; then
             echo "NASM_CACHE_EXISTS=true" >> $GITHUB_ENV
           else
             echo "NASM_CACHE_EXISTS=false" >> $GITHUB_ENV

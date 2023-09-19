@@ -26,9 +26,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.cache
-          key: nasm-ubuntu-${{ hashFiles('apt-get-lock') }}
+          key: nasm-windows
           restore-keys: |
-            nasm-ubuntu-
+            nasm-windows-
 
       - name: Install NASM
         run: |

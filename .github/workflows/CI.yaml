@@ -22,18 +22,25 @@ jobs:
       #     key: cmake-cache-${{ runner.os }}-${{ hashFiles('./src/CMakeLists.txt') }}
       #   if: steps.cache.outputs.cache-hit != 'true'
 
-    - name: Restore NASM Cache
-      uses: actions/cache@v2
-      with:
-        path: ~/.cache
-        key: nasm-windows
-        restore-keys: |
-          nasm-windows-
-
+      - name: Restore NASM Cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache
+          key: nasm-ubuntu-${{ hashFiles('apt-get-lock') }}
+          restore-keys: |
+            nasm-ubuntu-
 
       - name: Install NASM
         run: |
           choco install nasm
+
+      - name: Cache NASM
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache
+          key: nasm-windows
+          restore-keys: |
+            nasm-windows-
 
       # - name: Build project
       #   run: |

@@ -21,6 +21,5 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run grpc tests
-        uses: actions/cache@v2
         run: |
           ./src/build/grpc_test.exe

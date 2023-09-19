@@ -15,20 +15,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # - name: Cache CMake configuration
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: ./src
-      #     key: cmake-cache-${{ runner.os }}-${{ hashFiles('./src/CMakeLists.txt') }}
-      #   if: steps.cache.outputs.cache-hit != 'true'
-
       - name: Restore NASM Cache
         uses: actions/cache@v2
         with:
           path: ~/.cache
           key: nasm-windows
-          restore-keys: |
-            nasm-windows-
 
       - name: Install NASM
         run: |
@@ -39,18 +30,22 @@ jobs:
         with:
           path: ~/.cache
           key: nasm-windows
-          restore-keys: |
-            nasm-windows-
 
-      # - name: Build project
-      #   run: |
-      #       PowerShell.exe -ExecutionPolicy Bypass -File ipc_build.ps1
+      - name: Restore cache CMake configuration
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache
+          key: cmake-cache
 
-      # - name: Cache CMake output
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: ./src
-      #     key: cmake-output-${{ runner.os }}-${{ hashFiles('./src/build') }}
+      - name: Build project
+        run: |
+            PowerShell.exe -ExecutionPolicy Bypass -File ipc_build.ps1
+
+      - name: Cache CMake output
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache
+          key: cmake-cache
 
       # - name: Run grpc tests
       #   run: |

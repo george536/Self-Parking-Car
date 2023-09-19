@@ -1,0 +1,50 @@
+name: build_dependencies
+
+on:
+  push:
+    branches:
+      - main
+      - Dev
+      - Test/grpc_test
+
+  workflow_run:
+    workflows: ["grpc_pre_setup"]
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: windows-latest  # Use the Windows runner
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Restore dependencies cache
+        uses: actions/cache@v2
+        id: restore_dependencies_cache
+        with:
+          path: ~/.dependencies_cache
+          key: dependencies_cache
+
+
+      - name: Check if dependencies are cached
+        id: check-cache
+        run: |
+          if [[ "${{ steps.restore_dependencies_cache.outputs.cache-hit }}" == 'true' ]]; then
+            echo "DEPENDENCIES_CACHE_EXISTS=true" >> $GITHUB_ENV
+          else
+            echo "DEPENDENCIES_CACHE_EXISTS=false" >> $GITHUB_ENV
+          fi
+        shell: bash
+
+      - name: Build dependencies
+        if: env.DEPENDENCIES_CACHE_EXISTS != 'true'
+        run: |
+            PowerShell.exe -ExecutionPolicy Bypass -File ipc_dependencies_build.ps1
+
+      - name: Cache dependencies output
+        uses: actions/cache@v2
+        with:
+          path: ~/.dependencies_cache
+          key: dependencies_cache

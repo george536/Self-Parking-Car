@@ -1,3 +1,3 @@
 ipc_dependencies_build.ps1
 
-ipc_core_build.ps1
+ipc_grpc_build.ps1

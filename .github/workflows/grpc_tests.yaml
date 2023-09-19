@@ -1,0 +1,26 @@
+name: grpc_tests
+
+on:
+  push:
+    branches:
+      - main
+      - Dev
+      - Test/grpc_test
+
+  workflow_run:
+    workflows: ["build_grpc"]
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: windows-latest  # Use the Windows runner
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run grpc tests
+        uses: actions/cache@v2
+        run: |
+          ./src/build/grpc_test.exe

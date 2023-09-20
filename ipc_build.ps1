@@ -28,14 +28,7 @@ cmake --install . --prefix "$pwd/install_opencv" --config Debug
 
 cd ..
 
-mkdir build_carla
-
-
 cd ..
-
-cd carla
-make setup
-make LibCarla
 
 # Execute for C++
 src/build_grpc/third_party/protobuf/protoc --proto_path=./ --cpp_out=./src/include/ ./ipc_configs.proto

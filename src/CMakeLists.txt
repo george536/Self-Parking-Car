@@ -15,6 +15,11 @@ FIND_PACKAGE(protobuf CONFIG)
 FIND_PACKAGE(gRPC CONFIG REQUIRED)
 add_subdirectory(googletest)
 
+set(LIBCARLA_BUILD_DEBUG ON)
+set(LIBCARLA_BUILD_RELEASE OFF)
+set(LIBCARLA_BUILD_TEST OFF)
+
+
 include_directories(include/ipc_configs.pb.h)
 include_directories(grpc_processing_utils/include/grpc_data_processor.h)
 include_directories(include/ipc_configs.grpc.pb.h)

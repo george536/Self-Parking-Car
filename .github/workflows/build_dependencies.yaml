@@ -24,7 +24,7 @@ jobs:
         uses: actions/cache@v2
         id: restore_dependencies_cache
         with:
-          path: ~/.dependencies_cache
+          path: ~/src
           key: dependencies_cache
 
       - name: Check if dependencies are cached
@@ -45,5 +45,5 @@ jobs:
       - name: Cache dependencies output
         uses: actions/cache@v2
         with:
-          path: ~/.dependencies_cache
+          path: ~/src
           key: dependencies_cache

@@ -15,10 +15,18 @@ FIND_PACKAGE(protobuf CONFIG)
 FIND_PACKAGE(gRPC CONFIG REQUIRED)
 add_subdirectory(googletest)
 
+set(CARLA_LIB_PATH ${CMAKE_CURRENT_LIST_DIR}/libcarla)
+
+#add_subdirectory(libcarla)
+
+LINK_DIRECTORIES(libcarla)
+
 include_directories(include/ipc_configs.pb.h)
 include_directories(grpc_processing_utils/include/grpc_data_processor.h)
 include_directories(include/ipc_configs.grpc.pb.h)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/build_grpc/install_grpc/include)
+include_directories(${CMAKE_CURRENT_LIST_DIR}/libcarla/include)
+include_directories(${CMAKE_CURRENT_LIST_DIR}/libcarla/include/system)
 
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz)
 FetchContent_MakeAvailable(json)
@@ -28,5 +36,9 @@ add_executable(grpc_test ./test/grpc_data_processor_test.cpp ./grpc_processing_u
 
 message(PROJECT_SOURCE_DIR="${OpenCV_LIBS}")
 
-target_link_libraries(ipc_server gRPC::grpc++ ${OpenCV_LIBS} nlohmann_json::nlohmann_json)
+target_link_libraries(ipc_server gRPC::grpc++ ${OpenCV_LIBS} nlohmann_json::nlohmann_json carla_client_debug 
+debugutils detour detourcrowd detourTileCache libboost_atomic-vc142-mt-x64-1_80 libboost_date_time-vc142-mt-x64-1_80 
+libboost_filesystem-vc142-mt-x64-1_80 libboost_numpy39-vc142-mt-x64-1_80 libboost_python39-vc142-mt-x64-1_80 
+libboost_system-vc142-mt-x64-1_80 libpng proj recast rpc sqlite3 xerces-c_3 zlibstatic)
+
 target_link_libraries(grpc_test GTest::gtest gmock gmock_main GTest::gtest_main gRPC::grpc++ ${OpenCV_LIBS} nlohmann_json::nlohmann_json)

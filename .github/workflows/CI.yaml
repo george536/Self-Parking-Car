@@ -1,0 +1,28 @@
+name: grpc_test
+
+on:
+  push:
+    branches:
+      - main
+      - Dev
+      - Test/grpc_test
+
+jobs:
+  build:
+    runs-on: windows-latest  # Use the Windows runner
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install NASM
+        run: |
+          choco install nasm
+
+      # - name: Build project
+      #   run: |
+      #       .\generate_protos.bat
+
+      # - name: Run grpc tests
+      #   run: |
+      #     .\grpc_test.exe

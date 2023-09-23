@@ -81,3 +81,6 @@ __pycache__
 src/build/*
 
 training_data/*
+
+src/build_grpc/*
+src/build_opencv/*

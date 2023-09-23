@@ -1,0 +1,66 @@
+name: build_grpc
+on:
+  push:
+    branches:
+      - main
+      - Dev
+      - Test/grpc_test
+
+  workflow_run:
+    workflows: ["build_dependencies"]
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: windows-latest  # Use the Windows runner
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Restore dependencies cache
+        uses: actions/cache@v2
+        id: restore_dependencies_cache
+        with:
+          path: ~/src
+          key: dependencies_cache
+
+      - name: Restore grpc cache
+        uses: actions/cache@v2
+        id: restore_grpc_cache
+        with:
+          path: ~/src/build/
+          key: grpc_cache
+
+      - name: Check if grpc are cached
+        id: check-cache
+        run: |
+          if [[ "${{ steps.restore_grpc_cache.outputs.cache-hit }}" == 'true' ]]; then
+            echo "GRPC_CACHE_EXISTS=true" >> $GITHUB_ENV
+          else
+            echo "GRPC_CACHE_EXISTS=false" >> $GITHUB_ENV
+          fi
+        shell: bash
+
+      - name: Build grpc
+        if: env.GRPC_CACHE_EXISTS != 'true'
+        run: |
+            PowerShell.exe -ExecutionPolicy Bypass -File ipc_grpc_build.ps1
+
+      - name: Check if grpc_test.exe exists
+        id: check_grpc_test_exists
+        run: |
+          if [ -f ./src/build/grpc_test.exe ]; then
+            echo "GRPC_TEST_EXISTS=true" >> $GITHUB_ENV
+          else
+            echo "GRPC_TEST_EXISTS=true" >> $GITHUB_ENV
+          fi
+        shell: bash
+
+      - name: Cache grpc output
+        if: env.GRPC_TEST_EXISTS == 'true'
+        uses: actions/cache@v2
+        with:
+          path: ~/src/build/
+          key: grpc_cache

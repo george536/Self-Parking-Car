@@ -1,4 +1,4 @@
-name: grpc_test
+name: grpc_tests
 
 on:
   push:
@@ -6,6 +6,11 @@ on:
       - main
       - Dev
       - Test/grpc_test
+
+  workflow_run:
+    workflows: ["build_grpc"]
+    types:
+      - completed
 
 jobs:
   build:
@@ -15,14 +20,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install NASM
+      - name: Run grpc tests
         run: |
-          choco install nasm
-
-      # - name: Build project
-      #   run: |
-      #       .\generate_protos.bat
-
-      # - name: Run grpc tests
-      #   run: |
-      #     .\grpc_test.exe
+          ./src/build/grpc_test.exe

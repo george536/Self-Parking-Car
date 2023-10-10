@@ -4,6 +4,7 @@
 
 #include "opencv2/opencv.hpp"
 #include "../grpc_processing_utils/include/grpc_data_processor.h"
+#include "file_utils.h"
 
 using ::testing::NiceMock;
 
@@ -12,7 +13,7 @@ GrpcDataProcessor processor;
 
 class MockFileUtils : public FileUtils {
 public:
-    MOCK_METHOD(nlohmann::json, readJson, (const char* jsonFilePath), (override));
+    MOCK_METHOD(nlohmann::json, readJson, (const char* jsonFilePath));
 };
 
 class GrpcDataProcessorTest : public ::testing::Test {
@@ -50,7 +51,6 @@ TEST_F(GrpcDataProcessorTest, LoadWidthAndHeightTest) {
             jsonData["pygame_window_dimensions"]["h"] = 600;
             return jsonData;
         });
-
     mockProcessor.loadWidthAndHeight();
     ASSERT_EQ(mockProcessor.imageDimensions.width, 800);
     ASSERT_EQ(mockProcessor.imageDimensions.height, 600);

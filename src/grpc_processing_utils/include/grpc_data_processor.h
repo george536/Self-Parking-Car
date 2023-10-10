@@ -14,6 +14,9 @@
 #include "../../include/ipc_configs.pb.h"
 #include "file_utils.h"
 
+#include "opencv2/opencv.hpp"
+#include "../../include/ipc_configs.pb.h"
+
 struct ImageDimensions {
     int width;
     int height;

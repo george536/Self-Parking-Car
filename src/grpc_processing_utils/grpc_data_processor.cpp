@@ -1,16 +1,20 @@
 #include "include/grpc_data_processor.h"
 
-GrpcDataProcessor::GrpcDataProcessor() {
+namespace fs = std::filesystem;
+
+GrpcDataProcessor::GrpcDataProcessor(FileUtils* fUtils) : fUtils_(fUtils) {
+    if (!fUtils_) {
+        fUtils_ = new FileUtils;
+    }
+
     imageDimensions.width = INVALID_DIMENSION;
     imageDimensions.height = INVALID_DIMENSION;
-    currentDirectory = getCurrentDirectory();
+    projectPath = fs::current_path().string();
     loadWidthAndHeight();
     extractNextImageId();
 }
 
 bool GrpcDataProcessor::convertAndSaveImage(const google::protobuf::RepeatedField<float>& imageBytes) {
-
-    // Check if image was loaded successfully
     if (imageBytes.empty()) {
         std::cerr << "Failed to load image from RGB data." << std::endl;
         return false;
@@ -28,15 +32,12 @@ bool GrpcDataProcessor::convertAndSaveImage(const google::protobuf::RepeatedFiel
     return true;
 }
 
-
 void GrpcDataProcessor::saveTransformData(const transform_request& transform) {
-    std::string currentDir = currentDirectory;
     char filePath[260];
-    snprintf(filePath, sizeof(filePath), TRANSFORMS_JSON_FILE, currentDir.c_str());
+    snprintf(filePath, sizeof(filePath), TRANSFORMS_JSON_FILE, projectPath.c_str());
 
-    nlohmann::json jsonData = readJson(filePath);
+    nlohmann::json jsonData = fUtils_->readJson(filePath);
 
-    // Append new transform data to the existing JSON data
     jsonData[std::to_string(nextID)] = {
         {"x", transform.x()},
         {"y", transform.y()},
@@ -46,23 +47,21 @@ void GrpcDataProcessor::saveTransformData(const transform_request& transform) {
         {"roll", transform.roll()},
     };
 
-    saveJsonData(filePath, jsonData);
+    fUtils_->saveJsonData(filePath, jsonData);
 
     nextID++;
 }
 
 void GrpcDataProcessor::extractNextImageId() {
     char filePath[260];
-    snprintf(filePath, sizeof(filePath), TRANSFORMS_JSON_FILE, currentDirectory.c_str());
+    snprintf(filePath, sizeof(filePath), TRANSFORMS_JSON_FILE, projectPath.c_str());
 
-    // Check if the file TRANSFORMS_JSON_FILE exists
     std::ifstream file(filePath);
     if (!file) {
-        return; // File doesn't exist, return defaultId
+        return;
     }
 
-    // Read the JSON content from the file
-    nlohmann::json jsonData = readJson(filePath);
+    nlohmann::json jsonData = fUtils_->readJson(filePath);
     if (jsonData.empty()) {
         return;
     }
@@ -98,55 +97,18 @@ bool GrpcDataProcessor::saveImage(cv::Mat image) {
     if (image.empty()) {
         return false;
     }
-    std::string currentDir = currentDirectory;
     char filePath[260];
-    snprintf(filePath, sizeof(filePath), "%s/../..\\training_data\\%s.jpg", currentDir.c_str(), std::to_string(nextID).c_str());
+    snprintf(filePath, sizeof(filePath), "%s\\training_data\\%s.jpg", projectPath.c_str(), std::to_string(nextID).c_str());
     return cv::imwrite(filePath, image);
 }
 
 void GrpcDataProcessor::loadWidthAndHeight() {
     if(imageDimensions.width == INVALID_DIMENSION || imageDimensions.height == INVALID_DIMENSION) {
         char jsonFilePath[260];
-        snprintf(jsonFilePath, sizeof(jsonFilePath), CAMERA_CONFIGS_FILE, currentDirectory.c_str());
-        nlohmann::json jsonData = readJson(jsonFilePath);
+        snprintf(jsonFilePath, sizeof(jsonFilePath), CAMERA_CONFIGS_FILE, projectPath.c_str());
+        nlohmann::json jsonData = fUtils_->readJson(jsonFilePath);
         nlohmann::json pygame_window_dimensions = jsonData["pygame_window_dimensions"];
         imageDimensions.width = pygame_window_dimensions["w"];
         imageDimensions.height = pygame_window_dimensions["h"];
     }
 }
-
-nlohmann::json GrpcDataProcessor::readJson(const char* jsonFilePath) {
-        nlohmann::json jsonData;
-        std::ifstream jsonFile(jsonFilePath);
-        if (jsonFile.is_open()) {
-            jsonFile >> jsonData;
-            if (jsonFile.fail()) {
-                std::cerr << "Failed to read JSON data from the file." << std::endl;
-            }
-            jsonFile.close();
-        } else {
-            std::cerr << "Failed to open JSON file." << std::endl;
-        }
-        return jsonData;
-}
-
-void GrpcDataProcessor::saveJsonData(const char* jsonFilePath, nlohmann::json& jsonData) {
-    std::ofstream outputFile(jsonFilePath);
-    if (outputFile.is_open()) {
-        outputFile << jsonData.dump(4); // Indent with 4 spaces for better readability
-        outputFile.close();
-    } else {
-        std::cerr << "Error opening file for writing: " << jsonFilePath << std::endl;
-    }
-}
-
-std::string GrpcDataProcessor::getCurrentDirectory() {
-    std::string fullPath(__FILE__);  // Get full path of the current source file
-    size_t lastSeparator = fullPath.rfind("\\");  // Find the last separator in the path
-    if (lastSeparator != std::string::npos) {
-        return fullPath.substr(0, lastSeparator);  // Extract the directory
-    }
-    std::cerr << "Error getting current directory." << std::endl;
-    return "";  // Return an empty string in case of failure
-}
-

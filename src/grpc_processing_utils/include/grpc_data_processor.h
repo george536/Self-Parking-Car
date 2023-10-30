@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <vector>
-#include <nlohmann/json.hpp>
 #include <fstream>
 #include <cstring>
 #include <direct.h>
@@ -13,7 +12,7 @@
 
 #include "opencv2/opencv.hpp"
 #include "../../include/ipc_configs.pb.h"
-#include "../../utils/include/file_utils.h"
+#include <file_utils.h>
 
 struct ImageDimensions {
     int width;

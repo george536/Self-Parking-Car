@@ -3,7 +3,7 @@
 #include <gmock/gmock.h>
 #include <filesystem>
 
-#include "../utils/include/file_utils.h"
+#include "file_utils.h"
 
 namespace fs = std::filesystem;
 

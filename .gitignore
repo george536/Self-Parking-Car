@@ -86,3 +86,4 @@ src/build_grpc/*
 src/build_opencv/*
 
 !src/libcarla/*.lib
+!src/glfw/*.lib

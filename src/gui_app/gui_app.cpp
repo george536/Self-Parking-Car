@@ -1,6 +1,7 @@
 #include "gui_app.h"
 #include <iostream>
 #include <thread>
+#include <assert.h>
 
 GuiApp::GuiApp(int window_width, int window_height, const char* window_title){
     width = window_width;
@@ -16,8 +17,10 @@ GuiApp::~GuiApp()
 
 void GuiApp::start_app()
 {
+    assert(draw_callback_fn != NULL);
+    assert(terminate_callback_fn != NULL);
     std::thread t(&GuiApp::run, this);
-    t.detach();
+    t.join();
 }
 
 GLFWwindow* GuiApp::get_window()
@@ -107,12 +110,3 @@ void GuiApp::update()
     }
 }
 
-void GuiApp::key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
-{
-
-}
-
-void GuiApp::mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
-{
-
-}

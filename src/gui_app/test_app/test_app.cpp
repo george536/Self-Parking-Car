@@ -44,17 +44,12 @@ int main()
 
     app = std::make_shared<GuiApp>(800, 600, "Test App");
 
-    app->start_app();
-
     app->register_draw_callback(test_callback);
 
     app->register_terminate_callback(terminate_callback);
 
-    while(true)
-    {
-
-    }
-
+    app->start_app();
+    
     return 0;
 
 }

@@ -1,3 +1,4 @@
-## To start Carla: CarlaUE4.exe -windowed -carla-server -benchmark -fps=10
-## to get git submodules run: git submodule update --init --recursive
-## To run ipc_build.ps1: PowerShell.exe -ExecutionPolicy Bypass -File ipc_build.ps1
+## Start Carla: CarlaUE4.exe -windowed -carla-server -benchmark -fps=10
+## Get git submodules run: git submodule update --init --recursive
+## Run grpc build: PowerShell.exe -ExecutionPolicy Bypass -File ipc_build.ps1
+## Run tests: PowerShell.exe -ExecutionPolicy Bypass -File run_tests.ps1

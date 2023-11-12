@@ -3,6 +3,10 @@
 #include <thread>
 #include <assert.h>
 
+#define STB_IMAGE_IMPLEMENTATION 1 
+
+#include "stb_image.h"
+
 GuiApp::GuiApp(int window_width, int window_height, const char* window_title){
     width = window_width;
     height = window_height;
@@ -110,3 +114,98 @@ void GuiApp::update()
     }
 }
 
+ImageTexture::ImageTexture(int width, int height, GLenum format, GLenum type, void *data, bool init_texture)
+{
+    this->width = width;
+    this->height = height;
+    this->data = data;
+    this->format = format;
+    this->type = type;
+
+    if(init_texture)
+        initialize();
+}
+
+ImageTexture::~ImageTexture()
+{
+    glDeleteTextures(1, &texture_id);
+}
+
+void ImageTexture::initialize()
+{
+
+    glGenTextures(1, &texture_id);
+    glBindTexture(GL_TEXTURE_2D, texture_id);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    
+    glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, type, (data==nullptr)? NULL : data);
+
+    if(data)
+    {
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+}
+
+void ImageTexture::bind()
+{
+    glBindTexture(GL_TEXTURE_2D, texture_id);
+}
+
+void ImageTexture::unbind()
+{
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+ImageTexture2DStatic::ImageTexture2DStatic(const char *filename):ImageTexture(0, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr, false)
+{
+    int width, height, nrChannels;
+    unsigned char *data = stbi_load(filename, &width, &height, &nrChannels, 0);
+
+    if(data)
+    {
+        this->width = width;
+        this->height = height;
+        this->format = (nrChannels == 3)? GL_RGB : GL_RGBA;
+        this->type = GL_UNSIGNED_BYTE;
+        this->data = data;
+        initialize();
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    
+    
+}
+
+ImageTexture2DStatic::~ImageTexture2DStatic()
+{
+    stbi_image_free(data);
+}
+
+ImageTexture2DDynamic::ImageTexture2DDynamic(int width, int height, GLenum format, GLenum type, void *data, bool init_texture): ImageTexture(width, height, format, type, data, init_texture)
+{
+
+}
+
+ImageTexture2DDynamic::~ImageTexture2DDynamic()
+{
+}
+
+void ImageTexture2DDynamic::update(void *data)
+{
+    glBindTexture(GL_TEXTURE_2D, texture_id);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, format, type, data);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}

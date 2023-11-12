@@ -32,6 +32,8 @@ include_directories(${CMAKE_CURRENT_LIST_DIR}/glfw)
 
 add_subdirectory(gui_app)
 
+add_subdirectory(test_app)
+
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz)
 FetchContent_MakeAvailable(json)
 

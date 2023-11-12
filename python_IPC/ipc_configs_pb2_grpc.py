@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import python_IPC.ipc_configs_pb2 as ipc__configs__pb2
+import python_ipc.ipc_configs_pb2 as ipc__configs__pb2
 
 
 class image_transferStub(object):

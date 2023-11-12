@@ -17,7 +17,7 @@ from birds_eye_view.birds_eye_view_calibration import BEVCalibration
 from birds_eye_view.comb_surface_access import get_combined_surface, set_combined_surface, semaphore
 from parking_spot_labeller.utils_labeller import load_parking_spots
 from birds_eye_view.camera_properties_calibration import CameraPropertiesCalibration
-from python_IPC.IPC_client import IPC_client
+from python_ipc.IpcClient import IpcClient
 
 class BirdsEyeView(Thread):
     
@@ -109,12 +109,12 @@ class BirdsEyeView(Thread):
             window.blit(combined_surface, (0, 0))
             if self.ipc_on:
                 # Convert Pygame Surface to bytes array to be sent over ipc if needed
-                IPC_client.semaphore1.acquire()
+                IpcClient.semaphore1.acquire()
                 surface_bytes = pygame.image.tostring(combined_surface, 'RGB')
                 rgb_data = np.frombuffer(surface_bytes, dtype=np.uint8)
-                IPC_client.get_instance().set_image_data(rgb_data)
-                IPC_client.get_instance().set_transform(self.vehicle.get_transform())
-                IPC_client.semaphore2.release()
+                IpcClient.get_instance().set_image_data(rgb_data)
+                IpcClient.get_instance().set_transform_data(self.vehicle.get_transform())
+                IpcClient.semaphore2.release()
 
             semaphore.release()
             pygame.display.flip()

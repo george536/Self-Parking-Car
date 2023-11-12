@@ -1,32 +1,34 @@
+"""Args utilization"""
 import sys
 
 from birds_eye_view.run import BirdsEyeView
-from parking_spot_labeller.run import parking_labeller
-from python_IPC.IPC_client import IPC_client
+from parking_spot_labeller.run import ParkingSpotLabeller
+from python_ipc.IpcClient import IpcClient
 
-calibration_flag = "-calibrate"
-labeller_flag = "-labeller"
-load_spots_flag = "-load_spots"
-ipc_client_flag = "-ipc_client"
+CALIBRATION_FLAG = "-calibrate"
+LABELLER_FLAG = "-labeller"
+LOAD_SPOTS_FLAG = "-load_spots"
+IPC_CLIENT_FLAG = "-ipc_client"
 
 def main():
+    """Starts Carla tools"""
     running_tools = []
 
-    if labeller_flag in sys.argv:
-        parking_labeller().run()
-        quit()
+    if LABELLER_FLAG in sys.argv:
+        ParkingSpotLabeller().run()
+        sys.exit()
 
     # Use this tool to calibrate the Bird's Eye View
-    calibrate = calibration_flag in sys.argv
-    # Use this tool to send image data over ipc
-    ipc_on = ipc_client_flag in sys.argv
+    calibrate = CALIBRATION_FLAG in sys.argv
+    # Use this tool to send images data over ipc
+    ipc_on = IPC_CLIENT_FLAG in sys.argv
     # use this to load saved spots into world
-    should_load_spots = load_spots_flag in sys.argv
+    should_load_spots = LOAD_SPOTS_FLAG in sys.argv
 
     running_tools.append(BirdsEyeView(calibrate, ipc_on, should_load_spots))
 
     if ipc_on:
-        running_tools.append(IPC_client())
+        running_tools.append(IpcClient())
 
     for tool in running_tools:
         tool.start()

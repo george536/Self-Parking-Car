@@ -10,7 +10,7 @@ nlohmann::json FileUtils::readJson(const char* jsonFilePath) {
         }
         jsonFile.close();
     } else {
-        std::cerr << "Failed to open JSON file." << std::endl;
+        std::cerr << "Failed to open JSON file or file does not exist." << std::endl;
     }
     return jsonData;
 }

@@ -47,7 +47,7 @@ def load_parking_spots(world):
         with open(PARKING_SPOTS_FILE_PATH, "r", encoding="utf-8") as json_file:
             data = json.load(json_file)
             print("Loading previously saved parking spots...")
-            for spot_corners in data.items():
+            for _, spot_corners in data.items():
                 draw_bounding_box(world, spot_corners)
                 for point in spot_corners:
                     world.debug.draw_point(Location(x=point[0], y=point[1], z=point[2]),

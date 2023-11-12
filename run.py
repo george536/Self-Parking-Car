@@ -1,4 +1,3 @@
-"""Args utilization"""
 import sys
 
 from birds_eye_view.run import BirdsEyeView

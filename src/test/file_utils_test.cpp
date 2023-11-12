@@ -43,7 +43,7 @@ TEST(FileUtilsTest, SaveJsonDataTest) {
 
         testJsonStream.close();
     } else {
-        FAIL() << "Failed to open the JSON file for reading.";
+        FAIL() << "Failed to open the JSON file for reading or file does not exist.";
     }
 
     remove(testJsonFile);

@@ -1,4 +1,4 @@
-from carla import Cleint
+from carla import Client
 
 from carla_controls.abstract_command import CMD
 

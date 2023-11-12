@@ -4,7 +4,6 @@
 #include <filesystem>
 
 #include "file_utils.h"
-
 namespace fs = std::filesystem;
 
 FileUtils futils;

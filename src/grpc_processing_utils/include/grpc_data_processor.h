@@ -12,7 +12,7 @@
 
 #include "opencv2/opencv.hpp"
 #include "../../include/ipc_configs.pb.h"
-#include <file_utils.h>
+#include "file_utils.h"
 
 struct ImageDimensions {
     int width;

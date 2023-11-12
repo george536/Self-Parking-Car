@@ -1,7 +1,0 @@
-# ninja log v5
-2	1936	7203254227568056	CMakeFiles/file_utils.dir/src/file_utils.cpp.obj	d04912e7ae1badc4
-1530	1596	7203272571202564	FileUtilsLib.lib	3cbf7fea25a00573
-1938	2028	7203254228345997	file_utils.lib	17f8751f0d4da5d7
-2	1529	7203272570723824	CMakeFiles/FileUtilsLib.dir/src/file_utils.cpp.obj	dc9d38f75a2f7a2
-10	1537	7203288844064287	CMakeFiles/FileUtilsLib.dir/src/file_utils.cpp.obj	d77c229834d29288
-1537	1604	7203288844558483	FileUtilsLib.lib	3cbf7fea25a00573

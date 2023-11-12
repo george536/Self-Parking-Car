@@ -18,12 +18,7 @@ add_subdirectory(googletest)
 
 set(CARLA_LIB_PATH ${CMAKE_CURRENT_LIST_DIR}/libcarla)
 
-set(FileUtilsLib_DIR ${CMAKE_CURRENT_LIST_DIR}/utils/file_utils/build)
-find_package(FileUtilsLib REQUIRED)
-target_include_directories(FileUtilsLib PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
-)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/utils/file_utils)
 
 LINK_DIRECTORIES(libcarla)
 
@@ -40,10 +35,10 @@ add_executable(file_utils_test ./test/file_utils_test.cpp)
 
 message(PROJECT_SOURCE_DIR="${OpenCV_LIBS}")
 
-target_link_libraries(ipc_server gRPC::grpc++ ${OpenCV_LIBS} carla_client_debug 
+target_link_libraries(ipc_server FileUtilsLib gRPC::grpc++ ${OpenCV_LIBS} carla_client_debug 
 debugutils detour detourcrowd detourTileCache libboost_atomic-vc142-mt-x64-1_80 libboost_date_time-vc142-mt-x64-1_80 
 libboost_filesystem-vc142-mt-x64-1_80 libboost_numpy39-vc142-mt-x64-1_80 libboost_python39-vc142-mt-x64-1_80 
 libboost_system-vc142-mt-x64-1_80 libpng proj recast rpc sqlite3 xerces-c_3 zlibstatic)
 
-target_link_libraries(grpc_test GTest::gtest gmock gmock_main GTest::gtest_main gRPC::grpc++ ${OpenCV_LIBS})
-target_link_libraries(file_utils_test GTest::gtest gmock gmock_main GTest::gtest_main)
+target_link_libraries(grpc_test FileUtilsLib GTest::gtest gmock gmock_main GTest::gtest_main gRPC::grpc++ ${OpenCV_LIBS})
+target_link_libraries(file_utils_test FileUtilsLib GTest::gtest gmock gmock_main GTest::gtest_main)

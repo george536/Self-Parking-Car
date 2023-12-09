@@ -24,13 +24,17 @@ Status ImageTransferServiceImpl::send_data(ServerContext* context, const request
 }
 
 void ImageTransferServiceImpl::notifyGrpcDataListeners(const GrpcData& newData) {
-    for (const auto& callback : callbacks) {
+    std::lock_guard<std::mutex> lock(callbacksMutex);
+    for (const auto& callback : ImageTransferServiceImpl::getInstance().callbacks) {
         callback(newData);
     }
+    std::cout << "callback size: " << ImageTransferServiceImpl::getInstance().callbacks.size() << std::endl;
 }
 
 void ImageTransferServiceImpl::callbackOnGrpcData(const std::function<void(GrpcData)>& callback) {
+    std::lock_guard<std::mutex> lock(ImageTransferServiceImpl::getInstance().callbacksMutex);
     ImageTransferServiceImpl::getInstance().callbacks.push_back(callback);
+    std::cout << "New callback registered." << std::endl;
 }
 
 void RunServer() {

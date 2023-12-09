@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <mutex>
 #include <grpcpp/grpcpp.h>
 #include <mutex>
 #include "ipc_configs.pb.h" // Generated header from your proto file
@@ -24,6 +25,7 @@ public:
     void ImageTransferServiceImpl::notifyGrpcDataListeners(const GrpcData& newData);
 
 private:   
+    std::mutex callbacksMutex;
     ImageTransferServiceImpl() {}
     ImageTransferServiceImpl(const ImageTransferServiceImpl&) = delete;
     ImageTransferServiceImpl& operator=(const ImageTransferServiceImpl&) = delete;

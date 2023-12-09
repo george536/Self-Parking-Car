@@ -61,11 +61,18 @@ GrpcData* AutoSpawnUtils::findClosesTransform(geom::Transform targetTransform) {
             }
         }
     }
+    if (closestGrpcData == nullptr) {
+        std::cout << "Grpc data list is empty!! \n No data was recieved from server." << std::endl;
+    }
     return closestGrpcData;
 }
 
 void AutoSpawnUtils::processGrpcData(geom::Transform targetTransform) {
     GrpcData& matchingGrpcData = *findClosesTransform(targetTransform);
+    if (&matchingGrpcData == nullptr) {
+        std::cout << "No matching transform found." << std::endl;
+        return;
+    }
     grpcDataProcessor.convertAndSaveImage(matchingGrpcData.image->data());
     grpcDataProcessor.saveTransformData(*matchingGrpcData.transform);
 }

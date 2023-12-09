@@ -13,11 +13,20 @@
 
 class ImageTransferServiceImpl final : public image_transfer::Service {
 public:
-    static std::vector<std::function<void(GrpcData)>> callbacks;
+    static ImageTransferServiceImpl& getInstance() {
+        static ImageTransferServiceImpl instance;
+        return instance;
+    }
+    std::vector<std::function<void(GrpcData)>> callbacks;
 
     grpc::Status send_data(grpc::ServerContext* context, const request_data* request, empty_return* reply) override;
     static void callbackOnGrpcData(const std::function<void(GrpcData)>& callback);
     void ImageTransferServiceImpl::notifyGrpcDataListeners(const GrpcData& newData);
+
+private:   
+    ImageTransferServiceImpl() {}
+    ImageTransferServiceImpl(const ImageTransferServiceImpl&) = delete;
+    ImageTransferServiceImpl& operator=(const ImageTransferServiceImpl&) = delete;
 };
 
 #endif

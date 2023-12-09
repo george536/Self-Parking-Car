@@ -11,11 +11,9 @@
 #include <filesystem>
 
 #include "opencv2/opencv.hpp"
-#include "../../include/ipc_configs.pb.h"
 #include "file_utils.h"
-
-#include "opencv2/opencv.hpp"
-#include "../../include/ipc_configs.pb.h"
+#include "../../grpc_server/include/ipc_configs.pb.h"
+#include "../../utils/structs/GrpcData.h"
 
 struct ImageDimensions {
     int width;

@@ -30,9 +30,9 @@ void AutoSpawnUtils::extractVehicleFromWorld() {
 
 void AutoSpawnUtils::extractParkingLotCoordinates() {
     std::cout << "Extracting parking lot coordinates..." << std::endl;
-
+    std::string projectPath = fs::current_path().string(); 
     char jsonFilePath[260];
-    snprintf(jsonFilePath, sizeof(jsonFilePath), PARKING_LOT_COORDINATES_FILE, fs::current_path().c_str());
+    snprintf(jsonFilePath, sizeof(jsonFilePath), PARKING_LOT_COORDINATES_FILE, projectPath.c_str());
     nlohmann::json jsonData = fileutils.readJson(jsonFilePath);
     jsonData = jsonData[PARKING_LOT_COORDINATES_KEY];
     parkingLotBottomLeftCorner = geom::Location(jsonData[0][0], jsonData[0][1], jsonData[0][2]);
@@ -41,31 +41,77 @@ void AutoSpawnUtils::extractParkingLotCoordinates() {
     parkingLotBottomRightCorner = geom::Location(jsonData[3][0], jsonData[3][1], jsonData[3][2]);
 }
 
-void AutoSpawnUtils::spawnCarAtDifferentLocations() {
-    std::cout << "Spawning car at different locations..." << std::endl;
-    for(float x=parkingLotBottomLeftCorner.x; x>=parkingLotTopLeftCorner.x; x--) {
-        for(float y=parkingLotBottomLeftCorner.y; y>=parkingLotBottomRightCorner.y; y--) {
-            // Define the new location and rotation for the vehicle.
-            geom::Location newLocation(x, y, 2.0f);
-            for (float i=-180; i<=180; i++) {
-                geom::Rotation newRotation(0.0f, i, 0.0f);
-                
-                if (&vehicle_ptr != nullptr) {
-                    // Set the new transform for the vehicle.
-                    geom::Transform NewTransform(newLocation, newRotation);
-                    vehicle_ptr->SetTransform(NewTransform);
+void AutoSpawnUtils::saveGrpcData(GrpcData grpcData) {
+    grpcDataList.push_back(grpcData);
+}
 
-                    // Check for collisions or failures.
-                    world_ptr->Tick(seconds(1));
-                    if (vehicle_ptr->GetLocation().Distance(newLocation) <= 1.0f) {
-                        // release server semaphore to save picture
-                    } else {
-                        std::cout << "EVehicle is not at rest, collision detected!" << std::endl;
-                    }
-                }
+GrpcData* AutoSpawnUtils::findClosesTransform(geom::Transform targetTransform) {
+    GrpcData* closestGrpcData = nullptr;
+    float closestDistance = std::numeric_limits<float>::max();
+
+    for (auto& grpcData : grpcDataList) {
+        if (grpcData.transform != nullptr) {
+            float distance = std::abs(grpcData.transform->x() - targetTransform.location.x) +
+                             std::abs(grpcData.transform->y() - targetTransform.location.y) +
+                             std::abs(grpcData.transform->z() - targetTransform.location.z);
+
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestGrpcData = &grpcData;
             }
-            
         }
+    }
+    return closestGrpcData;
+}
+
+void AutoSpawnUtils::processGrpcData(geom::Transform targetTransform) {
+    GrpcData& matchingGrpcData = *findClosesTransform(targetTransform);
+    grpcDataProcessor.convertAndSaveImage(matchingGrpcData.image->data());
+    grpcDataProcessor.saveTransformData(*matchingGrpcData.transform);
+}
+
+void AutoSpawnUtils::spawnCarAtDifferentLocations() {
+    std::cout << "Spawning car at different locations..." << std::endl;  
+    auto sensor_blueprints = world_ptr->GetBlueprintLibrary();     
+    auto sensor_blueprint = (*(sensor_blueprints->Filter("sensor.other.collision")))[0];        
+    collision = false;
+
+    if (&vehicle_ptr != nullptr && &world_ptr != nullptr && &sensor_blueprint != nullptr) {
+        auto sensor_transform = carla::geom::Transform(carla::geom::Location(0, 0, 0));
+        auto sensor = boost::static_pointer_cast<carla::client::Sensor>(world_ptr->SpawnActor(sensor_blueprint, sensor_transform, vehicle_ptr.get()));
+
+        sensor->Listen([this](auto data) {
+            auto collision_data = boost::static_pointer_cast<const carla::sensor::data::CollisionEvent>(data);
+            collision = true;
+            std::cout << "Collision detected. Failed to spawn the vehicle" << std::endl;
+        });
+
+        ImageTransferServiceImpl::callbackOnGrpcData([=](GrpcData grpcData) { saveGrpcData(grpcData); });
+
+        for(float x=parkingLotBottomLeftCorner.x; x>=parkingLotTopLeftCorner.x; x--) {
+            for(float y=parkingLotBottomLeftCorner.y; y>=parkingLotBottomRightCorner.y; y--) {
+                geom::Location newLocation(x, y, 2.0f);
+                //for (float i=-180; i<=180; i+=10) {
+                    geom::Rotation newRotation(0.0f, 0.0f, 0.0f);
+                    geom::Transform newTransform(newLocation, newRotation);
+                    vehicle_ptr->SetTransform(newTransform);
+
+                    world_ptr->Tick(seconds(1));
+                    std::this_thread::sleep_for (std::chrono::milliseconds(1000));
+
+                    if (vehicle_ptr->GetLocation().Distance(newLocation) <= 5.0f && !collision) {
+                        std::cout << "Vehicle is spawned successfully into location x:" << x << ", y: "<< y<< std::endl;
+                        processGrpcData(newTransform);
+                        grpcDataList.clear();
+                    }
+
+                    collision = false;
+                //}
+            }
+        }
+        sensor->Stop();  
+        sensor->Destroy();
+        // unsubscribe from callback
     }
 }
 
@@ -82,6 +128,5 @@ void AutoSpawnUtils::run() {
 int main() {
     AutoSpawnUtils autoSpawn;
     autoSpawn.run();
-    // No need to delete; the destructor will be called automatically when autoSpawn goes out of scope
     return 0;
 }

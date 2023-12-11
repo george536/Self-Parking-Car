@@ -15,7 +15,7 @@ using grpc::Status;
 
 class ImageTransferServiceImpl final : public image_transfer::Service {
 
-    GrpcDataProcessor grpcDataProcessor = GrpcDataProcessor();
+    GrpcDataProcessor grpcDataProcessor;
 
     Status send_data(ServerContext* context, const request_data* request, empty_return* reply) override {
         // Process image and transform data here

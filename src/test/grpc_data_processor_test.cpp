@@ -5,185 +5,152 @@
 #include "opencv2/opencv.hpp"
 #include "../grpc_processing_utils/include/grpc_data_processor.h"
 
+using ::testing::NiceMock;
+
+FileUtils fileutils;
 GrpcDataProcessor processor;
 
-class MockGrpcDataProcessor : public GrpcDataProcessor {
+class MockFileUtils : public FileUtils {
 public:
     MOCK_METHOD(nlohmann::json, readJson, (const char* jsonFilePath), (override));
 };
 
-TEST(GrpcDataProcessorTest, GetCurrentDirectoryTest) {
-    std::string currentDirectory = processor.getCurrentDirectory();
+class GrpcDataProcessorTest : public ::testing::Test {
+protected:
+    NiceMock<MockFileUtils> mockFileUtils;
 
-    ASSERT_FALSE(currentDirectory.empty()) << "Current directory should not be empty.";
-    ASSERT_TRUE(currentDirectory.find("src\\grpc_processing_utils") != std::string::npos) << "instead found: " << currentDirectory.c_str();
+    void SetUp() override {
+        ON_CALL(mockFileUtils, readJson).WillByDefault([](const char* jsonFilePath) {
+            FileUtils realFileUtils;
+            return realFileUtils.readJson(jsonFilePath);
+        });
+    }
+};
+
+bool createEmptyJsonFileIfNeeded(char* name) {
+    std::ifstream file(name);
+    if (!file) {
+        nlohmann::json jsonData;
+        fileutils.saveJsonData(name, jsonData);
+    }
+    return !file;
 }
 
-TEST(GrpcDataProcessorTest, ReadJsonTest) {
-    // Create a temporary JSON file for testing
-    const char* testJsonFile = "test_data.json";
-    std::ofstream testJsonStream(testJsonFile);
-    testJsonStream << R"({"1": "5"})";
-    testJsonStream.close();
-
-    // Call the readJson function
-    nlohmann::json jsonData = processor.readJson(testJsonFile);
-
-    // Remove the temporary file
-    remove(testJsonFile);
-
-    // Check if JSON data was read correctly
-    ASSERT_FALSE(jsonData.empty());
-    ASSERT_EQ(jsonData["1"], "5");
-}
-
-TEST(GrpcDataProcessorTest, ReadEmptyJsonTest) {
-    // Create a temporary JSON file for testing
-    const char* testJsonFile = "test_data.json";
-
-    // Call the readJson function
-    nlohmann::json jsonData = processor.readJson(testJsonFile);
-
-    // Check that jsonData is null
-    ASSERT_TRUE(jsonData == nullptr);
-}
-
-TEST(GrpcDataProcessorTest, LoadWidthAndHeightTest) {
-    MockGrpcDataProcessor mockProcessor;
+TEST_F(GrpcDataProcessorTest, LoadWidthAndHeightTest) {
+    GrpcDataProcessor mockProcessor(&mockFileUtils);
     mockProcessor.imageDimensions.height = mockProcessor.INVALID_DIMENSION;
     mockProcessor.imageDimensions.width = mockProcessor.INVALID_DIMENSION;
-    // Create a mock JSON file with the expected structure
+
     char jsonFilePath[260];
-    snprintf(jsonFilePath, sizeof(jsonFilePath), mockProcessor.CAMERA_CONFIGS_FILE, mockProcessor.currentDirectory.c_str());
-    EXPECT_CALL(mockProcessor, readJson(testing::StrEq(jsonFilePath)))
-            .WillOnce([](const char*) {
-                // Return your mock JSON data here
-                nlohmann::json jsonData;
-                jsonData["pygame_window_dimensions"]["w"] = 800;
-                jsonData["pygame_window_dimensions"]["h"] = 600;
-                return jsonData;
-            });
+    snprintf(jsonFilePath, sizeof(jsonFilePath), processor.CAMERA_CONFIGS_FILE, processor.projectPath.c_str());
+    EXPECT_CALL(mockFileUtils, readJson(testing::StrEq(jsonFilePath)))
+        .WillOnce([](const char*) {
+            nlohmann::json jsonData;
+            jsonData["pygame_window_dimensions"]["w"] = 800;
+            jsonData["pygame_window_dimensions"]["h"] = 600;
+            return jsonData;
+        });
 
-    // Call the loadWidthAndHeight function
     mockProcessor.loadWidthAndHeight();
-
-    // Check if the imageDimensions were updated correctly
     ASSERT_EQ(mockProcessor.imageDimensions.width, 800);
     ASSERT_EQ(mockProcessor.imageDimensions.height, 600);
 }
 
-TEST(GrpcDataProcessorTest, SaveImage) {
+TEST_F(GrpcDataProcessorTest, SaveImage) {
     processor.nextID = -1;
-    // Create an empty black image (all pixels are black)
     cv::Mat blackImage(100, 100, CV_8UC3, cv::Scalar(0, 0, 0));
 
     bool result = processor.saveImage(blackImage);
     ASSERT_TRUE(result);
     
-    // Remove the temporary file
     char jsonFilePath[260];
-    snprintf(jsonFilePath, sizeof(jsonFilePath), "%s/../..\\training_data\\%s.jpg", processor.currentDirectory.c_str(), std::to_string(processor.nextID).c_str());
-    
+    snprintf(jsonFilePath, sizeof(jsonFilePath), "%s\\training_data\\%s.jpg", processor.projectPath.c_str(), std::to_string(processor.nextID).c_str());
     remove(jsonFilePath);
 }
 
-TEST(GrpcDataProcessorTest, SaveEmptyImage) {
-    // Create an empty black image (all pixels are black)
+TEST_F(GrpcDataProcessorTest, SaveEmptyImage) {
     cv::Mat emptyImage;
 
     bool result = processor.saveImage(emptyImage);
     ASSERT_FALSE(result);
 }
 
-TEST(GrpcDataProcessorTest, ConvertRGBtoCV2) {
+TEST_F(GrpcDataProcessorTest, ConvertRGBtoCV2) {
     processor.imageDimensions.height = 2;
     processor.imageDimensions.width = 3;
 
     google::protobuf::RepeatedField<float> imageBytes;
     for (int i = 0; i < 24; i += 3) {
-        imageBytes.Add(255.0f);  // Red component
-        imageBytes.Add(0.0f);    // Green component
-        imageBytes.Add(0.0f);    // Blue component
-        }
+        imageBytes.Add(255.0f);
+        imageBytes.Add(0.0f);
+        imageBytes.Add(0.0f);
+    }
 
     cv::Mat resultImage = processor.convertRGBtoCV2(imageBytes);
-
     ASSERT_FALSE(resultImage.empty());
-
     ASSERT_EQ(resultImage.rows, processor.imageDimensions.height);
     ASSERT_EQ(resultImage.cols, processor.imageDimensions.width);
 }
 
-TEST(GrpcDataProcessorTest, ExtractNextImageIdWhenJsonIsEmpty) {
-    MockGrpcDataProcessor mockProcessor;
+TEST_F(GrpcDataProcessorTest, ExtractNextImageIdWhenJsonIsEmpty) {
+    GrpcDataProcessor mockProcessor(&mockFileUtils);
     mockProcessor.nextID = 0;
 
     char jsonFilePath[260];
-    snprintf(jsonFilePath, sizeof(jsonFilePath), mockProcessor.TRANSFORMS_JSON_FILE, mockProcessor.currentDirectory.c_str());
-    
-    std::ifstream file(jsonFilePath);
-    bool notFound = !file;
-    if (notFound) {
-        nlohmann::json jsonData;
-        mockProcessor.saveJsonData(jsonFilePath, jsonData);
-    }
+    snprintf(jsonFilePath, sizeof(jsonFilePath), mockProcessor.TRANSFORMS_JSON_FILE, mockProcessor.projectPath.c_str());
+    bool emptyFileCreated = createEmptyJsonFileIfNeeded(jsonFilePath);
 
-    EXPECT_CALL(mockProcessor, readJson(testing::StrEq(jsonFilePath)))
+    EXPECT_CALL(mockFileUtils, readJson(testing::StrEq(jsonFilePath)))
             .WillOnce([](const char*) {
-                // Return your mock JSON data here
                 nlohmann::json jsonData;
                 return jsonData;
             });
+
     mockProcessor.extractNextImageId();
     ASSERT_EQ(mockProcessor.nextID, 0);
 
-    if (notFound) {
+    if (emptyFileCreated) {
         remove(jsonFilePath);
     }
 }
 
-TEST(GrpcDataProcessorTest, ExtractNextImageIdWhenJsonIsNotEmpty) {
-    MockGrpcDataProcessor mockProcessor;
+TEST_F(GrpcDataProcessorTest, ExtractNextImageIdWhenJsonIsNotEmpty) {
+    GrpcDataProcessor mockProcessor(&mockFileUtils);
     mockProcessor.nextID = 0;
-    char jsonFilePath[260];
-    snprintf(jsonFilePath, sizeof(jsonFilePath), mockProcessor.TRANSFORMS_JSON_FILE, mockProcessor.currentDirectory.c_str());
-    
-    std::ifstream file(jsonFilePath);
-    bool notFound = !file;
-    if (notFound) {
-        nlohmann::json jsonData;
-        mockProcessor.saveJsonData(jsonFilePath, jsonData);
-    }
 
-    EXPECT_CALL(mockProcessor, readJson(testing::StrEq(jsonFilePath)))
+    char jsonFilePath[260];
+    snprintf(jsonFilePath, sizeof(jsonFilePath), mockProcessor.TRANSFORMS_JSON_FILE, mockProcessor.projectPath.c_str());
+    bool emptyFileCreated = createEmptyJsonFileIfNeeded(jsonFilePath);
+
+    EXPECT_CALL(mockFileUtils, readJson(testing::StrEq(jsonFilePath)))
             .WillOnce([](const char*) {
-                // Return your mock JSON data here
                 nlohmann::json jsonData;
                 jsonData["5"] = {};
                 return jsonData;
             });
+
     mockProcessor.extractNextImageId();
     ASSERT_EQ(mockProcessor.nextID, 6);
 
-    if (notFound) {
+    if (emptyFileCreated) {
         remove(jsonFilePath);
     }
 }
 
-TEST(GrpcDataProcessorTest, SaveTransformData) {
-    MockGrpcDataProcessor mockProcessor;
+TEST_F(GrpcDataProcessorTest, SaveTransformData) {
+    GrpcDataProcessor mockProcessor(&mockFileUtils);
     mockProcessor.nextID = 0;
-    mockProcessor.currentDirectory = "";
+    mockProcessor.projectPath = "";
     mockProcessor.TRANSFORMS_JSON_FILE = "test.json";
 
     char jsonFilePath[260];
-    snprintf(jsonFilePath, sizeof(jsonFilePath), mockProcessor.TRANSFORMS_JSON_FILE, mockProcessor.currentDirectory.c_str());
-    EXPECT_CALL(mockProcessor, readJson(testing::StrEq(jsonFilePath)))
+    snprintf(jsonFilePath, sizeof(jsonFilePath), mockProcessor.TRANSFORMS_JSON_FILE, mockProcessor.projectPath.c_str());
+    EXPECT_CALL(mockFileUtils, readJson(testing::StrEq(jsonFilePath)))
             .WillOnce([](const char*) {
-                // Return your mock JSON data here
                 nlohmann::json jsonData;
                 return jsonData;
             });
+
     transform_request transform;
     transform.set_x(0.1);
     transform.set_y(0.1);
@@ -193,10 +160,9 @@ TEST(GrpcDataProcessorTest, SaveTransformData) {
     transform.set_yaw(0.1);
 
     mockProcessor.saveTransformData(transform);
-
     ASSERT_EQ(mockProcessor.nextID, 1);
     
-    nlohmann::json jsonData = processor.readJson(jsonFilePath);
+    nlohmann::json jsonData = fileutils.readJson(jsonFilePath);
     ASSERT_EQ(jsonData["0"]["x"], transform.x());
     ASSERT_EQ(jsonData["0"]["y"], transform.y());
     ASSERT_EQ(jsonData["0"]["z"], transform.z());
@@ -204,6 +170,5 @@ TEST(GrpcDataProcessorTest, SaveTransformData) {
     ASSERT_EQ(jsonData["0"]["roll"], transform.roll());
     ASSERT_EQ(jsonData["0"]["yaw"], transform.yaw());
 
-    // Remove the temporary file
     remove(jsonFilePath);
 }

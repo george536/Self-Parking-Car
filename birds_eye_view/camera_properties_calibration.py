@@ -13,17 +13,18 @@ class CameraPropertiesCalibration(Thread):
             self.camera_locations = None
             self.cameras = []
             self.load_json_data()
+            self.root = None
 
     @staticmethod
     def get_instance():
-        if CameraPropertiesCalibration.__instance == None:
+        if CameraPropertiesCalibration.__instance is None:
             CameraPropertiesCalibration()
         return CameraPropertiesCalibration.__instance
 
     def load_json_data(self):
         print("loading camera locations configurations..")
         # Load camera locations from JSON file
-        with open('birds_eye_view/camera_locations.json') as config_file:
+        with open('birds_eye_view/camera_locations.json', encoding="utf-8") as config_file:
             self.camera_locations = json.load(config_file)
 
     def save_camera_properties(self):
@@ -37,12 +38,12 @@ class CameraPropertiesCalibration(Thread):
 
         print("Saving camera properties configurations")
 
-        with open('birds_eye_view/camera_locations.json', 'w') as config_file:
+        with open('birds_eye_view/camera_locations.json', 'w', encoding="utf-8") as config_file:
             json.dump(self.camera_locations, config_file, indent=4)
 
     def get_camera_locations_dictionary(self):
         return self.camera_locations
-    
+
     def generate_fields(self, camera):
         return [
             ("x",camera.get_x(), camera.set_x, -50, 50, 0.1),
@@ -52,12 +53,11 @@ class CameraPropertiesCalibration(Thread):
             ("yaw",camera.get_yaw(), camera.set_yaw, -360, 360, 1),
             ("roll",camera.get_roll(), camera.set_roll, -360, 360, 1)
         ]
-    
+
     def add_camera(self, camera):
         self.cameras.append(camera)
 
     def run(self):
-
         self.root = tk.Tk()
         self.root.title("Camera Properties Calibration")
         self.root.resizable(True, True)

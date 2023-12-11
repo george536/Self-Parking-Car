@@ -1,5 +1,5 @@
 {
-    "FrontLocation": {
+    "FRONT_LOCATION": {
         "x": 3.3,
         "y": 0.0,
         "z": 1.4,
@@ -7,7 +7,7 @@
         "yaw": 0.0,
         "roll": 0.0
     },
-    "RearLocation": {
+    "REAR_LOCATION": {
         "x": -3.5,
         "y": 0.0,
         "z": 1.4,
@@ -15,7 +15,7 @@
         "yaw": 180.0,
         "roll": 0.0
     },
-    "RightLocation": {
+    "RIGHT_LOCATION": {
         "x": -0.3,
         "y": 2.4,
         "z": 0.4,
@@ -23,7 +23,7 @@
         "yaw": 90.0,
         "roll": 0.0
     },
-    "LeftLocation": {
+    "LEFT_LOCATION": {
         "x": -0.4,
         "y": -2.4,
         "z": 0.4,

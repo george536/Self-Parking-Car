@@ -1,26 +1,34 @@
 import json
 import atexit
 
-def get_source_matrix(id, h, w):
+def get_source_matrix(camera_id, h, w):
     config_modifications_insatnce = ConfigModifier.get_instance()
-    if id == 1 or id == 2:
-        return [[0, h//config_modifications_insatnce.source_matrix_depth_factor_v], [w, h//config_modifications_insatnce.source_matrix_depth_factor_v], [w, h], [0, h]]
+    if camera_id == 1 or camera_id == 2:
+        return [[0, h//config_modifications_insatnce.source_matrix_depth_factor_v],
+                [w, h//config_modifications_insatnce.source_matrix_depth_factor_v],
+                [w, h], [0, h]]
     else:
-        return [[0, h//config_modifications_insatnce.source_matrix_depth_factor_h], [w, h//config_modifications_insatnce.source_matrix_depth_factor_h], [w, h], [0, h]]
+        return [[0, h//config_modifications_insatnce.source_matrix_depth_factor_h],
+                [w, h//config_modifications_insatnce.source_matrix_depth_factor_h],
+                [w, h], [0, h]]
 
-def get_destination_matrix(id, h, w):
+def get_destination_matrix(camera_id, h, w):
     config_modifications_insatnce = ConfigModifier.get_instance()
-    if id == 1 or id == 2:
-        return [[0, 0], [w, 0], [(w//2)+(w//config_modifications_insatnce.destination_matrix_depth_factor_v), h], [(w//2)-(w//config_modifications_insatnce.destination_matrix_depth_factor_v), h]]
-    else:
-        return [[0, 0], [w, 0], [(w//2)+(w//config_modifications_insatnce.destination_matrix_depth_factor_h), h], [(w//2)-(w//config_modifications_insatnce.destination_matrix_depth_factor_h), h]]
+    if camera_id in (1,2):
+        return [[0, 0], [w, 0],
+                [(w//2)+(w//config_modifications_insatnce.destination_matrix_depth_factor_v), h],
+                [(w//2)-(w//config_modifications_insatnce.destination_matrix_depth_factor_v), h]]
 
-def get_wrapped_image_dimensions(id):
+    return [[0, 0], [w, 0],
+            [(w//2)+(w//config_modifications_insatnce.destination_matrix_depth_factor_h), h],
+            [(w//2)-(w//config_modifications_insatnce.destination_matrix_depth_factor_h), h]]
+
+def get_wrapped_image_dimensions(camera_id):
     config_modifications_insatnce = ConfigModifier.get_instance()
-    if id == 1 or id == 2:
+    if camera_id in (1,2):
         return config_modifications_insatnce.wrapped_image_dimensions_vertical
-    else:
-        return config_modifications_insatnce.wrapped_image_dimensions_horizontal
+
+    return config_modifications_insatnce.wrapped_image_dimensions_horizontal
 
 class ConfigModifier:
     __instance = None
@@ -36,11 +44,12 @@ class ConfigModifier:
             self.load_data()
             self.assing_variables()
             ConfigModifier.__instance = self
+            self.camera_configs = {}
 
     def load_data(self):
         print("loading Bird's Eye View configurations..")
         # Load camera configurations from JSON file
-        with open('birds_eye_view/camera_configs.json') as config_file:
+        with open('birds_eye_view/camera_configs.json', encoding="utf-8") as config_file:
             self.camera_configs = json.load(config_file)
 
     def assing_variables(self):
@@ -61,9 +70,12 @@ class ConfigModifier:
         self.left_camera_top_indentation = self.camera_configs["left_camera_top_indentation"]
         self.left_camera_left_indentation = self.camera_configs["left_camera_left_indentation"]
         self.pygame_images_window_placement={
-        '1': (self.pygame_window_dimensions['w']//self.front_camera_left_indentation, self.pygame_window_dimensions['h']//self.front_camera_top_indentation),
-        '3': (self.pygame_window_dimensions['w']*2//self.right_camera_left_indentation, self.right_camera_top_indentation),
-        '2': (self.pygame_window_dimensions['w']//self.rear_camera_left_indentation, self.pygame_window_dimensions['h']*2//self.rear_camera_top_indentation),
+        '1': (self.pygame_window_dimensions['w']//self.front_camera_left_indentation, 
+              self.pygame_window_dimensions['h']//self.front_camera_top_indentation),
+        '3': (self.pygame_window_dimensions['w']*2//self.right_camera_left_indentation, 
+              self.right_camera_top_indentation),
+        '2': (self.pygame_window_dimensions['w']//self.rear_camera_left_indentation, 
+              self.pygame_window_dimensions['h']*2//self.rear_camera_top_indentation),
         '4': (self.left_camera_left_indentation, self.left_camera_top_indentation)
         }
 
@@ -89,7 +101,7 @@ class ConfigModifier:
         }
 
         # Save the camera_configs dictionary to the JSON file
-        with open('birds_eye_view/camera_configs.json', 'w') as config_file:
+        with open('birds_eye_view/camera_configs.json', 'w', encoding="utf-8") as config_file:
             json.dump(self.camera_configs, config_file, indent=4)
 
     def update_source_matrix_vertical(self,new_val):
@@ -148,7 +160,6 @@ class ConfigModifier:
         self.left_camera_top_indentation = float(new_val)
         self.pygame_images_window_placement['4'] = (self.left_camera_left_indentation, self.left_camera_top_indentation)
 
-config_modifications_instance = ConfigModifier.get_instance()
+CONFIG_MODIFICATIONS_INSTANCE = ConfigModifier.get_instance()
 # Call the save_camera_configs function before program exit
-atexit.register(config_modifications_instance.save_camera_configs)
-
+atexit.register(CONFIG_MODIFICATIONS_INSTANCE.save_camera_configs)

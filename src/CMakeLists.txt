@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.23)
 project(IPC_lib CXX C)
 
+
 include(FetchContent)
 
 set(OpenCV_DIR ${CMAKE_CURRENT_LIST_DIR}/build_opencv)
@@ -17,7 +18,7 @@ add_subdirectory(googletest)
 
 set(CARLA_LIB_PATH ${CMAKE_CURRENT_LIST_DIR}/libcarla)
 
-#add_subdirectory(libcarla)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/utils/file_utils)
 
 LINK_DIRECTORIES(libcarla)
 link_directories(glfw)
@@ -47,9 +48,9 @@ set(protobuf_source "./include/ipc_configs.pb.cc" "./grpc_processing_utils/grpc_
 
 add_executable(ipc_server server.cpp ${protobuf_source})
 add_executable(grpc_test ./test/grpc_data_processor_test.cpp ${protobuf_source})
+add_executable(file_utils_test ./test/file_utils_test.cpp)
 
+target_link_libraries(ipc_server FileUtilsLib ${OpenCV_LIBS} ${protobuf_carla_dependency})
 
-
-target_link_libraries(ipc_server ${OpenCV_LIBS} ${protobuf_carla_dependency})
-
-target_link_libraries(grpc_test GTest::gtest gmock gmock_main GTest::gtest_main gRPC::grpc++ ${OpenCV_LIBS} nlohmann_json::nlohmann_json)
+target_link_libraries(grpc_test FileUtilsLib GTest::gtest gmock gmock_main GTest::gtest_main gRPC::grpc++ ${OpenCV_LIBS})
+target_link_libraries(file_utils_test FileUtilsLib GTest::gtest gmock gmock_main GTest::gtest_main)

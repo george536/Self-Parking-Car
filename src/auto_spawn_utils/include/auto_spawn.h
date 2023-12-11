@@ -24,7 +24,6 @@
 
 class AutoSpawnUtils {
     public:
-    AutoSpawnUtils();
     const char* PARKING_LOT_COORDINATES_FILE = "%s\\parking_spot_labeller\\spots_data.json";
     const char* PARKING_LOT_COORDINATES_KEY = "parking lot";
     bool collision = false;
@@ -41,8 +40,8 @@ class AutoSpawnUtils {
     void extractParkingLotCoordinates();
     void AutoSpawnUtils::waitForGrpcClient();
     void saveGrpcData(GrpcData grpcData);
-    void processGrpcData(carla::geom::Transform targetTransform);
-    GrpcData* findClosestTransform(carla::geom::Transform targetTransform);
+    void processGrpcData(carla::geom::Location targetLocation);
+    GrpcData* findGrpcDataWithClosestLocation(carla::geom::Location targetLocation);
     void spawnCarAtDifferentLocations();
     static void startAutoSpawn();
 };

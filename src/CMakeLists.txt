@@ -31,6 +31,7 @@ link_directories(glfw)
 
 include_directories(grpc_server/include/ipc_configs.pb.h)
 include_directories(grpc_server/include/ipc_configs.grpc.pb.h)
+include_directories(grpc_server/include/server.h)
 include_directories(grpc_processing_utils/include/grpc_data_processor.h)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/build_grpc/install_grpc/include)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/libcarla/include)
@@ -42,6 +43,7 @@ add_executable(ipc_server ./grpc_server/run_server.cpp ./grpc_server/include/ipc
 add_executable(grpc_test ./test/grpc_data_processor_test.cpp ./grpc_processing_utils/grpc_data_processor.cpp ./grpc_server/include/ipc_configs.grpc.pb.cc ./grpc_server/include/ipc_configs.pb.cc)
 add_executable(file_utils_test ./test/file_utils_test.cpp)
 add_executable(auto_spawn ./auto_spawn_utils/run_auto_spawn.cpp ./grpc_processing_utils/grpc_data_processor.cpp ./grpc_server/src/server.cpp ./grpc_server/include/ipc_configs.pb.cc ./grpc_server/include/ipc_configs.grpc.pb.cc)
+add_executable(auto_spawn_test ./test/auto_spawn_test.cpp ./auto_spawn_utils/src/auto_spawn.cpp ./grpc_server/src/server.cpp ./grpc_processing_utils/grpc_data_processor.cpp ./grpc_server/include/ipc_configs.grpc.pb.cc ./grpc_server/include/ipc_configs.pb.cc)
 
 message(PROJECT_SOURCE_DIR="${OpenCV_LIBS}")
 
@@ -51,16 +53,3 @@ target_link_libraries(grpc_test FileUtilsLib GTest::gtest gmock gmock_main GTest
 target_link_libraries(file_utils_test FileUtilsLib GTest::gtest gmock gmock_main GTest::gtest_main)
 
 target_link_options(auto_spawn PRIVATE "/NODEFAULTLIB:MSVCRT")
-
-<<<<<<< HEAD
-target_link_libraries(auto_spawn FileUtilsLib ${OpenCV_LIBS} carla_client_debug Shlwapi
-debugutils-d detour-d detourcrowd-d detourTileCache-d libboost_atomic-vc142-mt-x64-1_83 libboost_date_time-vc142-mt-x64-1_83 
-libboost_numpy39-vc142-mt-x64-1_80 libboost_python39-vc142-mt-x64-1_80 
-<<<<<<< HEAD
-libboost_system-vc142-mt-x64-1_83 libpng proj recast-d rpc sqlite3 xerces-c_3 zlibstatic)
-=======
-libboost_system-vc142-mt-x64-1_83 libpng proj recast-d rpc sqlite3 xerces-c_3 zlibstatic gRPC::grpc++)
->>>>>>> 17fbcbe0 (Added callback, not yet working)
-=======
-target_link_libraries(auto_spawn FileUtilsLib ${OpenCV_LIBS} CarlaUtils gRPC::grpc++)
->>>>>>> 7e9a250c (Moved carla functions into Carla Lib)

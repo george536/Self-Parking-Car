@@ -6,12 +6,7 @@ namespace fs = std::filesystem;
 using namespace std::chrono;
 using namespace carla;
 
-AutoSpawnUtils::AutoSpawnUtils() {
-    carlaUtils.createCarlaClient();
-    carlaUtils.connectToCarla();
-    carlaUtils.extractVehicleFromWorld();
-}
-
+// No need to test, it is a helper function
 void AutoSpawnUtils::extractParkingLotCoordinates() {
     std::cout << "Extracting parking lot coordinates..." << std::endl;
     std::string projectPath = fs::current_path().string(); 
@@ -29,15 +24,15 @@ void AutoSpawnUtils::saveGrpcData(GrpcData grpcData) {
     grpcDataList.push_back(grpcData);
 }
 
-GrpcData* AutoSpawnUtils::findClosestTransform(geom::Transform targetTransform) {
+GrpcData* AutoSpawnUtils::findGrpcDataWithClosestLocation(geom::Location targetLocation) {
     GrpcData* closestGrpcData = nullptr;
     float closestDistance = std::numeric_limits<float>::max();
 
     for (auto& grpcData : grpcDataList) {
         if (grpcData.transform != nullptr) {
-            float distance = std::abs(grpcData.transform->x() - targetTransform.location.x) +
-                             std::abs(grpcData.transform->y() - targetTransform.location.y) +
-                             std::abs(grpcData.transform->z() - targetTransform.location.z);
+            float distance = std::abs(grpcData.transform->x() - targetLocation.x) +
+                             std::abs(grpcData.transform->y() - targetLocation.y) +
+                             std::abs(grpcData.transform->z() - targetLocation.z);
 
             if (distance < closestDistance) {
                 closestDistance = distance;
@@ -47,16 +42,16 @@ GrpcData* AutoSpawnUtils::findClosestTransform(geom::Transform targetTransform) 
     }
     if (closestGrpcData == nullptr) {
         std::cout << "Grpc data list is empty!! \n No data was recieved from server." << std::endl;
-        std::cout << "Target Transform: (" << targetTransform.location.x << ", "
-            << targetTransform.location.y << ", " << targetTransform.location.z << ")" << std::endl;
+        std::cout << "Target Transform: (" << targetLocation.x << ", "
+            << targetLocation.y << ", " << targetLocation.z << ")" << std::endl;
 
         exit(0);
     }
     return closestGrpcData;
 }
 
-void AutoSpawnUtils::processGrpcData(geom::Transform targetTransform) {
-    GrpcData& matchingGrpcData = *findClosestTransform(targetTransform);
+void AutoSpawnUtils::processGrpcData(geom::Location targetLocation) {
+    GrpcData& matchingGrpcData = *findGrpcDataWithClosestLocation(targetLocation);
     if (&matchingGrpcData == nullptr) {
         std::cout << "No matching transform found." << std::endl;
         return;
@@ -104,7 +99,7 @@ void AutoSpawnUtils::spawnCarAtDifferentLocations() {
 
                     if (carlaUtils.getVehicle()->GetLocation().Distance(newLocation) <= 3.0f && !collision) {
                         std::cout << "Vehicle is spawned successfully into location x:" << x << ", y: "<< y<< std::endl;
-                        processGrpcData(newTransform);
+                        processGrpcData(newLocation);
                         grpcDataList.clear();
                     }
 
@@ -120,6 +115,9 @@ void AutoSpawnUtils::spawnCarAtDifferentLocations() {
 
 void AutoSpawnUtils::startAutoSpawn() {
     AutoSpawnUtils autoSpawn;
+    autoSpawn.carlaUtils.createCarlaClient();
+    autoSpawn.carlaUtils.connectToCarla();
+    autoSpawn.carlaUtils.extractVehicleFromWorld();
     // pre-run
     autoSpawn.extractParkingLotCoordinates();
 

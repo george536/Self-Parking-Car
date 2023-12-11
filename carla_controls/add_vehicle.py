@@ -14,4 +14,10 @@ class AddVehicle(CMD):
         # Spawn the vehicle at a given location
         vehicle = self.world.spawn_actor(vehicle_bp, self.spawn_point, attach_to=None)
         vehicle.apply_control(VehicleControl(brake=1.0, steer=0.0))
+        # Set vehicle mass and drage coefficient to be 0
+        physics_control = vehicle.get_physics_control()
+        physics_control.use_sweep_wheel_collision = True
+        physics_control.drag_coefficient=0.0
+        vehicle.apply_physics_control(physics_control)
+        # vehicle.set_simulate_physics(enabled=False)
         return vehicle

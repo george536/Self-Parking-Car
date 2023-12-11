@@ -19,7 +19,7 @@ if($compile_proto){
     python -m grpc_tools.protoc -I. --python_out=./python_IPC --grpc_python_out=./python_IPC ipc_configs.proto
 
     # Execute for C++
-    src/build_grpc/third_party/protobuf/protoc --proto_path=./ --cpp_out=./src/include/ ./ipc_configs.proto
+    src/build_grpc/third_party/protobuf/protoc --proto_path=./ --cpp_out=./src/grpc_server/include/ ./ipc_configs.proto
 
     # Execute for gRPC C++, only after grpc++ has been build using CMake
     # Give full path for protos folder like below

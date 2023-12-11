@@ -1,6 +1,6 @@
 #include "src/server.cpp"
 
 int main() {
-    RunServer();
+    GrpcServer::RunServer();
     return 0;
 }

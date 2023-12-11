@@ -10,12 +10,6 @@
 #include <memory>
 #include <Time.h>
 #include <vector>
-#include <carla/client/Client.h>
-#include <carla/client/World.h>
-#include <carla/client/ActorList.h>
-#include <carla/client/Actor.h>
-#include <carla/client/Sensor.h>
-#include <carla/client/BlueprintLibrary.h>
 #include <carla/geom/Location.h>
 #include <carla/geom/Transform.h>
 #include <carla/geom/Vector3D.h>
@@ -24,6 +18,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "file_utils.h"
+#include "carla_utils.h"
 #include "../../grpc_processing_utils/include/grpc_data_processor.h"
 #include "../../grpc_server/include/server.h"
 
@@ -34,6 +29,7 @@ class AutoSpawnUtils {
     const char* PARKING_LOT_COORDINATES_KEY = "parking lot";
     bool collision = false;
     FileUtils fileutils;
+    CarlaUtils carlaUtils;
     std::vector<GrpcData> grpcDataList;
     GrpcDataProcessor grpcDataProcessor;
     
@@ -42,18 +38,13 @@ class AutoSpawnUtils {
     carla::geom::Location parkingLotBottomRightCorner;
     carla::geom::Location parkingLotTopLeftCorner;
 
-    std::shared_ptr<carla::client::Client> client_ptr;
-    std::shared_ptr<carla::client::World> world_ptr;
-    boost::shared_ptr<carla::client::Actor> vehicle_ptr;
-
-    void connectToCarla();
-    void extractVehicleFromWorld();
     void extractParkingLotCoordinates();
+    void AutoSpawnUtils::waitForGrpcClient();
     void saveGrpcData(GrpcData grpcData);
     void processGrpcData(carla::geom::Transform targetTransform);
-    GrpcData* findClosesTransform(carla::geom::Transform targetTransform);
+    GrpcData* findClosestTransform(carla::geom::Transform targetTransform);
     void spawnCarAtDifferentLocations();
-    void run();
+    static void startAutoSpawn();
 };
 
 #endif

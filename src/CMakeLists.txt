@@ -41,20 +41,18 @@ include_directories(auto_spawn_utils/include/auto_spawn.h)
 add_executable(ipc_server ./grpc_server/run_server.cpp ./grpc_server/include/ipc_configs.pb.cc ./grpc_server/include/ipc_configs.grpc.pb.cc)
 add_executable(grpc_test ./test/grpc_data_processor_test.cpp ./grpc_processing_utils/grpc_data_processor.cpp ./grpc_server/include/ipc_configs.grpc.pb.cc ./grpc_server/include/ipc_configs.pb.cc)
 add_executable(file_utils_test ./test/file_utils_test.cpp)
-add_executable(auto_spawn ./auto_spawn_utils/auto_spawn.cpp ./grpc_processing_utils/grpc_data_processor.cpp ./grpc_server/src/server.cpp ./grpc_server/include/ipc_configs.pb.cc ./grpc_server/include/ipc_configs.grpc.pb.cc)
+add_executable(auto_spawn ./auto_spawn_utils/run_auto_spawn.cpp ./grpc_processing_utils/grpc_data_processor.cpp ./grpc_server/src/server.cpp ./grpc_server/include/ipc_configs.pb.cc ./grpc_server/include/ipc_configs.grpc.pb.cc)
 
 message(PROJECT_SOURCE_DIR="${OpenCV_LIBS}")
 
-target_link_libraries(ipc_server FileUtilsLib gRPC::grpc++ ${OpenCV_LIBS} carla_client_debug 
-debugutils-d detour-d detourcrowd-d detourTileCache-d libboost_atomic-vc142-mt-x64-1_83 libboost_date_time-vc142-mt-x64-1_83 
-libboost_numpy39-vc142-mt-x64-1_80 libboost_python39-vc142-mt-x64-1_80 
-libboost_system-vc142-mt-x64-1_83 libpng proj recast-d rpc sqlite3 xerces-c_3 zlibstatic)
+target_link_libraries(ipc_server FileUtilsLib gRPC::grpc++ ${OpenCV_LIBS})
 
 target_link_libraries(grpc_test FileUtilsLib GTest::gtest gmock gmock_main GTest::gtest_main gRPC::grpc++ ${OpenCV_LIBS})
 target_link_libraries(file_utils_test FileUtilsLib GTest::gtest gmock gmock_main GTest::gtest_main)
 
 target_link_options(auto_spawn PRIVATE "/NODEFAULTLIB:MSVCRT")
 
+<<<<<<< HEAD
 target_link_libraries(auto_spawn FileUtilsLib ${OpenCV_LIBS} carla_client_debug Shlwapi
 debugutils-d detour-d detourcrowd-d detourTileCache-d libboost_atomic-vc142-mt-x64-1_83 libboost_date_time-vc142-mt-x64-1_83 
 libboost_numpy39-vc142-mt-x64-1_80 libboost_python39-vc142-mt-x64-1_80 
@@ -63,3 +61,6 @@ libboost_system-vc142-mt-x64-1_83 libpng proj recast-d rpc sqlite3 xerces-c_3 zl
 =======
 libboost_system-vc142-mt-x64-1_83 libpng proj recast-d rpc sqlite3 xerces-c_3 zlibstatic gRPC::grpc++)
 >>>>>>> 17fbcbe0 (Added callback, not yet working)
+=======
+target_link_libraries(auto_spawn FileUtilsLib ${OpenCV_LIBS} CarlaUtils gRPC::grpc++)
+>>>>>>> 7e9a250c (Moved carla functions into Carla Lib)

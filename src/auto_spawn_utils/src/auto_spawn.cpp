@@ -1,31 +1,15 @@
 #pragma once 
 
-#include "include/auto_spawn.h"
+#include "../include/auto_spawn.h"
 
 namespace fs = std::filesystem;
 using namespace std::chrono;
 using namespace carla;
 
 AutoSpawnUtils::AutoSpawnUtils() {
-    client_ptr = std::make_shared<carla::client::Client>("localhost", 2000);
-}
-
-void AutoSpawnUtils::connectToCarla() {
-    std::cout << "Connecting to Carla..." << std::endl;
-    client_ptr->SetTimeout(seconds(50));
-    world_ptr = std::make_shared<carla::client::World>(client_ptr->GetWorld());
-    std::cout << "Connected to Carla." << std::endl;
-}
-
-void AutoSpawnUtils::extractVehicleFromWorld() {
-    std::cout << "Extracting vehicle ..." << std::endl;
-    auto vehicles = world_ptr->GetActors()->Filter("vehicle.*");
-    if (!vehicles->empty()) {
-        vehicle_ptr = vehicles->at(0);
-    } else {
-        std::cout << "No vehicles found." << std::endl;
-        exit(EXIT_FAILURE);
-    }
+    carlaUtils.createCarlaClient();
+    carlaUtils.connectToCarla();
+    carlaUtils.extractVehicleFromWorld();
 }
 
 void AutoSpawnUtils::extractParkingLotCoordinates() {
@@ -45,7 +29,7 @@ void AutoSpawnUtils::saveGrpcData(GrpcData grpcData) {
     grpcDataList.push_back(grpcData);
 }
 
-GrpcData* AutoSpawnUtils::findClosesTransform(geom::Transform targetTransform) {
+GrpcData* AutoSpawnUtils::findClosestTransform(geom::Transform targetTransform) {
     GrpcData* closestGrpcData = nullptr;
     float closestDistance = std::numeric_limits<float>::max();
 
@@ -63,12 +47,16 @@ GrpcData* AutoSpawnUtils::findClosesTransform(geom::Transform targetTransform) {
     }
     if (closestGrpcData == nullptr) {
         std::cout << "Grpc data list is empty!! \n No data was recieved from server." << std::endl;
+        std::cout << "Target Transform: (" << targetTransform.location.x << ", "
+            << targetTransform.location.y << ", " << targetTransform.location.z << ")" << std::endl;
+
+        exit(0);
     }
     return closestGrpcData;
 }
 
 void AutoSpawnUtils::processGrpcData(geom::Transform targetTransform) {
-    GrpcData& matchingGrpcData = *findClosesTransform(targetTransform);
+    GrpcData& matchingGrpcData = *findClosestTransform(targetTransform);
     if (&matchingGrpcData == nullptr) {
         std::cout << "No matching transform found." << std::endl;
         return;
@@ -77,63 +65,64 @@ void AutoSpawnUtils::processGrpcData(geom::Transform targetTransform) {
     grpcDataProcessor.saveTransformData(*matchingGrpcData.transform);
 }
 
+void AutoSpawnUtils::waitForGrpcClient() {
+    std::cout << "Waiting for grpc client..." << std::endl;
+    while (grpcDataList.size() == 0) {
+        std::this_thread::sleep_for (std::chrono::milliseconds(100));
+    }
+    std::cout << "Grpc client is connected." << std::endl;
+}
+
 void AutoSpawnUtils::spawnCarAtDifferentLocations() {
-    std::cout << "Spawning car at different locations..." << std::endl;  
-    auto sensor_blueprints = world_ptr->GetBlueprintLibrary();     
-    auto sensor_blueprint = (*(sensor_blueprints->Filter("sensor.other.collision")))[0];        
+    std::cout << "Spawning car at different locations..." << std::endl;         
     collision = false;
 
-    if (&vehicle_ptr != nullptr && &world_ptr != nullptr && &sensor_blueprint != nullptr) {
-        auto sensor_transform = carla::geom::Transform(carla::geom::Location(0, 0, 0));
-        auto sensor = boost::static_pointer_cast<carla::client::Sensor>(world_ptr->SpawnActor(sensor_blueprint, sensor_transform, vehicle_ptr.get()));
+    if (&carlaUtils.getVehicle() != nullptr && &carlaUtils.getWorld() != nullptr) {
+        boost::shared_ptr<client::Sensor> sensor = carlaUtils.attachCollisionSensorToVehcile();
 
         sensor->Listen([this](auto data) {
-            auto collision_data = boost::static_pointer_cast<const carla::sensor::data::CollisionEvent>(data);
+            auto collision_data = boost::static_pointer_cast<const sensor::data::CollisionEvent>(data);
             collision = true;
             std::cout << "Collision detected. Failed to spawn the vehicle" << std::endl;
         });
 
-        ImageTransferServiceImpl::callbackOnGrpcData([=](GrpcData grpcData) { saveGrpcData(grpcData); });
+        const std::function<void(GrpcData)>& callback = [=](GrpcData grpcData) { saveGrpcData(grpcData); };
+        GrpcServer::callbackOnGrpcData(callback);
 
+        waitForGrpcClient();
+ 
         for(float x=parkingLotBottomLeftCorner.x; x>=parkingLotTopLeftCorner.x; x--) {
             for(float y=parkingLotBottomLeftCorner.y; y>=parkingLotBottomRightCorner.y; y--) {
-                geom::Location newLocation(x, y, 2.0f);
-                //for (float i=-180; i<=180; i+=10) {
-                    geom::Rotation newRotation(0.0f, 0.0f, 0.0f);
+                geom::Location newLocation(x, y, 0.2f);
+                for (float yaw=-180; yaw<=180; yaw+=10) {
+                    geom::Rotation newRotation(0.0f, yaw, 0.0f);
                     geom::Transform newTransform(newLocation, newRotation);
-                    vehicle_ptr->SetTransform(newTransform);
+                    carlaUtils.getVehicle()->SetTransform(newTransform);
 
-                    world_ptr->Tick(seconds(1));
+                    carlaUtils.getWorld()->Tick(seconds(1));
                     std::this_thread::sleep_for (std::chrono::milliseconds(1000));
 
-                    if (vehicle_ptr->GetLocation().Distance(newLocation) <= 5.0f && !collision) {
+                    if (carlaUtils.getVehicle()->GetLocation().Distance(newLocation) <= 3.0f && !collision) {
                         std::cout << "Vehicle is spawned successfully into location x:" << x << ", y: "<< y<< std::endl;
                         processGrpcData(newTransform);
                         grpcDataList.clear();
                     }
 
                     collision = false;
-                //}
+                }
             }
         }
         sensor->Stop();  
         sensor->Destroy();
-        // unsubscribe from callback
+        GrpcServer::unsubscribeCallback(callback);
     }
 }
 
-void AutoSpawnUtils::run() {
-    // pre-run sets
-    connectToCarla();
-    extractVehicleFromWorld();
-    extractParkingLotCoordinates();
+void AutoSpawnUtils::startAutoSpawn() {
+    AutoSpawnUtils autoSpawn;
+    // pre-run
+    autoSpawn.extractParkingLotCoordinates();
 
     // run
-    spawnCarAtDifferentLocations();
-}
-
-int main() {
-    AutoSpawnUtils autoSpawn;
-    autoSpawn.run();
-    return 0;
+    autoSpawn.spawnCarAtDifferentLocations();
 }

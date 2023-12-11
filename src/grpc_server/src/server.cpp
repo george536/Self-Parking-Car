@@ -5,7 +5,7 @@ using grpc::ServerBuilder;
 using grpc::ServerContext;
 using grpc::Status;
 
-Status ImageTransferServiceImpl::send_data(ServerContext* context, const request_data* request, empty_return* reply) {
+Status GrpcServer::send_data(ServerContext* context, const request_data* request, empty_return* reply) {
     const image_request& image = request->image_data();
     const transform_request& transform = request->car_transform();
 
@@ -23,26 +23,41 @@ Status ImageTransferServiceImpl::send_data(ServerContext* context, const request
     return Status::OK;
 }
 
-void ImageTransferServiceImpl::notifyGrpcDataListeners(const GrpcData& newData) {
+void GrpcServer::notifyGrpcDataListeners(const GrpcData& newData) {
     std::lock_guard<std::mutex> lock(callbacksMutex);
-    for (const auto& callback : ImageTransferServiceImpl::getInstance().callbacks) {
+    for (const auto& callback : callbacks) {
         callback(newData);
     }
-    std::cout << "callback size: " << ImageTransferServiceImpl::getInstance().callbacks.size() << std::endl;
 }
 
-void ImageTransferServiceImpl::callbackOnGrpcData(const std::function<void(GrpcData)>& callback) {
-    std::lock_guard<std::mutex> lock(ImageTransferServiceImpl::getInstance().callbacksMutex);
-    ImageTransferServiceImpl::getInstance().callbacks.push_back(callback);
+void GrpcServer::callbackOnGrpcData(const std::function<void(GrpcData)>& callback) {
+    std::lock_guard<std::mutex> lock(GrpcServer::getInstance().callbacksMutex);
+    GrpcServer::getInstance().callbacks.push_back(callback);
     std::cout << "New callback registered." << std::endl;
 }
 
-void RunServer() {
+void GrpcServer::unsubscribeCallback(const std::function<void(GrpcData)>& callbackToRemove) {
+    std::lock_guard<std::mutex> lock(GrpcServer::getInstance().callbacksMutex);
+    auto& callbacks = GrpcServer::getInstance().callbacks;
+
+    auto it = std::remove_if(callbacks.begin(), callbacks.end(),
+                             [&callbackToRemove](const auto& callback) {
+                                 return callback.target_type() == callbackToRemove.target_type();
+                             });
+    if (it != callbacks.end()) {
+        callbacks.erase(it, callbacks.end());
+        std::cout << "Callback unsubscribed." << std::endl;
+    } else {
+        std::cout << "Callback not found." << std::endl;
+    }
+}
+
+void GrpcServer::RunServer() {
     std::string server_address("0.0.0.0:50051"); // Change to your desired address
 
     ServerBuilder builder;
     builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
-    builder.RegisterService(&ImageTransferServiceImpl::getInstance());
+    builder.RegisterService(&GrpcServer::getInstance());
 
     std::unique_ptr<Server> server(builder.BuildAndStart());
     std::cout << "Server listening on " << server_address << std::endl;

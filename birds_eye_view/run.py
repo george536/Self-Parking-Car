@@ -44,7 +44,7 @@ class BirdsEyeView(Thread):
             load_parking_spots(world)
 
         spectator = world.get_spectator()
-        spawn_point = Transform(Location(x=-13.2, y=-27.2, z=2), Rotation(pitch=0, yaw=-78, roll=0))
+        spawn_point = Transform(Location(x=-13.2, y=-27.2, z=0.2), Rotation(pitch=0, yaw=-78, roll=0))
         spectator.set_transform(spawn_point)
         self.vehicle = AddVehicle(world, spawn_point).execute()
 

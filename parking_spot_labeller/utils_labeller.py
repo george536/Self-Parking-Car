@@ -49,9 +49,7 @@ def load_parking_spots(world):
             print("Loading previously saved parking spots...")
             for _, spot_corners in data.items():
                 draw_bounding_box(world, spot_corners)
-                for point in spot_corners:
-                    world.debug.draw_point(Location(x=point[0], y=point[1], z=point[2]),
-                                            size=0.1, life_time=1000)
+
     except FileNotFoundError:
         print("No previously saved parking spots exist.")
 

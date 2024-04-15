@@ -49,19 +49,17 @@ def load_parking_spots(world):
             print("Loading previously saved parking spots...")
             for _, spot_corners in data.items():
                 draw_bounding_box(world, spot_corners)
-                for point in spot_corners:
-                    world.debug.draw_point(Location(x=point[0], y=point[1], z=point[2]),
-                                            size=0.1, life_time=1000)
+
     except FileNotFoundError:
         print("No previously saved parking spots exist.")
 
-def draw_bounding_box(world, points):
+def draw_bounding_box(world, points, color=Color(255, 0, 0), life_time=1000000):
     """Draws debug lines into world"""
     for p1, p2 in zip(points, points[1:] + [points[0]]):
         world.debug.draw_line(Location(x=p1[0], y=p1[1], z=p1[2]),
                               Location(x=p2[0], y=p2[1], z=p2[2]),
-                              thickness=0.1, color=Color(255, 0, 0),
-                              life_time=1000)
+                              thickness=0.1, color=color,
+                              life_time=life_time)
 
 def compute_intrinsic(img_width, img_height, fov):
     """Compute intrinsic matrix."""

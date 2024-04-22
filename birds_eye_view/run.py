@@ -24,7 +24,7 @@ from python_ipc.IpcClient import IpcClient
 
 class BirdsEyeView(Thread):
     """Generates bird's eye view of the vehicle"""
-    def __init__(self, should_calibrate, ipc_on, should_load_spots):
+    def __init__(self, should_calibrate, ipc_on, should_load_spots, should_show_bev_filed_box):
         super().__init__()
         self.should_calibrate = should_calibrate
         self.ipc_on = ipc_on
@@ -36,6 +36,7 @@ class BirdsEyeView(Thread):
 
         self.running = False
         self.should_load_spots = should_load_spots
+        self.should_show_bev_filed_box = should_show_bev_filed_box
 
     def run(self):
         client = ConnectToCarla().execute()
@@ -49,7 +50,7 @@ class BirdsEyeView(Thread):
         spectator.set_transform(spawn_point)
         self.vehicle = AddVehicle(world, spawn_point).execute()
 
-        BEV_field_labeller = BEVFieldLabeller(world, self.vehicle)
+        BEV_field_labeller = BEVFieldLabeller(world, self.vehicle, self.should_show_bev_filed_box)
 
         # Carla Camera resolution
         config_modifications_insatnce = ConfigModifier.get_instance()

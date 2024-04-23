@@ -38,6 +38,8 @@ class BirdsEyeView(Thread):
         self.should_load_spots = should_load_spots
         self.should_show_bev_filed_box = should_show_bev_filed_box
 
+        self.BEV_field_labeller = None
+
     def run(self):
         client = ConnectToCarla().execute()
 
@@ -50,7 +52,7 @@ class BirdsEyeView(Thread):
         spectator.set_transform(spawn_point)
         self.vehicle = AddVehicle(world, spawn_point).execute()
 
-        BEV_field_labeller = BEVFieldLabeller(world, self.vehicle, self.should_show_bev_filed_box)
+        self.BEV_field_labeller = BEVFieldLabeller(world, self.vehicle, self.should_show_bev_filed_box)
 
         # Carla Camera resolution
         config_modifications_insatnce = ConfigModifier.get_instance()
@@ -115,10 +117,10 @@ class BirdsEyeView(Thread):
             combined_surface_semaphore.acquire()
             combined_surface = get_combined_surface()
             window.blit(combined_surface, (0, 0))
+            self.BEV_field_labeller.update_box()
+            
             if self.ipc_on:
                 self.process_ipc_actions()
-
-            BEV_field_labeller.update_box()
 
             combined_surface_semaphore.release()
             pygame.display.flip()
@@ -139,6 +141,7 @@ class BirdsEyeView(Thread):
         rgb_data = np.frombuffer(surface_bytes, dtype=np.uint8)
         IpcClient.get_instance().set_image_data(rgb_data)
         IpcClient.get_instance().set_transform_data(self.vehicle.get_transform())
+        IpcClient.get_instance().set_BEV_bounding_box_cord(self.BEV_field_labeller.get_field_box_points())
         IpcClient.semaphore2.release()
 
     def at_exit(self):

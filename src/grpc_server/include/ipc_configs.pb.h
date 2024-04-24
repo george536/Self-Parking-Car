@@ -53,6 +53,9 @@ struct TableStruct_ipc_5fconfigs_2eproto {
 };
 extern const ::google::protobuf::internal::DescriptorTable
     descriptor_table_ipc_5fconfigs_2eproto;
+class BEV_bounding_box_cord_request;
+struct BEV_bounding_box_cord_requestDefaultTypeInternal;
+extern BEV_bounding_box_cord_requestDefaultTypeInternal _BEV_bounding_box_cord_request_default_instance_;
 class empty_return;
 struct empty_returnDefaultTypeInternal;
 extern empty_returnDefaultTypeInternal _empty_return_default_instance_;
@@ -206,6 +209,7 @@ class request_data final :
   enum : int {
     kImageDataFieldNumber = 1,
     kCarTransformFieldNumber = 2,
+    kBEVBoundingBoxCordFieldNumber = 3,
   };
   // .image_request image_data = 1;
   bool has_image_data() const;
@@ -237,12 +241,27 @@ class request_data final :
   ::transform_request* _internal_mutable_car_transform();
 
   public:
+  // .BEV_bounding_box_cord_request BEV_bounding_box_cord = 3;
+  bool has_bev_bounding_box_cord() const;
+  void clear_bev_bounding_box_cord() ;
+  const ::BEV_bounding_box_cord_request& bev_bounding_box_cord() const;
+  PROTOBUF_NODISCARD ::BEV_bounding_box_cord_request* release_bev_bounding_box_cord();
+  ::BEV_bounding_box_cord_request* mutable_bev_bounding_box_cord();
+  void set_allocated_bev_bounding_box_cord(::BEV_bounding_box_cord_request* value);
+  void unsafe_arena_set_allocated_bev_bounding_box_cord(::BEV_bounding_box_cord_request* value);
+  ::BEV_bounding_box_cord_request* unsafe_arena_release_bev_bounding_box_cord();
+
+  private:
+  const ::BEV_bounding_box_cord_request& _internal_bev_bounding_box_cord() const;
+  ::BEV_bounding_box_cord_request* _internal_mutable_bev_bounding_box_cord();
+
+  public:
   // @@protoc_insertion_point(class_scope:request_data)
  private:
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 2, 2, 0, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<2, 3, 3, 0, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
@@ -251,6 +270,7 @@ class request_data final :
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     ::image_request* image_data_;
     ::transform_request* car_transform_;
+    ::BEV_bounding_box_cord_request* bev_bounding_box_cord_;
     PROTOBUF_TSAN_DECLARE_MEMBER;
   };
   union { Impl_ _impl_; };
@@ -641,6 +661,248 @@ class transform_request final :
   friend struct ::TableStruct_ipc_5fconfigs_2eproto;
 };// -------------------------------------------------------------------
 
+class BEV_bounding_box_cord_request final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:BEV_bounding_box_cord_request) */ {
+ public:
+  inline BEV_bounding_box_cord_request() : BEV_bounding_box_cord_request(nullptr) {}
+  ~BEV_bounding_box_cord_request() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR BEV_bounding_box_cord_request(::google::protobuf::internal::ConstantInitialized);
+
+  BEV_bounding_box_cord_request(const BEV_bounding_box_cord_request& from);
+  BEV_bounding_box_cord_request(BEV_bounding_box_cord_request&& from) noexcept
+    : BEV_bounding_box_cord_request() {
+    *this = ::std::move(from);
+  }
+
+  inline BEV_bounding_box_cord_request& operator=(const BEV_bounding_box_cord_request& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline BEV_bounding_box_cord_request& operator=(BEV_bounding_box_cord_request&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const BEV_bounding_box_cord_request& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const BEV_bounding_box_cord_request* internal_default_instance() {
+    return reinterpret_cast<const BEV_bounding_box_cord_request*>(
+               &_BEV_bounding_box_cord_request_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    3;
+
+  friend void swap(BEV_bounding_box_cord_request& a, BEV_bounding_box_cord_request& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(BEV_bounding_box_cord_request* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(BEV_bounding_box_cord_request* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  BEV_bounding_box_cord_request* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<BEV_bounding_box_cord_request>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const BEV_bounding_box_cord_request& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const BEV_bounding_box_cord_request& from) {
+    BEV_bounding_box_cord_request::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(BEV_bounding_box_cord_request* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "BEV_bounding_box_cord_request";
+  }
+  protected:
+  explicit BEV_bounding_box_cord_request(::google::protobuf::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kLeftBottomXFieldNumber = 1,
+    kLeftBottomYFieldNumber = 2,
+    kLeftTopXFieldNumber = 3,
+    kLeftTopYFieldNumber = 4,
+    kRightTopXFieldNumber = 5,
+    kRightTopYFieldNumber = 6,
+    kRightBottomXFieldNumber = 7,
+    kRightBottomYFieldNumber = 8,
+  };
+  // float left_bottom_x = 1;
+  void clear_left_bottom_x() ;
+  float left_bottom_x() const;
+  void set_left_bottom_x(float value);
+
+  private:
+  float _internal_left_bottom_x() const;
+  void _internal_set_left_bottom_x(float value);
+
+  public:
+  // float left_bottom_y = 2;
+  void clear_left_bottom_y() ;
+  float left_bottom_y() const;
+  void set_left_bottom_y(float value);
+
+  private:
+  float _internal_left_bottom_y() const;
+  void _internal_set_left_bottom_y(float value);
+
+  public:
+  // float left_top_x = 3;
+  void clear_left_top_x() ;
+  float left_top_x() const;
+  void set_left_top_x(float value);
+
+  private:
+  float _internal_left_top_x() const;
+  void _internal_set_left_top_x(float value);
+
+  public:
+  // float left_top_y = 4;
+  void clear_left_top_y() ;
+  float left_top_y() const;
+  void set_left_top_y(float value);
+
+  private:
+  float _internal_left_top_y() const;
+  void _internal_set_left_top_y(float value);
+
+  public:
+  // float right_top_x = 5;
+  void clear_right_top_x() ;
+  float right_top_x() const;
+  void set_right_top_x(float value);
+
+  private:
+  float _internal_right_top_x() const;
+  void _internal_set_right_top_x(float value);
+
+  public:
+  // float right_top_y = 6;
+  void clear_right_top_y() ;
+  float right_top_y() const;
+  void set_right_top_y(float value);
+
+  private:
+  float _internal_right_top_y() const;
+  void _internal_set_right_top_y(float value);
+
+  public:
+  // float right_bottom_x = 7;
+  void clear_right_bottom_x() ;
+  float right_bottom_x() const;
+  void set_right_bottom_x(float value);
+
+  private:
+  float _internal_right_bottom_x() const;
+  void _internal_set_right_bottom_x(float value);
+
+  public:
+  // float right_bottom_y = 8;
+  void clear_right_bottom_y() ;
+  float right_bottom_y() const;
+  void set_right_bottom_y(float value);
+
+  private:
+  float _internal_right_bottom_y() const;
+  void _internal_set_right_bottom_y(float value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:BEV_bounding_box_cord_request)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<3, 8, 0, 0, 2> _table_;
+  template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    float left_bottom_x_;
+    float left_bottom_y_;
+    float left_top_x_;
+    float left_top_y_;
+    float right_top_x_;
+    float right_top_y_;
+    float right_bottom_x_;
+    float right_bottom_y_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_ipc_5fconfigs_2eproto;
+};// -------------------------------------------------------------------
+
 class empty_return final :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:empty_return) */ {
  public:
@@ -697,7 +959,7 @@ class empty_return final :
                &_empty_return_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    4;
 
   friend void swap(empty_return& a, empty_return& b) {
     a.Swap(&b);
@@ -1007,6 +1269,102 @@ inline void request_data::set_allocated_car_transform(::transform_request* value
   // @@protoc_insertion_point(field_set_allocated:request_data.car_transform)
 }
 
+// .BEV_bounding_box_cord_request BEV_bounding_box_cord = 3;
+inline bool request_data::has_bev_bounding_box_cord() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.bev_bounding_box_cord_ != nullptr);
+  return value;
+}
+inline void request_data::clear_bev_bounding_box_cord() {
+  if (_impl_.bev_bounding_box_cord_ != nullptr) _impl_.bev_bounding_box_cord_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000004u;
+}
+inline const ::BEV_bounding_box_cord_request& request_data::_internal_bev_bounding_box_cord() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  const ::BEV_bounding_box_cord_request* p = _impl_.bev_bounding_box_cord_;
+  return p != nullptr ? *p : reinterpret_cast<const ::BEV_bounding_box_cord_request&>(::_BEV_bounding_box_cord_request_default_instance_);
+}
+inline const ::BEV_bounding_box_cord_request& request_data::bev_bounding_box_cord() const {
+  // @@protoc_insertion_point(field_get:request_data.BEV_bounding_box_cord)
+  return _internal_bev_bounding_box_cord();
+}
+inline void request_data::unsafe_arena_set_allocated_bev_bounding_box_cord(::BEV_bounding_box_cord_request* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.bev_bounding_box_cord_);
+  }
+  _impl_.bev_bounding_box_cord_ = reinterpret_cast<::BEV_bounding_box_cord_request*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000004u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000004u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:request_data.BEV_bounding_box_cord)
+}
+inline ::BEV_bounding_box_cord_request* request_data::release_bev_bounding_box_cord() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000004u;
+  ::BEV_bounding_box_cord_request* released = _impl_.bev_bounding_box_cord_;
+  _impl_.bev_bounding_box_cord_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArenaForAllocation() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::BEV_bounding_box_cord_request* request_data::unsafe_arena_release_bev_bounding_box_cord() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:request_data.BEV_bounding_box_cord)
+
+  _impl_._has_bits_[0] &= ~0x00000004u;
+  ::BEV_bounding_box_cord_request* temp = _impl_.bev_bounding_box_cord_;
+  _impl_.bev_bounding_box_cord_ = nullptr;
+  return temp;
+}
+inline ::BEV_bounding_box_cord_request* request_data::_internal_mutable_bev_bounding_box_cord() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000004u;
+  if (_impl_.bev_bounding_box_cord_ == nullptr) {
+    auto* p = CreateMaybeMessage<::BEV_bounding_box_cord_request>(GetArenaForAllocation());
+    _impl_.bev_bounding_box_cord_ = reinterpret_cast<::BEV_bounding_box_cord_request*>(p);
+  }
+  return _impl_.bev_bounding_box_cord_;
+}
+inline ::BEV_bounding_box_cord_request* request_data::mutable_bev_bounding_box_cord() {
+  ::BEV_bounding_box_cord_request* _msg = _internal_mutable_bev_bounding_box_cord();
+  // @@protoc_insertion_point(field_mutable:request_data.BEV_bounding_box_cord)
+  return _msg;
+}
+inline void request_data::set_allocated_bev_bounding_box_cord(::BEV_bounding_box_cord_request* value) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::BEV_bounding_box_cord_request*>(_impl_.bev_bounding_box_cord_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena =
+        ::google::protobuf::Arena::InternalGetOwningArena(reinterpret_cast<::BEV_bounding_box_cord_request*>(value));
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000004u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000004u;
+  }
+
+  _impl_.bev_bounding_box_cord_ = reinterpret_cast<::BEV_bounding_box_cord_request*>(value);
+  // @@protoc_insertion_point(field_set_allocated:request_data.BEV_bounding_box_cord)
+}
+
 // -------------------------------------------------------------------
 
 // image_request
@@ -1187,6 +1545,186 @@ inline void transform_request::_internal_set_roll(float value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
   _impl_.roll_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// BEV_bounding_box_cord_request
+
+// float left_bottom_x = 1;
+inline void BEV_bounding_box_cord_request::clear_left_bottom_x() {
+  _impl_.left_bottom_x_ = 0;
+}
+inline float BEV_bounding_box_cord_request::left_bottom_x() const {
+  // @@protoc_insertion_point(field_get:BEV_bounding_box_cord_request.left_bottom_x)
+  return _internal_left_bottom_x();
+}
+inline void BEV_bounding_box_cord_request::set_left_bottom_x(float value) {
+  _internal_set_left_bottom_x(value);
+  // @@protoc_insertion_point(field_set:BEV_bounding_box_cord_request.left_bottom_x)
+}
+inline float BEV_bounding_box_cord_request::_internal_left_bottom_x() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.left_bottom_x_;
+}
+inline void BEV_bounding_box_cord_request::_internal_set_left_bottom_x(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.left_bottom_x_ = value;
+}
+
+// float left_bottom_y = 2;
+inline void BEV_bounding_box_cord_request::clear_left_bottom_y() {
+  _impl_.left_bottom_y_ = 0;
+}
+inline float BEV_bounding_box_cord_request::left_bottom_y() const {
+  // @@protoc_insertion_point(field_get:BEV_bounding_box_cord_request.left_bottom_y)
+  return _internal_left_bottom_y();
+}
+inline void BEV_bounding_box_cord_request::set_left_bottom_y(float value) {
+  _internal_set_left_bottom_y(value);
+  // @@protoc_insertion_point(field_set:BEV_bounding_box_cord_request.left_bottom_y)
+}
+inline float BEV_bounding_box_cord_request::_internal_left_bottom_y() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.left_bottom_y_;
+}
+inline void BEV_bounding_box_cord_request::_internal_set_left_bottom_y(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.left_bottom_y_ = value;
+}
+
+// float left_top_x = 3;
+inline void BEV_bounding_box_cord_request::clear_left_top_x() {
+  _impl_.left_top_x_ = 0;
+}
+inline float BEV_bounding_box_cord_request::left_top_x() const {
+  // @@protoc_insertion_point(field_get:BEV_bounding_box_cord_request.left_top_x)
+  return _internal_left_top_x();
+}
+inline void BEV_bounding_box_cord_request::set_left_top_x(float value) {
+  _internal_set_left_top_x(value);
+  // @@protoc_insertion_point(field_set:BEV_bounding_box_cord_request.left_top_x)
+}
+inline float BEV_bounding_box_cord_request::_internal_left_top_x() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.left_top_x_;
+}
+inline void BEV_bounding_box_cord_request::_internal_set_left_top_x(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.left_top_x_ = value;
+}
+
+// float left_top_y = 4;
+inline void BEV_bounding_box_cord_request::clear_left_top_y() {
+  _impl_.left_top_y_ = 0;
+}
+inline float BEV_bounding_box_cord_request::left_top_y() const {
+  // @@protoc_insertion_point(field_get:BEV_bounding_box_cord_request.left_top_y)
+  return _internal_left_top_y();
+}
+inline void BEV_bounding_box_cord_request::set_left_top_y(float value) {
+  _internal_set_left_top_y(value);
+  // @@protoc_insertion_point(field_set:BEV_bounding_box_cord_request.left_top_y)
+}
+inline float BEV_bounding_box_cord_request::_internal_left_top_y() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.left_top_y_;
+}
+inline void BEV_bounding_box_cord_request::_internal_set_left_top_y(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.left_top_y_ = value;
+}
+
+// float right_top_x = 5;
+inline void BEV_bounding_box_cord_request::clear_right_top_x() {
+  _impl_.right_top_x_ = 0;
+}
+inline float BEV_bounding_box_cord_request::right_top_x() const {
+  // @@protoc_insertion_point(field_get:BEV_bounding_box_cord_request.right_top_x)
+  return _internal_right_top_x();
+}
+inline void BEV_bounding_box_cord_request::set_right_top_x(float value) {
+  _internal_set_right_top_x(value);
+  // @@protoc_insertion_point(field_set:BEV_bounding_box_cord_request.right_top_x)
+}
+inline float BEV_bounding_box_cord_request::_internal_right_top_x() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.right_top_x_;
+}
+inline void BEV_bounding_box_cord_request::_internal_set_right_top_x(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.right_top_x_ = value;
+}
+
+// float right_top_y = 6;
+inline void BEV_bounding_box_cord_request::clear_right_top_y() {
+  _impl_.right_top_y_ = 0;
+}
+inline float BEV_bounding_box_cord_request::right_top_y() const {
+  // @@protoc_insertion_point(field_get:BEV_bounding_box_cord_request.right_top_y)
+  return _internal_right_top_y();
+}
+inline void BEV_bounding_box_cord_request::set_right_top_y(float value) {
+  _internal_set_right_top_y(value);
+  // @@protoc_insertion_point(field_set:BEV_bounding_box_cord_request.right_top_y)
+}
+inline float BEV_bounding_box_cord_request::_internal_right_top_y() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.right_top_y_;
+}
+inline void BEV_bounding_box_cord_request::_internal_set_right_top_y(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.right_top_y_ = value;
+}
+
+// float right_bottom_x = 7;
+inline void BEV_bounding_box_cord_request::clear_right_bottom_x() {
+  _impl_.right_bottom_x_ = 0;
+}
+inline float BEV_bounding_box_cord_request::right_bottom_x() const {
+  // @@protoc_insertion_point(field_get:BEV_bounding_box_cord_request.right_bottom_x)
+  return _internal_right_bottom_x();
+}
+inline void BEV_bounding_box_cord_request::set_right_bottom_x(float value) {
+  _internal_set_right_bottom_x(value);
+  // @@protoc_insertion_point(field_set:BEV_bounding_box_cord_request.right_bottom_x)
+}
+inline float BEV_bounding_box_cord_request::_internal_right_bottom_x() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.right_bottom_x_;
+}
+inline void BEV_bounding_box_cord_request::_internal_set_right_bottom_x(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.right_bottom_x_ = value;
+}
+
+// float right_bottom_y = 8;
+inline void BEV_bounding_box_cord_request::clear_right_bottom_y() {
+  _impl_.right_bottom_y_ = 0;
+}
+inline float BEV_bounding_box_cord_request::right_bottom_y() const {
+  // @@protoc_insertion_point(field_get:BEV_bounding_box_cord_request.right_bottom_y)
+  return _internal_right_bottom_y();
+}
+inline void BEV_bounding_box_cord_request::set_right_bottom_y(float value) {
+  _internal_set_right_bottom_y(value);
+  // @@protoc_insertion_point(field_set:BEV_bounding_box_cord_request.right_bottom_y)
+}
+inline float BEV_bounding_box_cord_request::_internal_right_bottom_y() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.right_bottom_y_;
+}
+inline void BEV_bounding_box_cord_request::_internal_set_right_bottom_y(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.right_bottom_y_ = value;
 }
 
 // -------------------------------------------------------------------

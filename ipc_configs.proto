@@ -11,6 +11,7 @@ service image_transfer {
 message request_data {
     image_request image_data = 1;
     transform_request car_transform = 2;
+    BEV_bounding_box_cord_request BEV_bounding_box_cord = 3;
 }
 
 message image_request  {
@@ -24,6 +25,20 @@ message transform_request {
     float pitch = 4;
     float yaw = 5;
     float roll = 6;
+}
+
+message BEV_bounding_box_cord_request {
+    float left_bottom_x = 1;
+    float left_bottom_y = 2;
+
+    float left_top_x = 3;
+    float left_top_y = 4;
+
+    float right_top_x = 5;
+    float right_top_y = 6;
+
+    float right_bottom_x = 7;
+    float right_bottom_y = 8;
 }
 
 message empty_return {

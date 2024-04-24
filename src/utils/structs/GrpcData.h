@@ -7,6 +7,7 @@
 struct GrpcData {
     std::shared_ptr<image_request> image;
     std::shared_ptr<transform_request> transform;
+    std::shared_ptr<BEV_bounding_box_cord_request> BEV_bounding_box_cord;
 };
 
 #endif

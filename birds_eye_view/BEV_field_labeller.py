@@ -3,7 +3,7 @@ from parking_spot_labeller.utils_labeller import draw_bounding_box
 from carla import Color
 
 class BEVFieldLabeller:
-    def __init__(self, world, vehicle):
+    def __init__(self, world, vehicle, should_show_bev_filed_box):
         self.upper_left_corner_shifts = [-7,4.6]
         self.upper_right_corner_shifts = [7,4.6]
         self.lower_left_corner_shifts = [-7,-4.6]
@@ -11,6 +11,7 @@ class BEVFieldLabeller:
         self.shifted_rotated_points = []
         self.world = world
         self.vehicle = vehicle
+        self.should_show_bev_filed_box = should_show_bev_filed_box
         self.calculate_field_corners()
 
     def calculate_field_corners(self):
@@ -45,7 +46,8 @@ class BEVFieldLabeller:
         
     def update_box(self):
         self.calculate_field_corners()
-        self.draw_field_box()
+        if self.should_show_bev_filed_box:
+            self.draw_field_box()
 
     def get_field_box_points(self):
         """ order of points: left bottom -> left top -> right top -> right bottom """

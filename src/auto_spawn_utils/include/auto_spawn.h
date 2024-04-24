@@ -24,7 +24,6 @@
 
 class AutoSpawnUtils {
     public:
-    const char* PARKING_LOT_COORDINATES_FILE = "%s\\parking_spot_labeller\\spots_data.json";
     const char* PARKING_LOT_COORDINATES_KEY = "parking lot";
     bool collision = false;
     FileUtils fileutils;

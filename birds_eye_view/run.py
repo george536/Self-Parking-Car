@@ -18,6 +18,7 @@ from birds_eye_view.comb_surface_access import get_combined_surface
 from birds_eye_view.comb_surface_access import set_combined_surface
 from birds_eye_view.comb_surface_access import combined_surface_semaphore
 from birds_eye_view.camera_properties_calibration import CameraPropertiesCalibration
+from birds_eye_view.BEV_field_labeller import BEVFieldLabeller
 from parking_spot_labeller.utils_labeller import load_parking_spots
 from python_ipc.IpcClient import IpcClient
 
@@ -47,6 +48,8 @@ class BirdsEyeView(Thread):
         spawn_point = Transform(Location(x=-13.2, y=-27.2, z=0.2), Rotation(pitch=0, yaw=-78, roll=0))
         spectator.set_transform(spawn_point)
         self.vehicle = AddVehicle(world, spawn_point).execute()
+
+        BEV_field_labeller = BEVFieldLabeller(world, self.vehicle)
 
         # Carla Camera resolution
         config_modifications_insatnce = ConfigModifier.get_instance()
@@ -113,6 +116,8 @@ class BirdsEyeView(Thread):
             window.blit(combined_surface, (0, 0))
             if self.ipc_on:
                 self.process_ipc_actions()
+
+            BEV_field_labeller.update_box()
 
             combined_surface_semaphore.release()
             pygame.display.flip()

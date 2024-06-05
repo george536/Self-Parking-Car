@@ -1,64 +1,56 @@
 import os
-import cv2
-from torch.utils.data import Dataset
-import os
-import cv2
-import albumentations as A
+import torch
 from torch.utils.data import Dataset
 from ml_io.parking_spot_image import ParkingSpotImage
+from ml.database.model_database_provider import ModelDatabaseProvider
+from ml.ml_io.parking_spot import ParkingSpot
+from ml.ml_io.transform import Transform
 
-class ParkingDataset(Dataset):
+class DatasetLoader(Dataset):
     def __init__(self, root_dir, transform=None):
         self.root_dir = root_dir
-        self.image_files = os.listdir(root_dir)
-        self.filter_image_files()
-        
+        self.transform = transform
+
+        self.image_ids = []
+    
         self.parking_spot_images = []
         self.populate_parking_spots()
-        
-        
-        self.parking_spots = []
-        self.load_parking_spots()
-        
-        self.transform = transform
-        
-    def match_images_to_spots(self):
-        pass    
-    
+
+        self.match_images_to_spots()
+
     def populate_parking_spots(self):
-        for image_file in self.image_files:
-            parking_spot = ParkingSpotImage(image_file)  # Assuming ParkingSpot class takes image_file as argument
-            self.parking_spot_images.append(parking_spot)
+        db_provider = ModelDatabaseProvider()
+
+        self.image_ids = db_provider.get_all_image_ids()
+        for image_id in self.image_ids:
+            image_path = os.path.join(self.root_dir, str(image_id)) + ('.jpg')
+            parking_spot_image = ParkingSpotImage(image_path, Transform(db_provider.get_car_transform(image_id)))
+            self.parking_spot_images.append(parking_spot_image)
+
+        db_provider.close() 
+
+    def match_images_to_spots(self):
+        db_provider = ModelDatabaseProvider()
+
+        for parking_spot_image in self.parking_spot_images:
+            image_id = int(os.path.splitext(os.path.basename(parking_spot_image.image_path))[0])
+            in_view_spots = db_provider.get_all_in_view_spots(image_id)
+            
+            for spot_id in in_view_spots:
+                spot_details = db_provider.get_parking_spot_corners(int(spot_id))
+                if spot_details:
+                    spot = ParkingSpot(int(spot_id), *spot_details)
+                    parking_spot_image.add_parking_spot(spot)
         
-    def filter_image_files(self):
-        self.image_files = [os.path.join(self.root_dir, f) for f in self.image_files if f.endswith('.jpg') or f.endswith('.png')]
-        
-    def load_parking_spots(self):
-        pass
+        db_provider.close()   
 
     def __len__(self):
         return len(self.parking_spot_images)
 
     def __getitem__(self, idx):
-        
         image_parking_spot = self.parking_spot_images[idx].get_image()
         
         if self.transform:
             image = self.transform(image=image_parking_spot)["image"]
         
-        return image
-    
-    
-    
-
-
-
-if __name__ == "__main__":
-
-    # Usage example:
-    transform = A.Compose([
-        A.ToTensorV2()
-    ])
-
-    dataset = ParkingDataset('/test_images', transform=transform)
-    image = dataset[0]  # Load the first image lazily and apply transformations
+        return image, torch.Tensor(image.get_parking_spots_labels())

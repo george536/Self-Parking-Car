@@ -89,3 +89,5 @@ src/build_opencv/*
 !src/glfw/*.lib
 
 imgui.ini
+
+test.json

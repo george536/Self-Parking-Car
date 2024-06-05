@@ -8,12 +8,14 @@ using grpc::Status;
 Status GrpcServer::send_data(ServerContext* context, const request_data* request, empty_return* reply) {
     const image_request& image = request->image_data();
     const transform_request& transform = request->car_transform();
+    const BEV_bounding_box_cord_request& BEV_bounding_box_cord = request->bev_bounding_box_cord();
 
     std::cout << "Client message received." << std::endl;
 
     GrpcData newData;
     newData.image = std::make_shared<image_request>(image);
     newData.transform = std::make_shared<transform_request>(transform); 
+    newData.BEV_bounding_box_cord = std::make_shared<BEV_bounding_box_cord_request>(BEV_bounding_box_cord); 
 
     notifyGrpcDataListeners(newData);
 

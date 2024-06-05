@@ -11,7 +11,7 @@ void AutoSpawnUtils::extractParkingLotCoordinates() {
     std::cout << "Extracting parking lot coordinates..." << std::endl;
     std::string projectPath = fs::current_path().string(); 
     char jsonFilePath[260];
-    snprintf(jsonFilePath, sizeof(jsonFilePath), PARKING_LOT_COORDINATES_FILE, projectPath.c_str());
+    snprintf(jsonFilePath, sizeof(jsonFilePath), grpcDataProcessor.PARKING_LOT_COORDINATES_FILE, projectPath.c_str());
     nlohmann::json jsonData = fileutils.readJson(jsonFilePath);
     jsonData = jsonData[PARKING_LOT_COORDINATES_KEY];
     parkingLotBottomLeftCorner = geom::Location(jsonData[0][0], jsonData[0][1], jsonData[0][2]);
@@ -57,7 +57,7 @@ void AutoSpawnUtils::processGrpcData(geom::Location targetLocation) {
         return;
     }
     grpcDataProcessor.convertAndSaveImage(matchingGrpcData.image->data());
-    grpcDataProcessor.saveTransformData(*matchingGrpcData.transform);
+    grpcDataProcessor.saveTransformAndInViewSpotsData(*matchingGrpcData.transform, *matchingGrpcData.BEV_bounding_box_cord);
 }
 
 void AutoSpawnUtils::waitForGrpcClient() {

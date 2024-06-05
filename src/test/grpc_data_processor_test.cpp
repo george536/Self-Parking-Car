@@ -137,7 +137,7 @@ TEST_F(GrpcDataProcessorTest, ExtractNextImageIdWhenJsonIsNotEmpty) {
     }
 }
 
-TEST_F(GrpcDataProcessorTest, SaveTransformData) {
+TEST_F(GrpcDataProcessorTest, SaveTransformAndInViewSpotsData) {
     GrpcDataProcessor mockProcessor(&mockFileUtils);
     mockProcessor.nextID = 0;
     mockProcessor.projectPath = "";
@@ -159,7 +159,17 @@ TEST_F(GrpcDataProcessorTest, SaveTransformData) {
     transform.set_roll(0.1);
     transform.set_yaw(0.1);
 
-    mockProcessor.saveTransformData(transform);
+    BEV_bounding_box_cord_request BEV_bounding_box_cord;
+    BEV_bounding_box_cord.set_left_bottom_x(-6.9);
+    BEV_bounding_box_cord.set_left_bottom_y(-22.25);
+    BEV_bounding_box_cord.set_left_top_x(-5.3);
+    BEV_bounding_box_cord.set_left_top_y(-31.3);
+    BEV_bounding_box_cord.set_right_top_x(-19.1);
+    BEV_bounding_box_cord.set_right_top_y(-33.7);
+    BEV_bounding_box_cord.set_right_bottom_x(-20.7);
+    BEV_bounding_box_cord.set_right_bottom_y(-24.68);
+
+    mockProcessor.saveTransformAndInViewSpotsData(transform, BEV_bounding_box_cord);
     ASSERT_EQ(mockProcessor.nextID, 1);
     
     nlohmann::json jsonData = fileutils.readJson(jsonFilePath);
@@ -169,6 +179,7 @@ TEST_F(GrpcDataProcessorTest, SaveTransformData) {
     ASSERT_EQ(jsonData["0"]["pitch"], transform.pitch());
     ASSERT_EQ(jsonData["0"]["roll"], transform.roll());
     ASSERT_EQ(jsonData["0"]["yaw"], transform.yaw());
+    ASSERT_EQ(jsonData["0"]["in_view_spots"], "17,18,19,22,23,24,25,32,");
 
     remove(jsonFilePath);
 }

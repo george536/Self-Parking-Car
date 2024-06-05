@@ -27,6 +27,7 @@ PROTOBUF_CONSTEXPR request_data::request_data(::_pbi::ConstantInitialized)
       /*decltype(_impl_._cached_size_)*/ {},
       /*decltype(_impl_.image_data_)*/ nullptr,
       /*decltype(_impl_.car_transform_)*/ nullptr,
+      /*decltype(_impl_.bev_bounding_box_cord_)*/ nullptr,
     } {}
 struct request_dataDefaultTypeInternal {
   PROTOBUF_CONSTEXPR request_dataDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
@@ -76,6 +77,29 @@ struct transform_requestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 transform_requestDefaultTypeInternal _transform_request_default_instance_;
         template <typename>
+PROTOBUF_CONSTEXPR BEV_bounding_box_cord_request::BEV_bounding_box_cord_request(::_pbi::ConstantInitialized)
+    : _impl_{
+      /*decltype(_impl_.left_bottom_x_)*/ 0,
+      /*decltype(_impl_.left_bottom_y_)*/ 0,
+      /*decltype(_impl_.left_top_x_)*/ 0,
+      /*decltype(_impl_.left_top_y_)*/ 0,
+      /*decltype(_impl_.right_top_x_)*/ 0,
+      /*decltype(_impl_.right_top_y_)*/ 0,
+      /*decltype(_impl_.right_bottom_x_)*/ 0,
+      /*decltype(_impl_.right_bottom_y_)*/ 0,
+      /*decltype(_impl_._cached_size_)*/ {},
+    } {}
+struct BEV_bounding_box_cord_requestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR BEV_bounding_box_cord_requestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~BEV_bounding_box_cord_requestDefaultTypeInternal() {}
+  union {
+    BEV_bounding_box_cord_request _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 BEV_bounding_box_cord_requestDefaultTypeInternal _BEV_bounding_box_cord_request_default_instance_;
+        template <typename>
 PROTOBUF_CONSTEXPR empty_return::empty_return(::_pbi::ConstantInitialized)
     : _impl_{
       /*decltype(_impl_.result_)*/ 0,
@@ -91,7 +115,7 @@ struct empty_returnDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 empty_returnDefaultTypeInternal _empty_return_default_instance_;
-static ::_pb::Metadata file_level_metadata_ipc_5fconfigs_2eproto[4];
+static ::_pb::Metadata file_level_metadata_ipc_5fconfigs_2eproto[5];
 static constexpr const ::_pb::EnumDescriptor**
     file_level_enum_descriptors_ipc_5fconfigs_2eproto = nullptr;
 static constexpr const ::_pb::ServiceDescriptor**
@@ -108,8 +132,10 @@ const ::uint32_t TableStruct_ipc_5fconfigs_2eproto::offsets[] PROTOBUF_SECTION_V
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::request_data, _impl_.image_data_),
     PROTOBUF_FIELD_OFFSET(::request_data, _impl_.car_transform_),
+    PROTOBUF_FIELD_OFFSET(::request_data, _impl_.bev_bounding_box_cord_),
     0,
     1,
+    2,
     ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::image_request, _internal_metadata_),
     ~0u,  // no _extensions_
@@ -134,6 +160,22 @@ const ::uint32_t TableStruct_ipc_5fconfigs_2eproto::offsets[] PROTOBUF_SECTION_V
     PROTOBUF_FIELD_OFFSET(::transform_request, _impl_.yaw_),
     PROTOBUF_FIELD_OFFSET(::transform_request, _impl_.roll_),
     ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::BEV_bounding_box_cord_request, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::BEV_bounding_box_cord_request, _impl_.left_bottom_x_),
+    PROTOBUF_FIELD_OFFSET(::BEV_bounding_box_cord_request, _impl_.left_bottom_y_),
+    PROTOBUF_FIELD_OFFSET(::BEV_bounding_box_cord_request, _impl_.left_top_x_),
+    PROTOBUF_FIELD_OFFSET(::BEV_bounding_box_cord_request, _impl_.left_top_y_),
+    PROTOBUF_FIELD_OFFSET(::BEV_bounding_box_cord_request, _impl_.right_top_x_),
+    PROTOBUF_FIELD_OFFSET(::BEV_bounding_box_cord_request, _impl_.right_top_y_),
+    PROTOBUF_FIELD_OFFSET(::BEV_bounding_box_cord_request, _impl_.right_bottom_x_),
+    PROTOBUF_FIELD_OFFSET(::BEV_bounding_box_cord_request, _impl_.right_bottom_y_),
+    ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::empty_return, _internal_metadata_),
     ~0u,  // no _extensions_
     ~0u,  // no _oneof_case_
@@ -146,40 +188,49 @@ const ::uint32_t TableStruct_ipc_5fconfigs_2eproto::offsets[] PROTOBUF_SECTION_V
 
 static const ::_pbi::MigrationSchema
     schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-        {0, 10, -1, sizeof(::request_data)},
-        {12, -1, -1, sizeof(::image_request)},
-        {21, -1, -1, sizeof(::transform_request)},
-        {35, -1, -1, sizeof(::empty_return)},
+        {0, 11, -1, sizeof(::request_data)},
+        {14, -1, -1, sizeof(::image_request)},
+        {23, -1, -1, sizeof(::transform_request)},
+        {37, -1, -1, sizeof(::BEV_bounding_box_cord_request)},
+        {53, -1, -1, sizeof(::empty_return)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
     &::_request_data_default_instance_._instance,
     &::_image_request_default_instance_._instance,
     &::_transform_request_default_instance_._instance,
+    &::_BEV_bounding_box_cord_request_default_instance_._instance,
     &::_empty_return_default_instance_._instance,
 };
 const char descriptor_table_protodef_ipc_5fconfigs_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-    "\n\021ipc_configs.proto\"]\n\014request_data\022\"\n\ni"
-    "mage_data\030\001 \001(\0132\016.image_request\022)\n\rcar_t"
-    "ransform\030\002 \001(\0132\022.transform_request\"\035\n\rim"
-    "age_request\022\014\n\004data\030\001 \003(\002\"^\n\021transform_r"
-    "equest\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022\t\n\001z\030\003 \001(\002\022"
-    "\r\n\005pitch\030\004 \001(\002\022\013\n\003yaw\030\005 \001(\002\022\014\n\004roll\030\006 \001("
-    "\002\"\036\n\014empty_return\022\016\n\006result\030\001 \001(\0022;\n\016ima"
-    "ge_transfer\022)\n\tsend_data\022\r.request_data\032"
-    "\r.empty_returnb\006proto3"
+    "\n\021ipc_configs.proto\"\234\001\n\014request_data\022\"\n\n"
+    "image_data\030\001 \001(\0132\016.image_request\022)\n\rcar_"
+    "transform\030\002 \001(\0132\022.transform_request\022=\n\025B"
+    "EV_bounding_box_cord\030\003 \001(\0132\036.BEV_boundin"
+    "g_box_cord_request\"\035\n\rimage_request\022\014\n\004d"
+    "ata\030\001 \003(\002\"^\n\021transform_request\022\t\n\001x\030\001 \001("
+    "\002\022\t\n\001y\030\002 \001(\002\022\t\n\001z\030\003 \001(\002\022\r\n\005pitch\030\004 \001(\002\022\013"
+    "\n\003yaw\030\005 \001(\002\022\014\n\004roll\030\006 \001(\002\"\317\001\n\035BEV_boundi"
+    "ng_box_cord_request\022\025\n\rleft_bottom_x\030\001 \001"
+    "(\002\022\025\n\rleft_bottom_y\030\002 \001(\002\022\022\n\nleft_top_x\030"
+    "\003 \001(\002\022\022\n\nleft_top_y\030\004 \001(\002\022\023\n\013right_top_x"
+    "\030\005 \001(\002\022\023\n\013right_top_y\030\006 \001(\002\022\026\n\016right_bot"
+    "tom_x\030\007 \001(\002\022\026\n\016right_bottom_y\030\010 \001(\002\"\036\n\014e"
+    "mpty_return\022\016\n\006result\030\001 \001(\0022;\n\016image_tra"
+    "nsfer\022)\n\tsend_data\022\r.request_data\032\r.empt"
+    "y_returnb\006proto3"
 };
 static ::absl::once_flag descriptor_table_ipc_5fconfigs_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_ipc_5fconfigs_2eproto = {
     false,
     false,
-    342,
+    616,
     descriptor_table_protodef_ipc_5fconfigs_2eproto,
     "ipc_configs.proto",
     &descriptor_table_ipc_5fconfigs_2eproto_once,
     nullptr,
     0,
-    4,
+    5,
     schemas,
     file_default_instances,
     TableStruct_ipc_5fconfigs_2eproto::offsets,
@@ -220,6 +271,10 @@ class request_data::_Internal {
   static void set_has_car_transform(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
+  static const ::BEV_bounding_box_cord_request& bev_bounding_box_cord(const request_data* msg);
+  static void set_has_bev_bounding_box_cord(HasBits* has_bits) {
+    (*has_bits)[0] |= 4u;
+  }
 };
 
 const ::image_request& request_data::_Internal::image_data(const request_data* msg) {
@@ -227,6 +282,9 @@ const ::image_request& request_data::_Internal::image_data(const request_data* m
 }
 const ::transform_request& request_data::_Internal::car_transform(const request_data* msg) {
   return *msg->_impl_.car_transform_;
+}
+const ::BEV_bounding_box_cord_request& request_data::_Internal::bev_bounding_box_cord(const request_data* msg) {
+  return *msg->_impl_.bev_bounding_box_cord_;
 }
 request_data::request_data(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
@@ -241,6 +299,7 @@ request_data::request_data(const request_data& from) : ::google::protobuf::Messa
       /*decltype(_impl_._cached_size_)*/ {},
       decltype(_impl_.image_data_){nullptr},
       decltype(_impl_.car_transform_){nullptr},
+      decltype(_impl_.bev_bounding_box_cord_){nullptr},
   };
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
@@ -249,6 +308,9 @@ request_data::request_data(const request_data& from) : ::google::protobuf::Messa
   }
   if ((from._impl_._has_bits_[0] & 0x00000002u) != 0) {
     _this->_impl_.car_transform_ = new ::transform_request(*from._impl_.car_transform_);
+  }
+  if ((from._impl_._has_bits_[0] & 0x00000004u) != 0) {
+    _this->_impl_.bev_bounding_box_cord_ = new ::BEV_bounding_box_cord_request(*from._impl_.bev_bounding_box_cord_);
   }
 
   // @@protoc_insertion_point(copy_constructor:request_data)
@@ -260,6 +322,7 @@ inline void request_data::SharedCtor(::_pb::Arena* arena) {
       /*decltype(_impl_._cached_size_)*/ {},
       decltype(_impl_.image_data_){nullptr},
       decltype(_impl_.car_transform_){nullptr},
+      decltype(_impl_.bev_bounding_box_cord_){nullptr},
   };
 }
 request_data::~request_data() {
@@ -271,6 +334,7 @@ inline void request_data::SharedDtor() {
   ABSL_DCHECK(GetArenaForAllocation() == nullptr);
   if (this != internal_default_instance()) delete _impl_.image_data_;
   if (this != internal_default_instance()) delete _impl_.car_transform_;
+  if (this != internal_default_instance()) delete _impl_.bev_bounding_box_cord_;
 }
 void request_data::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
@@ -283,7 +347,7 @@ PROTOBUF_NOINLINE void request_data::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
+  if (cached_has_bits & 0x00000007u) {
     if (cached_has_bits & 0x00000001u) {
       ABSL_DCHECK(_impl_.image_data_ != nullptr);
       _impl_.image_data_->Clear();
@@ -291,6 +355,10 @@ PROTOBUF_NOINLINE void request_data::Clear() {
     if (cached_has_bits & 0x00000002u) {
       ABSL_DCHECK(_impl_.car_transform_ != nullptr);
       _impl_.car_transform_->Clear();
+    }
+    if (cached_has_bits & 0x00000004u) {
+      ABSL_DCHECK(_impl_.bev_bounding_box_cord_ != nullptr);
+      _impl_.bev_bounding_box_cord_->Clear();
     }
   }
   _impl_._has_bits_.Clear();
@@ -305,26 +373,30 @@ const char* request_data::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 2, 0, 2> request_data::_table_ = {
+const ::_pbi::TcParseTable<2, 3, 3, 0, 2> request_data::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(request_data, _impl_._has_bits_),
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    3, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967288,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
-    2,  // num_aux_entries
+    3,  // num_field_entries
+    3,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     &_request_data_default_instance_._instance,
     ::_pbi::TcParser::GenericFallback,  // fallback
   }, {{
-    // .transform_request car_transform = 2;
-    {::_pbi::TcParser::FastMtS1,
-     {18, 1, 1, PROTOBUF_FIELD_OFFSET(request_data, _impl_.car_transform_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     // .image_request image_data = 1;
     {::_pbi::TcParser::FastMtS1,
      {10, 0, 0, PROTOBUF_FIELD_OFFSET(request_data, _impl_.image_data_)}},
+    // .transform_request car_transform = 2;
+    {::_pbi::TcParser::FastMtS1,
+     {18, 1, 1, PROTOBUF_FIELD_OFFSET(request_data, _impl_.car_transform_)}},
+    // .BEV_bounding_box_cord_request BEV_bounding_box_cord = 3;
+    {::_pbi::TcParser::FastMtS1,
+     {26, 2, 2, PROTOBUF_FIELD_OFFSET(request_data, _impl_.bev_bounding_box_cord_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -334,9 +406,13 @@ const ::_pbi::TcParseTable<1, 2, 2, 0, 2> request_data::_table_ = {
     // .transform_request car_transform = 2;
     {PROTOBUF_FIELD_OFFSET(request_data, _impl_.car_transform_), _Internal::kHasBitsOffset + 1, 1,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .BEV_bounding_box_cord_request BEV_bounding_box_cord = 3;
+    {PROTOBUF_FIELD_OFFSET(request_data, _impl_.bev_bounding_box_cord_), _Internal::kHasBitsOffset + 2, 2,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
     {::_pbi::TcParser::GetTable<::image_request>()},
     {::_pbi::TcParser::GetTable<::transform_request>()},
+    {::_pbi::TcParser::GetTable<::BEV_bounding_box_cord_request>()},
   }}, {{
   }},
 };
@@ -363,6 +439,13 @@ const ::_pbi::TcParseTable<1, 2, 2, 0, 2> request_data::_table_ = {
         _Internal::car_transform(this).GetCachedSize(), target, stream);
   }
 
+  // .BEV_bounding_box_cord_request BEV_bounding_box_cord = 3;
+  if (cached_has_bits & 0x00000004u) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessage(3, _Internal::bev_bounding_box_cord(this),
+        _Internal::bev_bounding_box_cord(this).GetCachedSize(), target, stream);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target =
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -381,7 +464,7 @@ const ::_pbi::TcParseTable<1, 2, 2, 0, 2> request_data::_table_ = {
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
+  if (cached_has_bits & 0x00000007u) {
     // .image_request image_data = 1;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
@@ -394,6 +477,13 @@ const ::_pbi::TcParseTable<1, 2, 2, 0, 2> request_data::_table_ = {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSize(
           *_impl_.car_transform_);
+    }
+
+    // .BEV_bounding_box_cord_request BEV_bounding_box_cord = 3;
+    if (cached_has_bits & 0x00000004u) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.bev_bounding_box_cord_);
     }
 
   }
@@ -416,7 +506,7 @@ void request_data::MergeImpl(::google::protobuf::Message& to_msg, const ::google
   (void) cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
+  if (cached_has_bits & 0x00000007u) {
     if (cached_has_bits & 0x00000001u) {
       _this->_internal_mutable_image_data()->::image_request::MergeFrom(
           from._internal_image_data());
@@ -424,6 +514,10 @@ void request_data::MergeImpl(::google::protobuf::Message& to_msg, const ::google
     if (cached_has_bits & 0x00000002u) {
       _this->_internal_mutable_car_transform()->::transform_request::MergeFrom(
           from._internal_car_transform());
+    }
+    if (cached_has_bits & 0x00000004u) {
+      _this->_internal_mutable_bev_bounding_box_cord()->::BEV_bounding_box_cord_request::MergeFrom(
+          from._internal_bev_bounding_box_cord());
     }
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
@@ -445,8 +539,8 @@ void request_data::InternalSwap(request_data* other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(request_data, _impl_.car_transform_)
-      + sizeof(request_data::_impl_.car_transform_)
+      PROTOBUF_FIELD_OFFSET(request_data, _impl_.bev_bounding_box_cord_)
+      + sizeof(request_data::_impl_.bev_bounding_box_cord_)
       - PROTOBUF_FIELD_OFFSET(request_data, _impl_.image_data_)>(
           reinterpret_cast<char*>(&_impl_.image_data_),
           reinterpret_cast<char*>(&other->_impl_.image_data_));
@@ -1008,6 +1102,452 @@ void transform_request::InternalSwap(transform_request* other) {
 }
 // ===================================================================
 
+class BEV_bounding_box_cord_request::_Internal {
+ public:
+};
+
+BEV_bounding_box_cord_request::BEV_bounding_box_cord_request(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:BEV_bounding_box_cord_request)
+}
+BEV_bounding_box_cord_request::BEV_bounding_box_cord_request(const BEV_bounding_box_cord_request& from)
+    : ::google::protobuf::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:BEV_bounding_box_cord_request)
+}
+inline void BEV_bounding_box_cord_request::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.left_bottom_x_){0},
+      decltype(_impl_.left_bottom_y_){0},
+      decltype(_impl_.left_top_x_){0},
+      decltype(_impl_.left_top_y_){0},
+      decltype(_impl_.right_top_x_){0},
+      decltype(_impl_.right_top_y_){0},
+      decltype(_impl_.right_bottom_x_){0},
+      decltype(_impl_.right_bottom_y_){0},
+      /*decltype(_impl_._cached_size_)*/ {},
+  };
+}
+BEV_bounding_box_cord_request::~BEV_bounding_box_cord_request() {
+  // @@protoc_insertion_point(destructor:BEV_bounding_box_cord_request)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void BEV_bounding_box_cord_request::SharedDtor() {
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+}
+void BEV_bounding_box_cord_request::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+PROTOBUF_NOINLINE void BEV_bounding_box_cord_request::Clear() {
+// @@protoc_insertion_point(message_clear_start:BEV_bounding_box_cord_request)
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.left_bottom_x_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.right_bottom_y_) -
+      reinterpret_cast<char*>(&_impl_.left_bottom_x_)) + sizeof(_impl_.right_bottom_y_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* BEV_bounding_box_cord_request::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<3, 8, 0, 0, 2> BEV_bounding_box_cord_request::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    8, 56,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967040,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    8,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_BEV_bounding_box_cord_request_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // float right_bottom_y = 8;
+    {::_pbi::TcParser::FastF32S1,
+     {69, 63, 0, PROTOBUF_FIELD_OFFSET(BEV_bounding_box_cord_request, _impl_.right_bottom_y_)}},
+    // float left_bottom_x = 1;
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(BEV_bounding_box_cord_request, _impl_.left_bottom_x_)}},
+    // float left_bottom_y = 2;
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(BEV_bounding_box_cord_request, _impl_.left_bottom_y_)}},
+    // float left_top_x = 3;
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(BEV_bounding_box_cord_request, _impl_.left_top_x_)}},
+    // float left_top_y = 4;
+    {::_pbi::TcParser::FastF32S1,
+     {37, 63, 0, PROTOBUF_FIELD_OFFSET(BEV_bounding_box_cord_request, _impl_.left_top_y_)}},
+    // float right_top_x = 5;
+    {::_pbi::TcParser::FastF32S1,
+     {45, 63, 0, PROTOBUF_FIELD_OFFSET(BEV_bounding_box_cord_request, _impl_.right_top_x_)}},
+    // float right_top_y = 6;
+    {::_pbi::TcParser::FastF32S1,
+     {53, 63, 0, PROTOBUF_FIELD_OFFSET(BEV_bounding_box_cord_request, _impl_.right_top_y_)}},
+    // float right_bottom_x = 7;
+    {::_pbi::TcParser::FastF32S1,
+     {61, 63, 0, PROTOBUF_FIELD_OFFSET(BEV_bounding_box_cord_request, _impl_.right_bottom_x_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float left_bottom_x = 1;
+    {PROTOBUF_FIELD_OFFSET(BEV_bounding_box_cord_request, _impl_.left_bottom_x_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float left_bottom_y = 2;
+    {PROTOBUF_FIELD_OFFSET(BEV_bounding_box_cord_request, _impl_.left_bottom_y_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float left_top_x = 3;
+    {PROTOBUF_FIELD_OFFSET(BEV_bounding_box_cord_request, _impl_.left_top_x_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float left_top_y = 4;
+    {PROTOBUF_FIELD_OFFSET(BEV_bounding_box_cord_request, _impl_.left_top_y_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float right_top_x = 5;
+    {PROTOBUF_FIELD_OFFSET(BEV_bounding_box_cord_request, _impl_.right_top_x_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float right_top_y = 6;
+    {PROTOBUF_FIELD_OFFSET(BEV_bounding_box_cord_request, _impl_.right_top_y_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float right_bottom_x = 7;
+    {PROTOBUF_FIELD_OFFSET(BEV_bounding_box_cord_request, _impl_.right_bottom_x_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float right_bottom_y = 8;
+    {PROTOBUF_FIELD_OFFSET(BEV_bounding_box_cord_request, _impl_.right_bottom_y_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+::uint8_t* BEV_bounding_box_cord_request::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:BEV_bounding_box_cord_request)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // float left_bottom_x = 1;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_left_bottom_x = this->_internal_left_bottom_x();
+  ::uint32_t raw_left_bottom_x;
+  memcpy(&raw_left_bottom_x, &tmp_left_bottom_x, sizeof(tmp_left_bottom_x));
+  if (raw_left_bottom_x != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        1, this->_internal_left_bottom_x(), target);
+  }
+
+  // float left_bottom_y = 2;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_left_bottom_y = this->_internal_left_bottom_y();
+  ::uint32_t raw_left_bottom_y;
+  memcpy(&raw_left_bottom_y, &tmp_left_bottom_y, sizeof(tmp_left_bottom_y));
+  if (raw_left_bottom_y != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        2, this->_internal_left_bottom_y(), target);
+  }
+
+  // float left_top_x = 3;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_left_top_x = this->_internal_left_top_x();
+  ::uint32_t raw_left_top_x;
+  memcpy(&raw_left_top_x, &tmp_left_top_x, sizeof(tmp_left_top_x));
+  if (raw_left_top_x != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        3, this->_internal_left_top_x(), target);
+  }
+
+  // float left_top_y = 4;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_left_top_y = this->_internal_left_top_y();
+  ::uint32_t raw_left_top_y;
+  memcpy(&raw_left_top_y, &tmp_left_top_y, sizeof(tmp_left_top_y));
+  if (raw_left_top_y != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        4, this->_internal_left_top_y(), target);
+  }
+
+  // float right_top_x = 5;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_right_top_x = this->_internal_right_top_x();
+  ::uint32_t raw_right_top_x;
+  memcpy(&raw_right_top_x, &tmp_right_top_x, sizeof(tmp_right_top_x));
+  if (raw_right_top_x != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        5, this->_internal_right_top_x(), target);
+  }
+
+  // float right_top_y = 6;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_right_top_y = this->_internal_right_top_y();
+  ::uint32_t raw_right_top_y;
+  memcpy(&raw_right_top_y, &tmp_right_top_y, sizeof(tmp_right_top_y));
+  if (raw_right_top_y != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        6, this->_internal_right_top_y(), target);
+  }
+
+  // float right_bottom_x = 7;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_right_bottom_x = this->_internal_right_bottom_x();
+  ::uint32_t raw_right_bottom_x;
+  memcpy(&raw_right_bottom_x, &tmp_right_bottom_x, sizeof(tmp_right_bottom_x));
+  if (raw_right_bottom_x != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        7, this->_internal_right_bottom_x(), target);
+  }
+
+  // float right_bottom_y = 8;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_right_bottom_y = this->_internal_right_bottom_y();
+  ::uint32_t raw_right_bottom_y;
+  memcpy(&raw_right_bottom_y, &tmp_right_bottom_y, sizeof(tmp_right_bottom_y));
+  if (raw_right_bottom_y != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        8, this->_internal_right_bottom_y(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:BEV_bounding_box_cord_request)
+  return target;
+}
+
+::size_t BEV_bounding_box_cord_request::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:BEV_bounding_box_cord_request)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // float left_bottom_x = 1;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_left_bottom_x = this->_internal_left_bottom_x();
+  ::uint32_t raw_left_bottom_x;
+  memcpy(&raw_left_bottom_x, &tmp_left_bottom_x, sizeof(tmp_left_bottom_x));
+  if (raw_left_bottom_x != 0) {
+    total_size += 5;
+  }
+
+  // float left_bottom_y = 2;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_left_bottom_y = this->_internal_left_bottom_y();
+  ::uint32_t raw_left_bottom_y;
+  memcpy(&raw_left_bottom_y, &tmp_left_bottom_y, sizeof(tmp_left_bottom_y));
+  if (raw_left_bottom_y != 0) {
+    total_size += 5;
+  }
+
+  // float left_top_x = 3;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_left_top_x = this->_internal_left_top_x();
+  ::uint32_t raw_left_top_x;
+  memcpy(&raw_left_top_x, &tmp_left_top_x, sizeof(tmp_left_top_x));
+  if (raw_left_top_x != 0) {
+    total_size += 5;
+  }
+
+  // float left_top_y = 4;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_left_top_y = this->_internal_left_top_y();
+  ::uint32_t raw_left_top_y;
+  memcpy(&raw_left_top_y, &tmp_left_top_y, sizeof(tmp_left_top_y));
+  if (raw_left_top_y != 0) {
+    total_size += 5;
+  }
+
+  // float right_top_x = 5;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_right_top_x = this->_internal_right_top_x();
+  ::uint32_t raw_right_top_x;
+  memcpy(&raw_right_top_x, &tmp_right_top_x, sizeof(tmp_right_top_x));
+  if (raw_right_top_x != 0) {
+    total_size += 5;
+  }
+
+  // float right_top_y = 6;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_right_top_y = this->_internal_right_top_y();
+  ::uint32_t raw_right_top_y;
+  memcpy(&raw_right_top_y, &tmp_right_top_y, sizeof(tmp_right_top_y));
+  if (raw_right_top_y != 0) {
+    total_size += 5;
+  }
+
+  // float right_bottom_x = 7;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_right_bottom_x = this->_internal_right_bottom_x();
+  ::uint32_t raw_right_bottom_x;
+  memcpy(&raw_right_bottom_x, &tmp_right_bottom_x, sizeof(tmp_right_bottom_x));
+  if (raw_right_bottom_x != 0) {
+    total_size += 5;
+  }
+
+  // float right_bottom_y = 8;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_right_bottom_y = this->_internal_right_bottom_y();
+  ::uint32_t raw_right_bottom_y;
+  memcpy(&raw_right_bottom_y, &tmp_right_bottom_y, sizeof(tmp_right_bottom_y));
+  if (raw_right_bottom_y != 0) {
+    total_size += 5;
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData BEV_bounding_box_cord_request::_class_data_ = {
+    ::google::protobuf::Message::CopyWithSourceCheck,
+    BEV_bounding_box_cord_request::MergeImpl
+};
+const ::google::protobuf::Message::ClassData*BEV_bounding_box_cord_request::GetClassData() const { return &_class_data_; }
+
+
+void BEV_bounding_box_cord_request::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<BEV_bounding_box_cord_request*>(&to_msg);
+  auto& from = static_cast<const BEV_bounding_box_cord_request&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:BEV_bounding_box_cord_request)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_left_bottom_x = from._internal_left_bottom_x();
+  ::uint32_t raw_left_bottom_x;
+  memcpy(&raw_left_bottom_x, &tmp_left_bottom_x, sizeof(tmp_left_bottom_x));
+  if (raw_left_bottom_x != 0) {
+    _this->_internal_set_left_bottom_x(from._internal_left_bottom_x());
+  }
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_left_bottom_y = from._internal_left_bottom_y();
+  ::uint32_t raw_left_bottom_y;
+  memcpy(&raw_left_bottom_y, &tmp_left_bottom_y, sizeof(tmp_left_bottom_y));
+  if (raw_left_bottom_y != 0) {
+    _this->_internal_set_left_bottom_y(from._internal_left_bottom_y());
+  }
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_left_top_x = from._internal_left_top_x();
+  ::uint32_t raw_left_top_x;
+  memcpy(&raw_left_top_x, &tmp_left_top_x, sizeof(tmp_left_top_x));
+  if (raw_left_top_x != 0) {
+    _this->_internal_set_left_top_x(from._internal_left_top_x());
+  }
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_left_top_y = from._internal_left_top_y();
+  ::uint32_t raw_left_top_y;
+  memcpy(&raw_left_top_y, &tmp_left_top_y, sizeof(tmp_left_top_y));
+  if (raw_left_top_y != 0) {
+    _this->_internal_set_left_top_y(from._internal_left_top_y());
+  }
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_right_top_x = from._internal_right_top_x();
+  ::uint32_t raw_right_top_x;
+  memcpy(&raw_right_top_x, &tmp_right_top_x, sizeof(tmp_right_top_x));
+  if (raw_right_top_x != 0) {
+    _this->_internal_set_right_top_x(from._internal_right_top_x());
+  }
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_right_top_y = from._internal_right_top_y();
+  ::uint32_t raw_right_top_y;
+  memcpy(&raw_right_top_y, &tmp_right_top_y, sizeof(tmp_right_top_y));
+  if (raw_right_top_y != 0) {
+    _this->_internal_set_right_top_y(from._internal_right_top_y());
+  }
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_right_bottom_x = from._internal_right_bottom_x();
+  ::uint32_t raw_right_bottom_x;
+  memcpy(&raw_right_bottom_x, &tmp_right_bottom_x, sizeof(tmp_right_bottom_x));
+  if (raw_right_bottom_x != 0) {
+    _this->_internal_set_right_bottom_x(from._internal_right_bottom_x());
+  }
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_right_bottom_y = from._internal_right_bottom_y();
+  ::uint32_t raw_right_bottom_y;
+  memcpy(&raw_right_bottom_y, &tmp_right_bottom_y, sizeof(tmp_right_bottom_y));
+  if (raw_right_bottom_y != 0) {
+    _this->_internal_set_right_bottom_y(from._internal_right_bottom_y());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void BEV_bounding_box_cord_request::CopyFrom(const BEV_bounding_box_cord_request& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:BEV_bounding_box_cord_request)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool BEV_bounding_box_cord_request::IsInitialized() const {
+  return true;
+}
+
+void BEV_bounding_box_cord_request::InternalSwap(BEV_bounding_box_cord_request* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(BEV_bounding_box_cord_request, _impl_.right_bottom_y_)
+      + sizeof(BEV_bounding_box_cord_request::_impl_.right_bottom_y_)
+      - PROTOBUF_FIELD_OFFSET(BEV_bounding_box_cord_request, _impl_.left_bottom_x_)>(
+          reinterpret_cast<char*>(&_impl_.left_bottom_x_),
+          reinterpret_cast<char*>(&other->_impl_.left_bottom_x_));
+}
+
+::google::protobuf::Metadata BEV_bounding_box_cord_request::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_ipc_5fconfigs_2eproto_getter, &descriptor_table_ipc_5fconfigs_2eproto_once,
+      file_level_metadata_ipc_5fconfigs_2eproto[3]);
+}
+// ===================================================================
+
 class empty_return::_Internal {
  public:
 };
@@ -1184,7 +1724,7 @@ void empty_return::InternalSwap(empty_return* other) {
 ::google::protobuf::Metadata empty_return::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_ipc_5fconfigs_2eproto_getter, &descriptor_table_ipc_5fconfigs_2eproto_once,
-      file_level_metadata_ipc_5fconfigs_2eproto[3]);
+      file_level_metadata_ipc_5fconfigs_2eproto[4]);
 }
 // @@protoc_insertion_point(namespace_scope)
 namespace google {

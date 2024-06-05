@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11ipc_configs.proto\"]\n\x0crequest_data\x12\"\n\nimage_data\x18\x01 \x01(\x0b\x32\x0e.image_request\x12)\n\rcar_transform\x18\x02 \x01(\x0b\x32\x12.transform_request\"\x1d\n\rimage_request\x12\x0c\n\x04\x64\x61ta\x18\x01 \x03(\x02\"^\n\x11transform_request\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02\x12\t\n\x01z\x18\x03 \x01(\x02\x12\r\n\x05pitch\x18\x04 \x01(\x02\x12\x0b\n\x03yaw\x18\x05 \x01(\x02\x12\x0c\n\x04roll\x18\x06 \x01(\x02\"\x1e\n\x0c\x65mpty_return\x12\x0e\n\x06result\x18\x01 \x01(\x02\x32;\n\x0eimage_transfer\x12)\n\tsend_data\x12\r.request_data\x1a\r.empty_returnb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11ipc_configs.proto\"\x9c\x01\n\x0crequest_data\x12\"\n\nimage_data\x18\x01 \x01(\x0b\x32\x0e.image_request\x12)\n\rcar_transform\x18\x02 \x01(\x0b\x32\x12.transform_request\x12=\n\x15\x42\x45V_bounding_box_cord\x18\x03 \x01(\x0b\x32\x1e.BEV_bounding_box_cord_request\"\x1d\n\rimage_request\x12\x0c\n\x04\x64\x61ta\x18\x01 \x03(\x02\"^\n\x11transform_request\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02\x12\t\n\x01z\x18\x03 \x01(\x02\x12\r\n\x05pitch\x18\x04 \x01(\x02\x12\x0b\n\x03yaw\x18\x05 \x01(\x02\x12\x0c\n\x04roll\x18\x06 \x01(\x02\"\xcf\x01\n\x1d\x42\x45V_bounding_box_cord_request\x12\x15\n\rleft_bottom_x\x18\x01 \x01(\x02\x12\x15\n\rleft_bottom_y\x18\x02 \x01(\x02\x12\x12\n\nleft_top_x\x18\x03 \x01(\x02\x12\x12\n\nleft_top_y\x18\x04 \x01(\x02\x12\x13\n\x0bright_top_x\x18\x05 \x01(\x02\x12\x13\n\x0bright_top_y\x18\x06 \x01(\x02\x12\x16\n\x0eright_bottom_x\x18\x07 \x01(\x02\x12\x16\n\x0eright_bottom_y\x18\x08 \x01(\x02\"\x1e\n\x0c\x65mpty_return\x12\x0e\n\x06result\x18\x01 \x01(\x02\x32;\n\x0eimage_transfer\x12)\n\tsend_data\x12\r.request_data\x1a\r.empty_returnb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -21,14 +21,16 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'ipc_configs_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _globals['_REQUEST_DATA']._serialized_start=21
-  _globals['_REQUEST_DATA']._serialized_end=114
-  _globals['_IMAGE_REQUEST']._serialized_start=116
-  _globals['_IMAGE_REQUEST']._serialized_end=145
-  _globals['_TRANSFORM_REQUEST']._serialized_start=147
-  _globals['_TRANSFORM_REQUEST']._serialized_end=241
-  _globals['_EMPTY_RETURN']._serialized_start=243
-  _globals['_EMPTY_RETURN']._serialized_end=273
-  _globals['_IMAGE_TRANSFER']._serialized_start=275
-  _globals['_IMAGE_TRANSFER']._serialized_end=334
+  _globals['_REQUEST_DATA']._serialized_start=22
+  _globals['_REQUEST_DATA']._serialized_end=178
+  _globals['_IMAGE_REQUEST']._serialized_start=180
+  _globals['_IMAGE_REQUEST']._serialized_end=209
+  _globals['_TRANSFORM_REQUEST']._serialized_start=211
+  _globals['_TRANSFORM_REQUEST']._serialized_end=305
+  _globals['_BEV_BOUNDING_BOX_CORD_REQUEST']._serialized_start=308
+  _globals['_BEV_BOUNDING_BOX_CORD_REQUEST']._serialized_end=515
+  _globals['_EMPTY_RETURN']._serialized_start=517
+  _globals['_EMPTY_RETURN']._serialized_end=547
+  _globals['_IMAGE_TRANSFER']._serialized_start=549
+  _globals['_IMAGE_TRANSFER']._serialized_end=608
 # @@protoc_insertion_point(module_scope)

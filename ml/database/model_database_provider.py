@@ -1,8 +1,13 @@
 import sqlite3
 
-class ModelDatbaseProvider:
+class ModelDatabaseProvider:
     def __init__(self, db_file="model_database.db"):
         self.conn = sqlite3.connect(db_file)
+
+    def get_all_image_ids(self):
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT id FROM Images")
+        return cursor.fetchone()
 
     def get_parking_spot_corners(self, spot_id):
         cursor = self.conn.cursor()

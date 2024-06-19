@@ -7,13 +7,10 @@ from  cv2 import flip
 import numpy as np
 import pygame
 from birds_eye_view.camera_configs_modifier import *
-from birds_eye_view.comb_surface_access import get_combined_surface, combined_surface_semaphore
+from birds_eye_view.comb_surface_access import *
 from pygame.locals import *
 
-surface_semaphore = Semaphore(1)
-
 images = [None, None, None, None]
-count = 0
 CONFIG_MODIFICATIONS_INSTANCE = ConfigModifier.get_instance()
 
 def raw_data_to_image(image):
@@ -72,35 +69,40 @@ def get_surface_image(camera_id, image):
     return pygame_img
 
 def combine_images():
-    """Combines all 4 images to form the bird's eye view in one surface"""
-    global images
+    """Combines all 4 images to form the bird's eye view in one surface"""  
+    while True:
+        for cond in image_sync_preserving_semaphores:
+            cond.acquire()
+        
+        global images
 
-    combined_surface_semaphore.acquire()
-    combined_surface = get_combined_surface()
+        combined_surface_semaphore.acquire()
+        combined_surface = get_combined_surface()
 
-    combined_surface.fill((0,0,0))
+        combined_surface.fill((0,0,0))
 
-    top_image = get_surface_image(1, images[0])
-    bottom_image = get_surface_image(2, images[1])
-    left_image = get_surface_image(3, images[2])
-    right_image = get_surface_image(4, images[3])
+        top_image = get_surface_image(1, images[0])
+        bottom_image = get_surface_image(2, images[1])
+        left_image = get_surface_image(3, images[2])
+        right_image = get_surface_image(4, images[3])
 
-    combined_surface.blit(top_image,
-                          CONFIG_MODIFICATIONS_INSTANCE.pygame_images_window_placement['1'])
-    combined_surface.blit(bottom_image,
-                          CONFIG_MODIFICATIONS_INSTANCE.pygame_images_window_placement['2'])
-    combined_surface.blit(left_image,
-                          CONFIG_MODIFICATIONS_INSTANCE.pygame_images_window_placement['3'])
-    combined_surface.blit(right_image,
-                          CONFIG_MODIFICATIONS_INSTANCE.pygame_images_window_placement['4'])
+        combined_surface.blit(top_image,
+                            CONFIG_MODIFICATIONS_INSTANCE.pygame_images_window_placement['1'])
+        combined_surface.blit(bottom_image,
+                            CONFIG_MODIFICATIONS_INSTANCE.pygame_images_window_placement['2'])
+        combined_surface.blit(left_image,
+                            CONFIG_MODIFICATIONS_INSTANCE.pygame_images_window_placement['3'])
+        combined_surface.blit(right_image,
+                            CONFIG_MODIFICATIONS_INSTANCE.pygame_images_window_placement['4'])
 
-    global count
-    count = 0
-
-    combined_surface_semaphore.release()
+        combined_surface_semaphore.release()
+        composition_event.set()
 
 def generate_birds_eye_view(camera_id, image):
     """Prepares all 4 images to be combined"""
+    if (cameras_waiting_states[camera_id - 1]):
+        return
+
     image_reshaped = raw_data_to_image(image)
 
     source_points, destination_points = get_srouce_and_destination_matrices(camera_id, image)
@@ -120,13 +122,12 @@ def generate_birds_eye_view(camera_id, image):
     if camera_id == 1:
         transformed_image = flip(transformed_image, 4)
 
-    images[camera_id-1] = transformed_image
+    cameras_waiting_states[camera_id - 1] = True
+    images[camera_id - 1] = transformed_image
 
-    global count
-    count+=1
-
-    if all(item is not None for item in images) and count >=3:
-        combine_images()
+    image_sync_preserving_semaphores[camera_id - 1].release()
+    composition_event.wait()
+    cameras_waiting_states[camera_id - 1] = False
 
 def blit_top_down_image(transformed_image):
     """Blits top down image view in one surface"""

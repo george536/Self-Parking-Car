@@ -12,11 +12,9 @@ from carla_controls.add_vehicle import AddVehicle
 from birds_eye_view.camera_location import CameraLocation
 from birds_eye_view.camera_location import CameraLocations
 from birds_eye_view.camera_configs_modifier import ConfigModifier
-from birds_eye_view.camera_processing import generate_birds_eye_view, generate_top_down_view
+from birds_eye_view.camera_processing import *
 from birds_eye_view.birds_eye_view_calibration import BEVCalibration
-from birds_eye_view.comb_surface_access import get_combined_surface
-from birds_eye_view.comb_surface_access import set_combined_surface
-from birds_eye_view.comb_surface_access import combined_surface_semaphore
+from birds_eye_view.comb_surface_access import *
 from birds_eye_view.camera_properties_calibration import CameraPropertiesCalibration
 from birds_eye_view.BEV_field_labeller import BEVFieldLabeller
 from parking_spot_labeller.utils_labeller import load_parking_spots
@@ -77,9 +75,6 @@ class BirdsEyeView(Thread):
 
             self.top_down_camera.listen(lambda image: generate_top_down_view(5, image))
         else:
-            def camera_listen(camera_id, camera):
-                camera.listen(lambda image: generate_birds_eye_view(camera_id, image))
-
             camera_location1 = CameraLocation(CameraLocations.FRONT_LOCATION)
             camera_location2 = CameraLocation(CameraLocations.REAR_LOCATION)
             camera_location3 = CameraLocation(CameraLocations.RIGHT_LOCATION)
@@ -98,29 +93,20 @@ class BirdsEyeView(Thread):
             camera_location2.camera = self.camera2
             camera_location3.camera = self.camera3
             camera_location4.camera = self.camera4
-            # Create threads for camera listens
-            thread1 = Thread(target=camera_listen, args=(1, self.camera1)) ## front camera
-            thread2 = Thread(target=camera_listen, args=(2, self.camera2)) ## rear camera
-            thread3 = Thread(target=camera_listen, args=(3, self.camera3)) ## right camera
-            thread4 = Thread(target=camera_listen, args=(4, self.camera4)) ## left camera
 
-            # Start the threads
-            thread1.start()
-            thread2.start()
-            thread3.start()
-            thread4.start()
-
-            # Wait for all threads to finish
-            thread1.join()
-            thread2.join()
-            thread3.join()
-            thread4.join()
+            combine_images_thread = Thread(target=combine_images, args=())
+            combine_images_thread.start()
+            
+            self.camera1.listen(lambda image: generate_birds_eye_view(1, image))
+            self.camera2.listen(lambda image: generate_birds_eye_view(2, image))
+            self.camera3.listen(lambda image: generate_birds_eye_view(3, image))
+            self.camera4.listen(lambda image: generate_birds_eye_view(4, image))
 
         if self.should_calibrate:
             biv_calibration = BEVCalibration()
             biv_calibration.start()
             CameraPropertiesCalibration.get_instance().start()
-                
+            
         self.running = True
         while self.running:
             world.tick()

@@ -99,7 +99,6 @@ def combine_images():
 
     combined_surface_semaphore.release()
 
-
 def generate_birds_eye_view(camera_id, image):
     """Prepares all 4 images to be combined"""
     image_reshaped = raw_data_to_image(image)
@@ -128,3 +127,35 @@ def generate_birds_eye_view(camera_id, image):
 
     if all(item is not None for item in images) and count >=3:
         combine_images()
+
+def blit_top_down_image(transformed_image):
+    """Blits top down image view in one surface"""
+    combined_surface_semaphore.acquire()
+    combined_surface = get_combined_surface()
+
+    combined_surface.fill((0,0,0))
+
+    surface_image = get_surface_image(5, transformed_image)
+
+    combined_surface_width, combined_surface_height = combined_surface.get_size()
+    pygame_img_width, pygame_img_height = surface_image.get_size()
+    
+    x = (combined_surface_width - pygame_img_width) // 2
+    y = (combined_surface_height - pygame_img_height) // 2
+
+    combined_surface.blit(surface_image,(x,y))
+
+    combined_surface_semaphore.release()
+
+def generate_top_down_view(camera_id, image):
+    """Prepares top down image to be blit"""
+    image_reshaped = raw_data_to_image(image)
+
+    source_points, destination_points = get_srouce_and_destination_matrices(camera_id, image)
+
+    transformed_image = transform_perspective(
+        camera_id, image_reshaped, source_points, destination_points)
+    
+    transformed_image = flip(transformed_image, 0)
+
+    blit_top_down_image(transformed_image)

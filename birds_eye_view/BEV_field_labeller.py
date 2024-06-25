@@ -31,7 +31,7 @@ class BEVFieldLabeller:
         car_location = [self.vehicle.get_transform().location.x, 
                         self.vehicle.get_transform().location.y, 
                         self.vehicle.get_transform().location.z]
-        
+
         # apply the shift amounts to car location (the center of the box)
         self.shifted_rotated_points = []
         for shifted_point in rotated_shift_points:

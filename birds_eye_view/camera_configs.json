@@ -1,8 +1,10 @@
 {
     "source_matrix_depth_factor_v": 2.9,
     "source_matrix_depth_factor_h": 3.5,
+    "source_matrix_depth_factor_top_down": 23.4,
     "destination_matrix_depth_factor_v": 11.5,
     "destination_matrix_depth_factor_h": 6.1,
+    "destination_matrix_depth_factor_top_down": 1.9,
     "wrapped_image_dimensions_vertical": {
         "w": 763,
         "h": 165
@@ -10,6 +12,10 @@
     "wrapped_image_dimensions_horizontal": {
         "w": 450,
         "h": 123
+    },
+    "wrapped_image_dimensions_top_down": {
+        "w": 450,
+        "h": 295
     },
     "pygame_window_dimensions": {
         "w": 295,

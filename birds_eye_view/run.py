@@ -12,7 +12,7 @@ from carla_controls.add_vehicle import AddVehicle
 from birds_eye_view.camera_location import CameraLocation
 from birds_eye_view.camera_location import CameraLocations
 from birds_eye_view.camera_configs_modifier import ConfigModifier
-from birds_eye_view.camera_processing import generate_birds_eye_view
+from birds_eye_view.camera_processing import generate_birds_eye_view, generate_top_down_view
 from birds_eye_view.birds_eye_view_calibration import BEVCalibration
 from birds_eye_view.comb_surface_access import get_combined_surface
 from birds_eye_view.comb_surface_access import set_combined_surface
@@ -32,6 +32,7 @@ class BirdsEyeView(Thread):
         self.camera2 = None
         self.camera3 = None
         self.camera4 = None
+        self.top_down_camera = None
         self.vehicle = None
 
         self.running = False
@@ -67,50 +68,59 @@ class BirdsEyeView(Thread):
         global combined_surface
         set_combined_surface(pygame.Surface(window_size, pygame.SRCALPHA))
 
-        def camera_listen(camera_id, camera):
-            camera.listen(lambda image: generate_birds_eye_view(camera_id, image))
+        if (self.ipc_on):
+            top_down_camera_location = CameraLocation(CameraLocations.TOP_DOWN_LOCATION)
 
-        camera_location1 = CameraLocation(CameraLocations.FRONT_LOCATION)
-        camera_location2 = CameraLocation(CameraLocations.REAR_LOCATION)
-        camera_location3 = CameraLocation(CameraLocations.RIGHT_LOCATION)
-        camera_location4 = CameraLocation(CameraLocations.LEFT_LOCATION)
+            self.top_down_camera = AttachCamera(world, self.vehicle).execute(
+                h, w, 100, top_down_camera_location.get_location(), top_down_camera_location.get_rotation())
+            top_down_camera_location.camera = self.top_down_camera
 
-        self.camera1 = AttachCamera(world, self.vehicle).execute(
-            h, w, 150, camera_location1.get_location(), camera_location1.get_rotation())
-        self.camera2 = AttachCamera(world, self.vehicle).execute(
-            h, w, 150, camera_location2.get_location(), camera_location2.get_rotation())
-        self.camera3 = AttachCamera(world, self.vehicle).execute(
-            h, w, 170, camera_location3.get_location(), camera_location3.get_rotation())
-        self.camera4 = AttachCamera(world, self.vehicle).execute(
-            h, w, 170, camera_location4.get_location(), camera_location4.get_rotation())
+            self.top_down_camera.listen(lambda image: generate_top_down_view(5, image))
+        else:
+            def camera_listen(camera_id, camera):
+                camera.listen(lambda image: generate_birds_eye_view(camera_id, image))
 
-        camera_location1.camera = self.camera1
-        camera_location2.camera = self.camera2
-        camera_location3.camera = self.camera3
-        camera_location4.camera = self.camera4
-        # Create threads for camera listens
-        thread1 = Thread(target=camera_listen, args=(1, self.camera1)) ## front camera
-        thread2 = Thread(target=camera_listen, args=(2, self.camera2)) ## rear camera
-        thread3 = Thread(target=camera_listen, args=(3, self.camera3)) ## right camera
-        thread4 = Thread(target=camera_listen, args=(4, self.camera4)) ## left camera
+            camera_location1 = CameraLocation(CameraLocations.FRONT_LOCATION)
+            camera_location2 = CameraLocation(CameraLocations.REAR_LOCATION)
+            camera_location3 = CameraLocation(CameraLocations.RIGHT_LOCATION)
+            camera_location4 = CameraLocation(CameraLocations.LEFT_LOCATION)
 
-        # Start the threads
+            self.camera1 = AttachCamera(world, self.vehicle).execute(
+                h, w, 150, camera_location1.get_location(), camera_location1.get_rotation())
+            self.camera2 = AttachCamera(world, self.vehicle).execute(
+                h, w, 150, camera_location2.get_location(), camera_location2.get_rotation())
+            self.camera3 = AttachCamera(world, self.vehicle).execute(
+                h, w, 170, camera_location3.get_location(), camera_location3.get_rotation())
+            self.camera4 = AttachCamera(world, self.vehicle).execute(
+                h, w, 170, camera_location4.get_location(), camera_location4.get_rotation())
+
+            camera_location1.camera = self.camera1
+            camera_location2.camera = self.camera2
+            camera_location3.camera = self.camera3
+            camera_location4.camera = self.camera4
+            # Create threads for camera listens
+            thread1 = Thread(target=camera_listen, args=(1, self.camera1)) ## front camera
+            thread2 = Thread(target=camera_listen, args=(2, self.camera2)) ## rear camera
+            thread3 = Thread(target=camera_listen, args=(3, self.camera3)) ## right camera
+            thread4 = Thread(target=camera_listen, args=(4, self.camera4)) ## left camera
+
+            # Start the threads
+            thread1.start()
+            thread2.start()
+            thread3.start()
+            thread4.start()
+
+            # Wait for all threads to finish
+            thread1.join()
+            thread2.join()
+            thread3.join()
+            thread4.join()
+
         if self.should_calibrate:
             biv_calibration = BEVCalibration()
             biv_calibration.start()
             CameraPropertiesCalibration.get_instance().start()
-
-        thread1.start()
-        thread2.start()
-        thread3.start()
-        thread4.start()
-
-        # Wait for all threads to finish
-        thread1.join()
-        thread2.join()
-        thread3.join()
-        thread4.join()
-
+                
         self.running = True
         while self.running:
             world.tick()

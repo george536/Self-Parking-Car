@@ -10,6 +10,7 @@ class CameraLocations(IntEnum):
     REAR_LOCATION = 2
     RIGHT_LOCATION = 3
     LEFT_LOCATION = 4
+    TOP_DOWN_LOCATION = 5
 
 class CameraLocation:
     def __init__(self, location,

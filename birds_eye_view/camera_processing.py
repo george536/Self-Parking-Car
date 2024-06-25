@@ -1,13 +1,13 @@
-from threading import Semaphore
-from  cv2 import getPerspectiveTransform
-from  cv2 import warpPerspective
-from  cv2 import COLOR_BGR2RGB
-from  cv2 import cvtColor
-from  cv2 import flip
+from cv2 import getPerspectiveTransform
+from cv2 import warpPerspective
+from cv2 import COLOR_BGR2RGB
+from cv2 import cvtColor
+from cv2 import flip
 import numpy as np
 import pygame
 from birds_eye_view.camera_configs_modifier import *
 from birds_eye_view.comb_surface_access import *
+from birds_eye_view.top_down_surface_access import *
 from pygame.locals import *
 
 images = [None, None, None, None]
@@ -131,22 +131,22 @@ def generate_birds_eye_view(camera_id, image):
 
 def blit_top_down_image(transformed_image):
     """Blits top down image view in one surface"""
-    combined_surface_semaphore.acquire()
-    combined_surface = get_combined_surface()
+    top_down_surface_semaphore.acquire()
+    top_down_surface = get_top_down_surface()
 
-    combined_surface.fill((0,0,0))
+    top_down_surface.fill((0,0,0))
 
     surface_image = get_surface_image(5, transformed_image)
 
-    combined_surface_width, combined_surface_height = combined_surface.get_size()
+    top_down_surface_width, top_down_surface_height = top_down_surface.get_size()
     pygame_img_width, pygame_img_height = surface_image.get_size()
     
-    x = (combined_surface_width - pygame_img_width) // 2
-    y = (combined_surface_height - pygame_img_height) // 2
+    x = (top_down_surface_width - pygame_img_width) // 2
+    y = (top_down_surface_height - pygame_img_height) // 2
 
-    combined_surface.blit(surface_image,(x,y))
+    top_down_surface.blit(surface_image,(x,y))
 
-    combined_surface_semaphore.release()
+    top_down_surface_semaphore.release()
 
 def generate_top_down_view(camera_id, image):
     """Prepares top down image to be blit"""

@@ -2,7 +2,7 @@ import sqlite3
 import json
 
 class ModelDatabaseMaker:
-    def __init__(self, db_file="model_database.db"):
+    def __init__(self, db_file="training_data/model_database.db"):
         self.TRAINING_DATA_FILE = "training_data/transforms.json"
         self.PARKING_SPOTS_DATA_FILE = "parking_spot_labeller/spots_data.json"
         self.conn = sqlite3.connect(db_file)

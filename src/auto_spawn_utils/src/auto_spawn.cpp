@@ -86,10 +86,10 @@ void AutoSpawnUtils::spawnCarAtDifferentLocations() {
 
         waitForGrpcClient();
  
-        for(float x=parkingLotBottomLeftCorner.x; x>=parkingLotTopLeftCorner.x; x--) {
+        for(float x=parkingLotBottomLeftCorner.x; x>=parkingLotTopLeftCorner.x; x-=4) {
             for(float y=parkingLotBottomLeftCorner.y; y>=parkingLotBottomRightCorner.y; y--) {
                 geom::Location newLocation(x, y, 0.2f);
-                for (float yaw=-180; yaw<=180; yaw+=10) {
+                for (float yaw=-180; yaw<=180; yaw+=20) {
                     geom::Rotation newRotation(0.0f, yaw, 0.0f);
                     geom::Transform newTransform(newLocation, newRotation);
                     carlaUtils.getVehicle()->SetTransform(newTransform);

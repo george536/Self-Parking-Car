@@ -42,15 +42,12 @@ class BirdsEyeView(Thread):
 
     def run(self):
         client = ConnectToCarla().execute()
-
         world = client.get_world()
+
         if self.should_load_spots:
             load_parking_spots(world)
 
-        spectator = world.get_spectator()
-        spawn_point = Transform(Location(x=-13.2, y=-27.2, z=0.2), Rotation(pitch=0, yaw=-78, roll=0))
-        spectator.set_transform(spawn_point)
-        self.vehicle = AddVehicle(world, spawn_point).execute()
+        self.add_vehicle(world)
 
         self.BEV_field_labeller = BEVFieldLabeller(world, self.vehicle, self.should_show_bev_filed_box)
 
@@ -69,6 +66,53 @@ class BirdsEyeView(Thread):
         set_combined_surface(pygame.Surface(window_size, pygame.SRCALPHA))
         set_top_down_surface(pygame.Surface(window_size, pygame.SRCALPHA))
 
+        self.prepare_cameras(h, w, world)
+
+        if self.should_calibrate:
+            biv_calibration = BEVCalibration()
+            biv_calibration.start()
+            CameraPropertiesCalibration.get_instance().start()
+            
+        self.running = True
+        while self.running:
+            world.tick()
+            combined_surface_semaphore.acquire()
+            top_down_surface_semaphore.acquire()
+
+            combined_surface = get_combined_surface()
+            top_down_surface = get_top_down_surface()
+            if self.ipc_on:
+                window.blit(top_down_surface, (0, 0))
+            else:
+                window.blit(combined_surface, (0, 0))
+
+            self.BEV_field_labeller.update_box()
+            
+            if self.ipc_on:
+                self.process_ipc_actions()
+
+            combined_surface_semaphore.release()
+            top_down_surface_semaphore.release()
+
+            pygame.display.flip()
+
+            # handle all events to avoid crashes
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.at_exit()
+                    self.running = False
+
+            time.sleep(0.01)
+
+    def add_vehicle(self, world):
+        """Add vehicle object and spawn the car"""
+        spectator = world.get_spectator()
+        spawn_point = Transform(Location(x=-13.2, y=-27.2, z=0.2), Rotation(pitch=0, yaw=-78, roll=0))
+        spectator.set_transform(spawn_point)
+        self.vehicle = AddVehicle(world, spawn_point).execute()
+
+    def prepare_cameras(self, h, w, world):
+        """Prepare and add all cameras attached to the car"""
         # Top down surface image
         top_down_camera_location = CameraLocation(CameraLocations.TOP_DOWN_LOCATION)
 
@@ -105,39 +149,6 @@ class BirdsEyeView(Thread):
         self.camera2.listen(lambda image: generate_birds_eye_view(2, image))
         self.camera3.listen(lambda image: generate_birds_eye_view(3, image))
         self.camera4.listen(lambda image: generate_birds_eye_view(4, image))
-
-        if self.should_calibrate:
-            biv_calibration = BEVCalibration()
-            biv_calibration.start()
-            CameraPropertiesCalibration.get_instance().start()
-            
-        self.running = True
-        while self.running:
-            world.tick()
-            combined_surface_semaphore.acquire()
-            top_down_surface_semaphore.acquire()
-            combined_surface = get_combined_surface()
-            top_down_surface = get_top_down_surface()
-            if self.ipc_on:
-                window.blit(top_down_surface, (0, 0))
-            else:
-                window.blit(combined_surface, (0, 0))
-            self.BEV_field_labeller.update_box()
-            
-            if self.ipc_on:
-                self.process_ipc_actions()
-
-            combined_surface_semaphore.release()
-            top_down_surface_semaphore.release()
-            pygame.display.flip()
-
-            # handle all events to avoid crashes
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.at_exit()
-                    self.running = False
-
-            time.sleep(0.01)
 
     def process_ipc_actions(self):
         """Sends image data and transform data over to the ipc server"""

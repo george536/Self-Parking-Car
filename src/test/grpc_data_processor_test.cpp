@@ -169,7 +169,9 @@ TEST_F(GrpcDataProcessorTest, SaveTransformAndInViewSpotsData) {
     BEV_bounding_box_cord.set_right_bottom_x(-20.7);
     BEV_bounding_box_cord.set_right_bottom_y(-24.68);
 
-    mockProcessor.saveTransformAndInViewSpotsData(transform, BEV_bounding_box_cord);
+    auto inViewSpotsResult = mockProcessor.getAllIntersectingBoundingBoxes(BEV_bounding_box_cord);
+
+    mockProcessor.saveTransformAndInViewSpotsData(transform, inViewSpotsResult);
     ASSERT_EQ(mockProcessor.nextID, 1);
     
     nlohmann::json jsonData = fileutils.readJson(jsonFilePath);

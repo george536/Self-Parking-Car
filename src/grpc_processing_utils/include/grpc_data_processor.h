@@ -36,7 +36,7 @@ public:
 
     GrpcDataProcessor(FileUtils* fUtils = nullptr);
     bool convertAndSaveImage(const google::protobuf::RepeatedField<float>& imageBytes);
-    void saveTransformAndInViewSpotsData(const transform_request& transform, const BEV_bounding_box_cord_request& BEV_bounding_box_cord);
+    void saveTransformAndInViewSpotsData(const transform_request& transform, const std::tuple<int, std::string> inViewSpotsResult);
     void extractNextImageId();
     cv::Mat convertRGBtoCV2(const google::protobuf::RepeatedField<float>& imageBytes);
     bool saveImage(cv::Mat image);

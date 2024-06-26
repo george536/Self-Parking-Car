@@ -33,8 +33,7 @@ bool GrpcDataProcessor::convertAndSaveImage(const google::protobuf::RepeatedFiel
     return true;
 }
 
-void GrpcDataProcessor::saveTransformAndInViewSpotsData(const transform_request& transform, const BEV_bounding_box_cord_request& BEV_bounding_box_cord) {
-    auto inViewSpotsResult = getAllIntersectingBoundingBoxes(BEV_bounding_box_cord);
+void GrpcDataProcessor::saveTransformAndInViewSpotsData(const transform_request& transform, const std::tuple<int, std::string> inViewSpotsResult) {
     int numOfSpotsFound = std::get<0>(inViewSpotsResult);
     std::string inViewSpots = std::get<1>(inViewSpotsResult);
 

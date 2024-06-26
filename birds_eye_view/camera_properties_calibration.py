@@ -29,12 +29,12 @@ class CameraPropertiesCalibration(Thread):
 
     def save_camera_properties(self):
         for camera in self.cameras:
-            self.camera_locations[camera.location.name]["x"] = camera.get_x()
-            self.camera_locations[camera.location.name]["y"] = camera.get_y()
-            self.camera_locations[camera.location.name]["z"] = camera.get_z()
-            self.camera_locations[camera.location.name]["pitch"] = camera.get_pitch()
-            self.camera_locations[camera.location.name]["yaw"] = camera.get_yaw()
-            self.camera_locations[camera.location.name]["roll"] = camera.get_roll()
+            self.camera_locations[camera.location.name]["x"] = float(camera.get_x())
+            self.camera_locations[camera.location.name]["y"] = float(camera.get_y())
+            self.camera_locations[camera.location.name]["z"] = float(camera.get_z())
+            self.camera_locations[camera.location.name]["pitch"] = float(camera.get_pitch())
+            self.camera_locations[camera.location.name]["yaw"] = float(camera.get_yaw())
+            self.camera_locations[camera.location.name]["roll"] = float(camera.get_roll())
 
         print("Saving camera properties configurations")
 

@@ -19,7 +19,7 @@ from birds_eye_view.top_down_surface_access import *
 from birds_eye_view.camera_properties_calibration import CameraPropertiesCalibration
 from birds_eye_view.BEV_field_labeller import BEVFieldLabeller
 from parking_spot_labeller.utils_labeller import load_parking_spots
-from python_ipc.IpcClient import IpcClient
+from python_IPC.IpcClient import IpcClient
 
 class BirdsEyeView(Thread):
     """Generates bird's eye view of the vehicle"""

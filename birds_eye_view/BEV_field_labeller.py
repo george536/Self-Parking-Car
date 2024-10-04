@@ -4,10 +4,10 @@ from carla import Color
 
 class BEVFieldLabeller:
     def __init__(self, world, vehicle, should_show_bev_filed_box):
-        self.upper_left_corner_shifts = [-5,3.4]
-        self.upper_right_corner_shifts = [5,3.4]
-        self.lower_left_corner_shifts = [-5,-3.4]
-        self.lower_right_corner_shifts = [5,-3.4]
+        self.upper_left_corner_shifts = [-4.5,3.2]
+        self.upper_right_corner_shifts = [4.5,3.2]
+        self.lower_left_corner_shifts = [-4.5,-3.2]
+        self.lower_right_corner_shifts = [4.5,-3.2]
         self.shifted_rotated_points = []
         self.world = world
         self.vehicle = vehicle

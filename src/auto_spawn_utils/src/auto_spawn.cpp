@@ -51,11 +51,22 @@ GrpcData* AutoSpawnUtils::findGrpcDataWithClosestLocation(geom::Location targetL
 }
 
 void AutoSpawnUtils::processGrpcData(geom::Location targetLocation) {
-    GrpcData& matchingGrpcData = *findGrpcDataWithClosestLocation(targetLocation);
+    GrpcData matchingGrpcData;
+    int retries = 5;
+    while (retries-- > 0) {
+        matchingGrpcData = *findGrpcDataWithClosestLocation(targetLocation);
+        if (&matchingGrpcData.transform != nullptr) {
+            break;
+        }
+        std::cout << "GrpcData not ready yet, retrying..." << std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));  // Wait before retrying
+    }
+
     if (&matchingGrpcData == nullptr) {
         std::cout << "No matching transform found." << std::endl;
         return;
     }
+
     auto inViewSpotsResult = grpcDataProcessor.getAllIntersectingBoundingBoxes(*matchingGrpcData.BEV_bounding_box_cord);
     if (std::get<0>(inViewSpotsResult) > 0)
     {
@@ -101,8 +112,9 @@ void AutoSpawnUtils::spawnCarAtDifferentLocations() {
                     carlaUtils.getWorld()->Tick(seconds(1));
                     std::this_thread::sleep_for (std::chrono::milliseconds(1000));
 
-                    if (carlaUtils.getVehicle()->GetLocation().Distance(newLocation) <= 1.0f && !collision && carlaUtils.getVehicle()->GetLocation().z <= 0.5) {
-                        std::cout << "Vehicle is spawned successfully into location x:" << x << ", y: "<< y<< std::endl;
+                    if (carlaUtils.getVehicle()->GetLocation().Distance(newLocation) <= 1.0f && !collision && carlaUtils.getVehicle()->GetLocation().z <= 0.2f
+                        && (carlaUtils.getVehicle()->GetTransform().rotation.yaw - newRotation.yaw) <= 0.5f) {
+                        std::cout << "Vehicle is spawned successfully into location x:" << x << ", y: " << y << ", yaw: " << yaw << std::endl;
                         processGrpcData(newLocation);
                         grpcDataList.clear();
                     }

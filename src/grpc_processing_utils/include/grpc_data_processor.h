@@ -11,6 +11,9 @@
 #include <filesystem>
 #include <map>
 #include <tuple>
+#include <boost/geometry.hpp>
+#include <boost/geometry/geometries/box.hpp>
+#include <boost/geometry/geometries/point.hpp>
 
 #include "opencv2/opencv.hpp"
 #include "file_utils.h"

@@ -53,7 +53,8 @@ void GrpcDataProcessor::saveTransformAndInViewSpotsData(const transform_request&
     };
 
     std::cout << "Saving vehicle location x: "<< transform.x() 
-    << " , y: "<< transform.y() 
+    << " , y: " << transform.y()
+    << " , yaw " << transform.yaw()
     << ", and the number of parking spots found in view is: " << numOfSpotsFound << " spots"
     << std::endl;
 
@@ -124,62 +125,24 @@ void GrpcDataProcessor::loadWidthAndHeight() {
 }
 
 bool GrpcDataProcessor::checkBoundingBoxesIntesection(const BoundingBox& box1, const BoundingBox& box2) {
-    // Check if any corner of box1 is inside box2
-    if ((box1.x1 >= std::min(box2.x1, box2.x3) && box1.x1 <= std::max(box2.x1, box2.x3) &&
-         box1.y1 >= std::min(box2.y1, box2.y3) && box1.y1 <= std::max(box2.y1, box2.y3)) ||
-        (box1.x2 >= std::min(box2.x1, box2.x3) && box1.x2 <= std::max(box2.x1, box2.x3) &&
-         box1.y2 >= std::min(box2.y1, box2.y3) && box1.y2 <= std::max(box2.y1, box2.y3)) ||
-        (box1.x3 >= std::min(box2.x1, box2.x3) && box1.x3 <= std::max(box2.x1, box2.x3) &&
-         box1.y3 >= std::min(box2.y1, box2.y3) && box1.y3 <= std::max(box2.y1, box2.y3)) ||
-        (box1.x4 >= std::min(box2.x1, box2.x3) && box1.x4 <= std::max(box2.x1, box2.x3) &&
-         box1.y4 >= std::min(box2.y1, box2.y3) && box1.y4 <= std::max(box2.y1, box2.y3)))
-        return true;
+        using point = boost::geometry::model::d2::point_xy<double>;
+        using polygon = boost::geometry::model::polygon<point>;
 
-    // Check if any corner of box2 is inside box1
-    if ((box2.x1 >= std::min(box1.x1, box1.x3) && box2.x1 <= std::max(box1.x1, box1.x3) &&
-         box2.y1 >= std::min(box1.y1, box1.y3) && box2.y1 <= std::max(box1.y1, box1.y3)) ||
-        (box2.x2 >= std::min(box1.x1, box1.x3) && box2.x2 <= std::max(box1.x1, box1.x3) &&
-         box2.y2 >= std::min(box1.y1, box1.y3) && box2.y2 <= std::max(box1.y1, box1.y3)) ||
-        (box2.x3 >= std::min(box1.x1, box1.x3) && box2.x3 <= std::max(box1.x1, box1.x3) &&
-         box2.y3 >= std::min(box1.y1, box1.y3) && box2.y3 <= std::max(box1.y1, box1.y3)) ||
-        (box2.x4 >= std::min(box1.x1, box1.x3) && box2.x4 <= std::max(box1.x1, box1.x3) &&
-         box2.y4 >= std::min(box1.y1, box1.y3) && box2.y4 <= std::max(box1.y1, box1.y3)))
-        return true;
+        polygon polygon1;
+        boost::geometry::append(polygon1, point(box1.x1, box1.y1));
+        boost::geometry::append(polygon1, point(box1.x2, box1.y2));
+        boost::geometry::append(polygon1, point(box1.x3, box1.y3));
+        boost::geometry::append(polygon1, point(box1.x4, box1.y4));
+        boost::geometry::append(polygon1, point(box1.x1, box1.y1));
 
-    // Check if box1 is inside box2
-    if ((box1.x1 >= std::min(box2.x1, box2.x3) && box1.x1 <= std::max(box2.x1, box2.x3) &&
-         box1.y1 >= std::min(box2.y1, box2.y3) && box1.y1 <= std::max(box2.y1, box2.y3)) &&
-        (box1.x2 >= std::min(box2.x1, box2.x3) && box1.x2 <= std::max(box2.x1, box2.x3) &&
-         box1.y2 >= std::min(box2.y1, box2.y3) && box1.y2 <= std::max(box2.y1, box2.y3)) &&
-        (box1.x3 >= std::min(box2.x1, box2.x3) && box1.x3 <= std::max(box2.x1, box2.x3) &&
-         box1.y3 >= std::min(box2.y1, box2.y3) && box1.y3 <= std::max(box2.y1, box2.y3)) &&
-        (box1.x4 >= std::min(box2.x1, box2.x3) && box1.x4 <= std::max(box2.x1, box2.x3) &&
-         box1.y4 >= std::min(box2.y1, box2.y3) && box1.y4 <= std::max(box2.y1, box2.y3)))
-        return true;
-
-    // Check if box2 is inside box1
-    if ((box2.x1 >= std::min(box1.x1, box1.x3) && box2.x1 <= std::max(box1.x1, box1.x3) &&
-         box2.y1 >= std::min(box1.y1, box1.y3) && box2.y1 <= std::max(box1.y1, box1.y3)) &&
-        (box2.x2 >= std::min(box1.x1, box1.x3) && box2.x2 <= std::max(box1.x1, box1.x3) &&
-         box2.y2 >= std::min(box1.y1, box1.y3) && box2.y2 <= std::max(box1.y1, box1.y3)) &&
-        (box2.x3 >= std::min(box1.x1, box1.x3) && box2.x3 <= std::max(box1.x1, box1.x3) &&
-         box2.y3 >= std::min(box1.y1, box1.y3) && box2.y3 <= std::max(box1.y1, box1.y3)) &&
-        (box2.x4 >= std::min(box1.x1, box1.x3) && box2.x4 <= std::max(box1.x1, box1.x3) &&
-         box2.y4 >= std::min(box1.y1, box1.y3) && box2.y4 <= std::max(box1.y1, box1.y3)))
-        return true;
-
-    // Check for edge overlap
-    if ((box1.x1 == box2.x1 && box1.y1 == box2.y1) || (box1.x2 == box2.x1 && box1.y2 == box2.y1) ||
-        (box1.x3 == box2.x1 && box1.y3 == box2.y1) || (box1.x4 == box2.x1 && box1.y4 == box2.y1) ||
-        (box1.x1 == box2.x2 && box1.y1 == box2.y2) || (box1.x2 == box2.x2 && box1.y2 == box2.y2) ||
-        (box1.x3 == box2.x2 && box1.y3 == box2.y2) || (box1.x4 == box2.x2 && box1.y4 == box2.y2) ||
-        (box1.x1 == box2.x3 && box1.y1 == box2.y3) || (box1.x2 == box2.x3 && box1.y2 == box2.y3) ||
-        (box1.x3 == box2.x3 && box1.y3 == box2.y3) || (box1.x4 == box2.x3 && box1.y4 == box2.y3) ||
-        (box1.x1 == box2.x4 && box1.y1 == box2.y4) || (box1.x2 == box2.x4 && box1.y2 == box2.y4) ||
-        (box1.x3 == box2.x4 && box1.y3 == box2.y4) || (box1.x4 == box2.x4 && box1.y4 == box2.y4))
-        return true;
-
-    return false;
+        polygon polygon2;
+        boost::geometry::append(polygon2, point(box2.x1, box2.y1));
+        boost::geometry::append(polygon2, point(box2.x2, box2.y2));
+        boost::geometry::append(polygon2, point(box2.x3, box2.y3));
+        boost::geometry::append(polygon2, point(box2.x4, box2.y4));
+        boost::geometry::append(polygon2, point(box2.x1, box2.y1));
+        
+        return boost::geometry::intersects(polygon1, polygon2);
 }
 
 void GrpcDataProcessor::fetchAllParkingSpotsCoordinates() {

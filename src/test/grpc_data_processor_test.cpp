@@ -64,6 +64,11 @@ TEST_F(GrpcDataProcessorTest, SaveImage) {
     bool result = processor.saveImage(blackImage);
     ASSERT_TRUE(result);
     
+    std::filesystem::path trainingDataDir = processor.projectPath + "\\training_data";
+    if (!std::filesystem::exists(trainingDataDir)) {
+        std::filesystem::create_directories(trainingDataDir);
+    }
+
     char jsonFilePath[260];
     snprintf(jsonFilePath, sizeof(jsonFilePath), "%s\\training_data\\%s.jpg", processor.projectPath.c_str(), std::to_string(processor.nextID).c_str());
     remove(jsonFilePath);

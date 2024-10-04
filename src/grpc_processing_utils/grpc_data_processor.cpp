@@ -108,6 +108,12 @@ bool GrpcDataProcessor::saveImage(cv::Mat image) {
     if (image.empty()) {
         return false;
     }
+
+    fs::path trainingDataDir = projectPath + "\\training_data";
+    if (!fs::exists(trainingDataDir)) {
+        fs::create_directories(trainingDataDir);
+    }
+
     char filePath[260];
     snprintf(filePath, sizeof(filePath), "%s\\training_data\\%s.jpg", projectPath.c_str(), std::to_string(nextID).c_str());
     return cv::imwrite(filePath, image);

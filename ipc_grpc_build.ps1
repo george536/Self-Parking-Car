@@ -28,8 +28,9 @@ if($compile_proto){
     Write-Host "Skipping compilation of proto files"
 }
 
-mkdir src/build
-cd src/build
+cd src
+mkdir build
+cd build
 
 if($generate){
     cmake ../ -G "Ninja" -DCMAKE_BUILD_TYPE=Debug

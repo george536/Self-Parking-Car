@@ -27,14 +27,26 @@ void AutoSpawnUtils::saveGrpcData(GrpcData grpcData) {
 GrpcData* AutoSpawnUtils::findGrpcDataWithClosestLocation(geom::Location targetLocation) {
     GrpcData* closestGrpcData = nullptr;
     float closestDistance = std::numeric_limits<float>::max();
-
+    int grpcDataListSize = size(grpcDataList);
+    int index = 0;
     for (auto& grpcData : grpcDataList) {
+        index++;
+        if (index == grpcDataListSize)
+        {
+            // drop last image
+            break;
+        }
+
+        if (index == 1)
+        {
+             // skip first image
+            continue;
+        }
         if (grpcData.transform != nullptr) {
             float distance = std::abs(grpcData.transform->x() - targetLocation.x) +
-                             std::abs(grpcData.transform->y() - targetLocation.y) +
-                             std::abs(grpcData.transform->z() - targetLocation.z);
-
-            if (distance < closestDistance) {
+                             std::abs(grpcData.transform->y() - targetLocation.y);
+    
+            if (distance <= closestDistance) {
                 closestDistance = distance;
                 closestGrpcData = &grpcData;
             }
@@ -103,14 +115,13 @@ void AutoSpawnUtils::spawnCarAtDifferentLocations() {
  
         for(float x=parkingLotBottomLeftCorner.x; x>=parkingLotTopLeftCorner.x; x-=4) {
             for(float y=parkingLotBottomLeftCorner.y; y>=parkingLotBottomRightCorner.y; y--) {
-                geom::Location newLocation(x, y, 0.2f);
+                geom::Location newLocation(x, y, 0.0f);
                 for (float yaw=-180; yaw<=180; yaw+=20) {
                     geom::Rotation newRotation(0.0f, yaw, 0.0f);
                     geom::Transform newTransform(newLocation, newRotation);
                     carlaUtils.getVehicle()->SetTransform(newTransform);
 
-                    carlaUtils.getWorld()->Tick(seconds(1));
-                    std::this_thread::sleep_for (std::chrono::milliseconds(1000));
+                    std::this_thread::sleep_for (std::chrono::milliseconds(3000));
 
                     if (carlaUtils.getVehicle()->GetLocation().Distance(newLocation) <= 1.0f && !collision && carlaUtils.getVehicle()->GetLocation().z <= 0.2f
                         && (carlaUtils.getVehicle()->GetTransform().rotation.yaw - newRotation.yaw) <= 0.5f) {

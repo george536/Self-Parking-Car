@@ -89,6 +89,7 @@ class BirdsEyeView(Thread):
             self.BEV_field_labeller.update_box()
             
             if self.ipc_on:
+                time.sleep(0.5)
                 self.process_ipc_actions()
 
             combined_surface_semaphore.release()
@@ -102,7 +103,7 @@ class BirdsEyeView(Thread):
                     self.at_exit()
                     self.running = False
 
-            time.sleep(0.01)
+            time.sleep(0.05)
 
     def add_vehicle(self, world):
         """Add vehicle object and spawn the car"""

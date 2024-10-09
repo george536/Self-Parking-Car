@@ -40,7 +40,14 @@ void GrpcDataProcessor::saveTransformAndInViewSpotsData(const transform_request&
     char transformsJsonFilePath[260];
     snprintf(transformsJsonFilePath, sizeof(transformsJsonFilePath), TRANSFORMS_JSON_FILE, projectPath.c_str());
 
-    nlohmann::json jsonData = fUtils_->readJson(transformsJsonFilePath);
+    nlohmann::json jsonData;
+    std::ifstream file(transformsJsonFilePath);
+    if (file.good()) {
+        jsonData = fUtils_->readJson(transformsJsonFilePath);
+    } else {
+        jsonData = nlohmann::json::object();
+        std::cout << "File does not exist. Starting with an empty JSON object." << std::endl;
+    }
 
     jsonData[std::to_string(nextID)] = {
         {"x", transform.x()},

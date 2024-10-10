@@ -5,11 +5,11 @@ import time
 from grpc import RpcError
 from grpc import insecure_channel
 from grpc import StatusCode
-from python_ipc.ipc_configs_pb2 import image_request
-from python_ipc.ipc_configs_pb2 import transform_request
-from python_ipc.ipc_configs_pb2 import BEV_bounding_box_cord_request
-from python_ipc.ipc_configs_pb2 import request_data
-from python_ipc.ipc_configs_pb2_grpc import image_transferStub
+from python_IPC.ipc_configs_pb2 import image_request
+from python_IPC.ipc_configs_pb2 import transform_request
+from python_IPC.ipc_configs_pb2 import BEV_bounding_box_cord_request
+from python_IPC.ipc_configs_pb2 import request_data
+from python_IPC.ipc_configs_pb2_grpc import image_transferStub
 
 class IpcClient(Thread):
     """Responsible for sending images and transform data"""

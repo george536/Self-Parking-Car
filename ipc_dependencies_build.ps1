@@ -12,7 +12,7 @@ if($generate){
 }
 
 cd src
-
+mkdir build
 
 pip install grpcio-tools
 

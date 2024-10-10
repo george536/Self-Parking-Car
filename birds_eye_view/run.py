@@ -19,7 +19,7 @@ from birds_eye_view.top_down_surface_access import *
 from birds_eye_view.camera_properties_calibration import CameraPropertiesCalibration
 from birds_eye_view.BEV_field_labeller import BEVFieldLabeller
 from parking_spot_labeller.utils_labeller import load_parking_spots
-from python_ipc.IpcClient import IpcClient
+from python_IPC.IpcClient import IpcClient
 
 class BirdsEyeView(Thread):
     """Generates bird's eye view of the vehicle"""
@@ -89,6 +89,7 @@ class BirdsEyeView(Thread):
             self.BEV_field_labeller.update_box()
             
             if self.ipc_on:
+                time.sleep(0.5)
                 self.process_ipc_actions()
 
             combined_surface_semaphore.release()
@@ -102,7 +103,7 @@ class BirdsEyeView(Thread):
                     self.at_exit()
                     self.running = False
 
-            time.sleep(0.01)
+            time.sleep(0.05)
 
     def add_vehicle(self, world):
         """Add vehicle object and spawn the car"""

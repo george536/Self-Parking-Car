@@ -57,13 +57,12 @@ class ModelDatabaseMaker:
         with open(self.TRAINING_DATA_FILE, "r", encoding="utf-8") as json_file:
             data = json.load(json_file)
             for key, value in data.items():
-                print(key)
                 self.__add_image_entry(key, value["x"], value["y"], value["z"], value["roll"], value["pitch"], value["yaw"], value["in_view_spots"])
 
         with open(self.PARKING_SPOTS_DATA_FILE, "r", encoding="utf-8") as json_file:
             data = json.load(json_file)
             for key, value in data.items():
-                print(key)
-                self.__add_spot_entry(int(key), value[0][0], value[0][1], value[1][0], value[1][1], value[2][0], value[2][1], value[3][0], value[3][1])
+                if key[:].isdigit():
+                    self.__add_spot_entry(int(key), value[0][0], value[0][1], value[1][0], value[1][1], value[2][0], value[2][1], value[3][0], value[3][1])
             
         self.close()

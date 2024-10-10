@@ -2,7 +2,7 @@ import sys
 
 from birds_eye_view.run import BirdsEyeView
 from parking_spot_labeller.run import ParkingSpotLabeller
-from python_ipc.IpcClient import IpcClient
+from python_IPC.IpcClient import IpcClient
 
 CALIBRATION_FLAG = "-calibrate"
 LABELLER_FLAG = "-labeller"

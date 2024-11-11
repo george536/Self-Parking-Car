@@ -1,7 +1,7 @@
 import os
 import torch
 from torch.utils.data import Dataset
-from ml_io.parking_spot_image import ParkingSpotImage
+from ml.ml_io.parking_spot_image import ParkingSpotImage
 from ml.database.model_database_provider import ModelDatabaseProvider
 from ml.ml_io.parking_spot import ParkingSpot
 from ml.ml_io.transform import Transform

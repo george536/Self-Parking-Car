@@ -25,4 +25,4 @@ class ParkingSpot:
         x_BR = self.x_BR - car_transform.x
         y_BR = self.y_BR - car_transform.y
 
-        return [1.0, x_BL, y_BL, x_UL, y_UL, x_UR, y_UR, x_BR, y_BR]
+        return [x_BL, y_BL, x_UL, y_UL, x_UR, y_UR, x_BR, y_BR]

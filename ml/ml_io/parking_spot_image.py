@@ -19,9 +19,14 @@ class ParkingSpotImage:
         return self.parking_spots
     
     def get_parking_spots_labels(self):
-        spots_labels = []
+        spot_bbox = []
+        clss_prob = []
         for i in range(10):
             if i < len(self.parking_spots):
-                spots_labels += self.parking_spots[i].get_relative_corners_transform_to_car(self.transform)
+                spot_bbox += self.parking_spots[i].get_relative_corners_transform_to_car(self.transform)
+                clss_prob += [1.0]
             else:
-                spots_labels += [0.0] * 9
+                spot_bbox += [0.0] * 8
+                clss_prob += [0.0]
+
+        return spot_bbox, clss_prob

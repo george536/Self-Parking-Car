@@ -52,5 +52,14 @@ class DatasetLoader(Dataset):
         
         if self.transform:
             image = self.transform(image=image_parking_spot)["image"]
+
+        spot_bbox, clss_prob = image_parking_spot.get_parking_spots_labels()
         
-        return image, torch.Tensor(image.get_parking_spots_labels())
+         # Convert lists to tensors
+        spot_bbox_tensor = torch.tensor(spot_bbox, dtype=torch.float32).view(-1, 8)
+        clss_prob_tensor = torch.tensor(clss_prob, dtype=torch.float32)
+
+        # Return targets as a tuple
+        targets = (spot_bbox_tensor, clss_prob_tensor)
+
+        return image, targets

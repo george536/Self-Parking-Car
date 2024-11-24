@@ -1,7 +1,7 @@
 import os
 import torch
 from torch.utils.data import Dataset
-from ml_io.parking_spot_image import ParkingSpotImage
+from ml.ml_io.parking_spot_image import ParkingSpotImage
 from ml.database.model_database_provider import ModelDatabaseProvider
 from ml.ml_io.parking_spot import ParkingSpot
 from ml.ml_io.transform import Transform
@@ -52,5 +52,14 @@ class DatasetLoader(Dataset):
         
         if self.transform:
             image = self.transform(image=image_parking_spot)["image"]
+
+        spot_bbox, clss_prob = image_parking_spot.get_parking_spots_labels()
         
-        return image, torch.Tensor(image.get_parking_spots_labels())
+         # Convert lists to tensors
+        spot_bbox_tensor = torch.tensor(spot_bbox, dtype=torch.float32).view(-1, 8)
+        clss_prob_tensor = torch.tensor(clss_prob, dtype=torch.float32)
+
+        # Return targets as a tuple
+        targets = (spot_bbox_tensor, clss_prob_tensor)
+
+        return image, targets
